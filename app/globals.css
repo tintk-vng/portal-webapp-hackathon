@@ -1,0 +1,9 @@
+@tailwind base;
+@layer base {
+  html {
+    @apply text-dark-500;
+    -webkit-tap-highlight-color: transparent;
+  } 
+}
+@tailwind components;
+@tailwind utilities;

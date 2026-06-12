@@ -1,0 +1,76 @@
+.zlp-tooltip {
+  position: relative;
+  display: inline-block;
+  &__tooltip {
+    width: 204px;
+    position: absolute;
+    opacity: 0;
+    transition: all 200ms;
+
+    background: #0033c9;
+    border-radius: 8px;
+
+    padding: 8px 12px;
+
+    label {
+      color: #ffffff !important;
+    }
+    &.top {
+      top: -62px;
+      &::after {
+        top: calc(100% - 6px);
+        left: 12px;
+        border-right: 12px solid transparent;
+        border-left: 12px solid transparent;
+        border-top: 12px solid #0033c9;
+        // border-top: 12px solid red;
+      }
+    }
+
+    &.arrow_mobile {
+      &::after {
+        left: 96px !important;
+      }
+    }
+    &.left {
+      left: calc(-100% - 6px);
+      top: 50%;
+      transform: translate(50%, -50%);
+      &::after {
+        top: 50%;
+        right: -6px;
+        transform: translate(0, -50%);
+
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+        border-left: 12px solid #0033c9;
+      }
+    }
+    &.right {
+      right: calc(-100% - 6px);
+      top: 50%;
+      transform: translate(-50%, -50%);
+      &::after {
+        top: 50%;
+        left: -6px;
+        transform: translate(0, -50%);
+
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+        border-right: 12px solid #0033c9;
+      }
+    }
+    &::after {
+      content: ' ';
+      position: absolute;
+    }
+  }
+  .zlp-tooltip__tooltip.active {
+    opacity: 1;
+    visibility: unset;
+  }
+  .zlp-tooltip__tooltip.inactive {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

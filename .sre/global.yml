@@ -1,0 +1,12 @@
+sonarqube:
+  quality_check: true  # jenkins job will fail if sonar step fails, otherwise it will run sonar as background, and upload result to sonar if success.
+  tag:
+    sonarqube_portfolio: merchant-technology
+    sonarqube_squad: bill-telco
+
+productionClusters: "zlp-k8s-prod-2" # optional, default is "zlp-k8s-prod-2", if has multiple values, separate by comma, e.g: "zlp-k8s-prod-2,aws-k8s-prod-1,aws-k8s-prod-2"
+configType: "js" # optional, default is "yaml"
+service_metadata:
+  tier: 3
+config: 
+  type: js

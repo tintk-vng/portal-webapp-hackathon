@@ -1,0 +1,48 @@
+.paginationBullets {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -12px;
+  display: flex;
+  justify-content: center;
+}
+
+.paginationBullet {
+  cursor: pointer;
+  width: 4px;
+  min-width: 4px;
+  height: 4px;
+  margin: 0 2px;
+  border-radius: 4px;
+  background-color: #ccd2d8;
+  transition: 0.3s;
+}
+
+.paginationBulletActive {
+  cursor: pointer;
+  width: 16px;
+  min-width: 16px;
+  height: 4px;
+  margin: 0 2px;
+  border-radius: 4px;
+  background-color: #0033c9;
+  transition: 0.3s;
+}
+
+@media (min-width: 768px) {
+  .paginationBullets {
+    bottom: -16px !important;
+    display: flex;
+    justify-content: center;
+  }
+
+  .paginationBullet {
+    width: 8px;
+    height: 8px;
+  }
+
+  .paginationBulletActive {
+    width: 24px;
+    height: 8px;
+  }
+}

@@ -1,0 +1,31 @@
+const logoMaping: { [key: string]: string } = {
+  '30': 'truyenhinh_viettel.png',
+  '300': 'truyenhinh_anvien.png',
+  '301': 'truyenhinh_hanoicab.png',
+  '303': 'truyenhinh_htv.png',
+  '304': 'truyenhinh_k+.png',
+  '306': 'truyenhinh_sctv2.png',
+  '307': 'truyenhinh_vnpt_cantho.png',
+  '308': 'truyenhinh_vnpt_danang.png',
+  '312': 'truyenhinh_vtv.png',
+  '372': 'truyenhinh_viettel.png',
+  '373': 'truyenhinh_viettel.png',
+  '374': 'truyenhinh_htv.png', 
+  '375': 'truyenhinh_htv.png', 
+  '376': 'truyenhinh_htv.png', 
+  '377': 'truyenhinh_htv.png',
+  '378': 'truyenhinh_htv.png', 
+  '379': 'truyenhinh_htv.png', 
+  '380': 'truyenhinh_htv.png', 
+  '381': 'truyenhinh_htv.png', 
+  '382': 'truyenhinh_htv.png', 
+  '383': 'truyenhinh_htv.png', 
+  '384': 'truyenhinh_htv.png',
+  '385': 'truyenhinh_htv.png', 
+  '386': 'truyenhinh_htv.png', 
+  '387': 'truyenhinh_htv.png',
+  '388': 'truyenhinh_htv.png', 
+  default: 'truyenhinh_htv.png'
+}
+
+export default logoMaping;

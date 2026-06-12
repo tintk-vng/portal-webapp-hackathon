@@ -1,0 +1,8 @@
+{
+  "name": "@dgs/looknlearn",
+  "version": "0.3.7",
+  "description": "Local offline stub for @dgs/looknlearn (real package lives on ZaloPay private registry). Approximates Header/Footer so the app runs without VPN.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "private": true
+}

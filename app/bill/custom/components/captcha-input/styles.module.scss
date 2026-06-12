@@ -1,0 +1,17 @@
+.resetIcon {
+  display: inline-block;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  background: url('/images/icons/uts_capcha_reset_dark_200.svg') no-repeat center;
+  background-size: contain;
+}
+
+.utsResetIcon {
+  display: inline-block;
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  background: url('/images/icons/uts_capcha_reset.svg') no-repeat center;
+  background-size: contain;
+}

@@ -1,0 +1,36 @@
+# Dockerfile.local — build chạy được NGOÀI mạng nội bộ VNG.
+# Khác với Dockerfile chính: dùng base image public, KHÔNG cần token verdaccio,
+# dùng stub @dgs/looknlearn, KHÔNG rsync ra CDN nội bộ.
+# Build với APP_ENV=local để: giữ static asset cùng app + bật proxy /api/v1 (data LIVE, no CORS).
+#
+#   docker build -f Dockerfile.local -t portal-webapp:local .
+#   docker run -p 8080:8080 portal-webapp:local
+#   → http://localhost:8080/telco/topup
+
+FROM node:20-alpine AS deps
+WORKDIR /app
+COPY package.json package-lock.json .npmrc ./
+COPY stubs ./stubs
+RUN npm install --no-audit --no-fund
+
+FROM node:20-alpine AS builder
+WORKDIR /app
+ENV APP_ENV=local
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npx next build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ENV APP_ENV=local
+ENV PORT=8080
+RUN addgroup -g 1001 -S nodejs || true && adduser -S nextjs -u 1001 || true
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/next.config.js ./next.config.js
+USER nextjs
+EXPOSE 8080
+ENTRYPOINT ["node_modules/.bin/next", "start", "-p", "8080"]

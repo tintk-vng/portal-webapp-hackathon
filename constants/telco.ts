@@ -1,0 +1,348 @@
+export const defaultSEOContent = {
+  images: ['https://scdn.zalopay.com.vn/zst/zpi/images/telco/banners_v2/telco_thumbnail.jpg'],
+  type: 'website',
+}
+
+export enum AppID {
+  PHONE_CARD = 12,
+  TOPUP = 61,
+  DATA_TOPUP = 441,
+  DATA_CODE = 2172,
+  POST_PAID = 451,
+  COMBO = 455,
+  GAME = 2391,
+  GOOGLEPLAY = 3628,
+}
+
+export enum ProductID {
+  PHONE_CARD = 12,
+  TOPUP = 61,
+  DATA_TOPUP = 441,
+  DATA_CODE = 2172,
+  POST_PAID = 451,
+  POST_PAID_VNPT = 453,
+  COMBO = 455,
+  GAME = 2391,
+  GOOGLEPLAY = 3628,
+}
+
+export enum TelcoCode {
+  INVALID = 'INVALID',
+  MOBIFONE = 'MOBIFONE',
+  VIETTEL = 'VIETTEL',
+  VINAPHONE = 'VINAPHONE',
+  GMOBILE = 'GMOBILE',
+  VIETNAMOBILE = 'VIETNAMOBILE',
+  WINTEL = 'WINTEL',
+  ITEL = 'ITEL',
+  SAYMEE = 'SAYMEE',
+  GOOGLEPLAY = 'GOOGLEPLAY',
+  GARENA = 'GARENA',
+  VTC = 'VTC',
+  ZING = 'ZING',
+  KUL = 'KUL',
+  SCOIN = 'SCOIN',
+  SOHACOIN = 'SOHACOIN',
+  GATE = 'GATE',
+  FUNCARD = 'FUNCARD',
+  GOSU = 'GOSU',
+  APPOTA = 'APPOTA',
+}
+
+export const TELCO_NAME: Partial<Record<TelcoCode, string>> = {
+  [TelcoCode.INVALID]: '',
+  [TelcoCode.MOBIFONE]: 'Mobifone',
+  [TelcoCode.VIETTEL]: 'Viettel',
+  [TelcoCode.VINAPHONE]: 'Vinaphone',
+  [TelcoCode.GMOBILE]: 'Gmobile',
+  [TelcoCode.VIETNAMOBILE]: 'Vietnamobile',
+  [TelcoCode.WINTEL]: 'Wintel',
+  [TelcoCode.ITEL]: 'iTel',
+  [TelcoCode.SAYMEE]: 'Saymee',
+  [TelcoCode.GOOGLEPLAY]: 'Mã thẻ Google Play',
+  [TelcoCode.GARENA]: 'GARENA',
+  [TelcoCode.VTC]: 'VTC',
+  [TelcoCode.ZING]: 'ZING',
+  [TelcoCode.KUL]: 'KUL',
+  [TelcoCode.SCOIN]: 'SCOIN',
+  [TelcoCode.SOHACOIN]: 'SOHACOIN',
+  [TelcoCode.APPOTA]: 'APPOTA',
+}
+
+export const TELCO_SUPPLIER_ID: { [key: number]: TelcoCode } = {
+  0: TelcoCode.INVALID,
+  401: TelcoCode.VINAPHONE,
+  402: TelcoCode.MOBIFONE,
+  403: TelcoCode.VIETTEL,
+}
+
+export const SUPPLIER_ORDER_BY_TELCO_CODE: Partial<Record<TelcoCode, number>> = {
+  [TelcoCode.INVALID]: 0,
+  [TelcoCode.VIETTEL]: 1,
+  [TelcoCode.MOBIFONE]: 2,
+  [TelcoCode.VINAPHONE]: 3,
+  [TelcoCode.GMOBILE]: 4,
+  [TelcoCode.VIETNAMOBILE]: 5,
+  [TelcoCode.WINTEL]: 6,
+  [TelcoCode.ITEL]: 8,
+  [TelcoCode.GOOGLEPLAY]: 9,
+}
+
+export const TELCO_CODE_PREFIX3: { [key: string]: TelcoCode } = {
+  // đầu số mới, từ 11 -> 10 số
+  '032': TelcoCode.VIETTEL,
+  '033': TelcoCode.VIETTEL,
+  '034': TelcoCode.VIETTEL,
+  '035': TelcoCode.VIETTEL,
+  '036': TelcoCode.VIETTEL,
+  '037': TelcoCode.VIETTEL,
+  '038': TelcoCode.VIETTEL,
+  '039': TelcoCode.VIETTEL,
+
+  '081': TelcoCode.VINAPHONE,
+  '082': TelcoCode.VINAPHONE,
+  '083': TelcoCode.VINAPHONE,
+  '084': TelcoCode.VINAPHONE,
+  '085': TelcoCode.VINAPHONE,
+
+  '070': TelcoCode.MOBIFONE,
+  '076': TelcoCode.MOBIFONE,
+  '077': TelcoCode.MOBIFONE,
+  '078': TelcoCode.MOBIFONE,
+  '079': TelcoCode.MOBIFONE,
+
+  '056': TelcoCode.VIETNAMOBILE,
+  '058': TelcoCode.VIETNAMOBILE,
+
+  '059': TelcoCode.GMOBILE,
+
+  // Đầu 3 số (sim 10 số) cũ
+  '086': TelcoCode.VIETTEL,
+  '096': TelcoCode.VIETTEL,
+  '097': TelcoCode.VIETTEL,
+  '098': TelcoCode.VIETTEL,
+
+  '088': TelcoCode.VINAPHONE,
+  '091': TelcoCode.VINAPHONE,
+  '094': TelcoCode.VINAPHONE,
+  // '087': TelcoCode.VINAPHONE,
+
+  '089': TelcoCode.MOBIFONE,
+  '090': TelcoCode.MOBIFONE,
+  '093': TelcoCode.MOBIFONE,
+
+  '052': TelcoCode.VIETNAMOBILE,
+  '092': TelcoCode.VIETNAMOBILE,
+
+  '099': TelcoCode.GMOBILE,
+
+  '055': TelcoCode.WINTEL,
+
+  '087': TelcoCode.ITEL,
+}
+
+export enum SupplierStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  MAINTENANCE = 'MAINTENANCE',
+  UNSUPPORTED = 'UNSUPPORTED',
+}
+
+export enum PackageStatus {
+  ACTIVE = 'ACTIVE',
+  MAINTENANCE = 'MAINTENANCE',
+}
+
+export const API_PATH: Record<AppID, { [key: string]: string }> = {
+  [AppID.PHONE_CARD]: {
+    GET_SUPPLIERS: `/api/v1/products/${ProductID.PHONE_CARD}/telco-suppliers`,
+    CREATE_ORDER: `/api/v1/products/${ProductID.PHONE_CARD}/orders`,
+  },
+  [AppID.TOPUP]: {
+    GET_SUPPLIERS: `/api/v1/products/${ProductID.TOPUP}/telco-suppliers`,
+    CREATE_ORDER: `/api/v1/products/${ProductID.TOPUP}/orders`,
+  },
+  [AppID.DATA_TOPUP]: {
+    GET_SUPPLIERS: `/api/v1/products/${ProductID.DATA_TOPUP}/telco-suppliers`,
+    CREATE_ORDER: `/api/v1/products/${ProductID.DATA_TOPUP}/orders`,
+  },
+  [AppID.DATA_CODE]: {
+    GET_SUPPLIERS: `/api/v1/products/${ProductID.DATA_CODE}/telco-suppliers`,
+    CREATE_ORDER: `/api/v1/products/${ProductID.DATA_CODE}/orders`,
+  },
+  [AppID.POST_PAID]: {
+    GET_SUPPLIERS: `/api/v1/products/${ProductID.POST_PAID}/suppliers`,
+    GET_BILLS: `/api/v1/products/${ProductID.POST_PAID}/bills`,
+    CREATE_ORDER: `/api/v1/products/${ProductID.POST_PAID}/orders`,
+  },
+  [AppID.COMBO]: {
+    GET_SUPPLIERS: `/api/v1/products/${ProductID.COMBO}/telco-suppliers`,
+    CREATE_ORDER: `/api/v1/products/${ProductID.COMBO}/orders`,
+  },
+  [AppID.GOOGLEPLAY]: {
+    GET_SUPPLIERS: `/api/v1/products/${ProductID.GOOGLEPLAY}/telco-suppliers`,
+    CREATE_ORDER: `/api/v1/products/${ProductID.GOOGLEPLAY}/orders`,
+  },
+  [AppID.GAME]: {
+    GET_SUPPLIERS: `/api/v1/products/${ProductID.GAME}/telco-suppliers`,
+    GET_SOFS: `/api/v1/products/${ProductID.GAME}/sofs`,
+    CREATE_ORDER: `/api/v1/products/${ProductID.GAME}/orders`,
+  },
+}
+
+export enum DataPackageGroupType {
+  DYNAMIC = 'DYNAMIC',
+  STATIC = 'STATIC',
+}
+
+export enum DataPackageType {
+  FIXED = 'FIXED',
+  ADDON = 'ADDON',
+  EXCLUSIVE = 'EXCLUSIVE',
+  DYNAMIC_AMOUNT = 'DYNAMIC_AMOUNT',
+}
+
+export const EVENT: Record<AppID, { [key: string]: string }> = {
+  [AppID.PHONE_CARD]: {
+    LOAD_PAGE: '1001.000',
+    SELECT_SUPPLIER: '1001.002',
+    SELECT_PACKAGE: '1001.003',
+    INCREASE_QUANTITY: '1001.004',
+    DECREASE_QUANTITY: '1001.005',
+    INPUT_EMAIL: '1001.006',
+    CLICK_PAYMENT_BUTTON: '1001.007',
+    CLICK_POLICY: '1001.008',
+    SHOW_ERROR_DIALOG: '1001.009',
+    CLICK_ERROR_DIALOG_CLOSE_BUTTON: '1001.010',
+    SHOW_CONFIRMATION_POPUP: '1001.011',
+    CLICK_CHECK_AGAIN_BUTTON: '1001.012',
+    CLICK_CONFIRM_BUTTON: '1001.013',
+    CLICK_MAINTENANCE_BUTTON: '1001.014',
+  },
+  [AppID.TOPUP]: {
+    LOAD_PAGE: '1000.000',
+    CLICK_BACK: '1000.001',
+    INPUT_PHONE_NUMBER: '1000.002',
+    SHOW_SUPPLIER_DROPDOWN_MENU: '1000.003',
+    SELECT_SUPPLIER: '1000.004',
+    SELECT_PACKAGE: '1000.005',
+    INPUT_EMAIL: '1000.006',
+    CLICK_PAYMENT_BUTTON: '1000.007',
+    CLICK_POLICY: '1000.008',
+    SHOW_ERROR_DIALOG: '1000.009',
+    CLICK_ERROR_DIALOG_CLOSE_BUTTON: '1000.010',
+    SHOW_CONFIRMATION_POPUP: '1000.011',
+    CLICK_CHECK_AGAIN_BUTTON: '1000.012',
+    CLICK_CONFIRM_BUTTON: '1000.013',
+    CLICK_MAINTENANCE_BUTTON: '1000.014',
+  },
+  [AppID.DATA_TOPUP]: {
+    LOAD_PAGE: '1003.000',
+    INPUT_PHONE_NUMBER: '1003.002',
+    SHOW_SUPPLIER_DROPDOWN_MENU: '1003.003',
+    SELECT_SUPPLIER: '1003.004',
+    SELECT_PACKAGE: '1003.005',
+    INPUT_EMAIL: '1003.006',
+    CLICK_PAYMENT_BUTTON: '1003.007',
+    CLICK_POLICY: '1003.008',
+    SHOW_ERROR_DIALOG: '1003.009',
+    CLICK_ERROR_DIALOG_CLOSE_BUTTON: '1003.010',
+    SHOW_CONFIRMATION_POPUP: '1003.011',
+    CLICK_CHECK_AGAIN_BUTTON: '1003.012',
+    CLICK_CONFIRM_BUTTON: '1003.013',
+    CLICK_MAINTENANCE_BUTTON: '1003.014',
+  },
+  [AppID.DATA_CODE]: {
+    LOAD_PAGE: '1004.000',
+    SELECT_SUPPLIER: '1004.002',
+    SELECT_PACKAGE: '1004.003',
+    INCREASE_QUANTITY: '1004.004',
+    DECREASE_QUANTITY: '1004.005',
+    INPUT_EMAIL: '1004.006',
+    CLICK_PAYMENT_BUTTON: '1004.007',
+    CLICK_POLICY: '1004.008',
+    SHOW_ERROR_DIALOG: '1004.009',
+    CLICK_ERROR_DIALOG_CLOSE_BUTTON: '1004.010',
+    SHOW_CONFIRMATION_POPUP: '1004.011',
+    CLICK_CHECK_AGAIN_BUTTON: '1004.012',
+    CLICK_CONFIRM_BUTTON: '1004.013',
+    CLICK_MAINTENANCE_BUTTON: '1004.014',
+  },
+  [AppID.POST_PAID]: {
+    LOAD_PAGE: '1002.000',
+    INPUT_PHONE_NUMBER: '1002.002',
+    SHOW_SUPPLIER_DROPDOWN_MENU: '1002.003',
+    SELECT_SUPPLIER: '1002.004',
+    CLICK_QUERY_BILL_BUTTON: '1002.005',
+    INPUT_AMOUNT: '1002.006',
+    INPUT_EMAIL: '1002.007',
+    CLICK_PAYMENT_BUTTON: '1002.008',
+    CLICK_POLICY: '1002.009',
+    // SHOW_ERROR_DIALOG: '1002.010',
+    // CLICK_ERROR_DIALOG_CLOSE_BUTTON: '1002.016',
+    SHOW_CONFIRMATION_POPUP: '1002.010',
+    CLICK_CHECK_AGAIN_BUTTON: '1002.011',
+    CLICK_CONFIRM_BUTTON: '1002.012',
+    INPUT_CAPTCHA: '1002.013',
+    RESET_CAPTCHA: '1002.014',
+    CLICK_MAINTENANCE_BUTTON: '1002.015',
+    CLICK_CHECK_GUIDE_LINE: '1002.016',
+    SHOW_GUIDE_LINE_POPUP: '1002.017',
+    CLOSE_GUIDE_LINE_POPUP: '1002.018',
+    CLICK_SEND_SMS_BUTTON: '1002.019',
+    CLICK_CALL_BUTTON: '1002.020',
+    CLICK_UNDERSTOOD_BUTTON: '1002.021',
+  },
+  [AppID.COMBO]: {
+    LOAD_PAGE: '1005.000',
+    INPUT_PHONE_NUMBER: '1005.002',
+    SHOW_SUPPLIER_DROPDOWN_MENU: '1005.003',
+    SELECT_SUPPLIER: '1005.004',
+    SELECT_PACKAGE: '1005.005',
+    INPUT_EMAIL: '1005.006',
+    CLICK_PAYMENT_BUTTON: '1005.007',
+    CLICK_POLICY: '1005.008',
+    SHOW_ERROR_DIALOG: '1005.009',
+    CLICK_ERROR_DIALOG_CLOSE_BUTTON: '1005.010',
+    SHOW_CONFIRMATION_POPUP: '1005.011',
+    CLICK_CHECK_AGAIN_BUTTON: '1005.012',
+    CLICK_CONFIRM_BUTTON: '1005.013',
+    CLICK_VIEW_PACKAGE_DETAILS: '1005.014',
+    SHOW_PACKAGE_DETAILS_POPUP: '1005.015',
+    CLOSE_PACKAGE_DETAILS_POPUP: '1005.016',
+    CLICK_UNDERSTOOD_BUTTON: '1005.017',
+    CLICK_MAINTENANCE_BUTTON: '1005.018',
+  },
+  [AppID.GOOGLEPLAY]: {
+    LOAD_PAGE: '1006.000',
+    SELECT_PACKAGE: '1006.002',
+    INPUT_EMAIL: '1006.003',
+    CLICK_PAYMENT_BUTTON: '1006.004',
+    CLICK_TUTORIAL: '1006.005',
+    CLICK_SUPPORT: '1006.006',
+    CLICK_UNDERSTOOD_BUTTON: '1006.007',
+    VIEW_POLICY: '1006.008',
+    SHOW_CONFIRMATION_POPUP: '1006.009',
+    CLICK_CHECK_AGAIN_BUTTON: '1006.010',
+    CLICK_CONFIRM_BUTTON: '1006.011',
+    LOAD_MAINTENANCE_PAGE: '1006.015',
+  },
+  [AppID.GAME]: {
+    LOAD_PAGE: '1007.000',
+    SELECT_SUPPLIER: '1007.002',
+    SELECT_PACKAGE: '1007.003',
+    INPUT_EMAIL: '1007.004',
+    SELECT_SOF: '1007.005',
+    INCREASE_QUANTITY: '1007.006',
+    DECREASE_QUANTITY: '1007.007',
+    CLICK_PAYMENT_BUTTON: '1007.008',
+    CLICK_POLICY: '1007.009',
+    SHOW_ERROR_DIALOG: '1007.010',
+    CLICK_ERROR_DIALOG_CLOSE_BUTTON: '1007.011',
+    SHOW_CONFIRMATION_POPUP: '1007.012',
+    CLICK_CHECK_AGAIN_BUTTON: '1007.013',
+    CLICK_CONFIRM_BUTTON: '1007.014',
+    CLICK_MAINTENANCE_BUTTON: '1007.015',
+    CLICK_BANNER: '1007.016',
+  },
+}

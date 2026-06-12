@@ -1,0 +1,32 @@
+.success {
+  span {
+    background-image: url('https://scdn.zalopay.com.vn/zst/zpi/images/telco/icons_v2/web_payment/success.svg');
+  }
+}
+.warning {
+  span {
+    background-image: url('https://scdn.zalopay.com.vn/zst/zpi/images/telco/icons_v2/web_payment/pending.svg');
+  }
+}
+.danger {
+  span {
+    background-image: url('https://scdn.zalopay.com.vn/zst/zpi/images/telco/icons_v2/web_payment/failure.svg');
+  }
+}
+.disabled {
+  span {
+    background-image: url('https://scdn.zalopay.com.vn/zst/zpi/images/telco/icons_v2/web_payment/disabled.svg');
+  }
+}
+.common {
+  p {
+    width: calc(100% - 36px - 8px);
+  }
+}
+@media (min-width: 640px) {
+  .common {
+    p {
+      width: 100%;
+    }
+  }
+}

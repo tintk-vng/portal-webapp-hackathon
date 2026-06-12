@@ -1,0 +1,126 @@
+.telco-time-section {
+  width: 100%;
+  padding: 0 16px;
+
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 57px;
+    padding: 16px 0;
+    border-bottom: 1px solid #e6e9ec;
+    font-size: 16px;
+    line-height: 20px;
+
+    &__name {
+      flex-grow: 1;
+      margin: 0 14px;
+    }
+  }
+}
+
+.promotion-day-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 64px;
+
+  ul {
+    li {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      margin-bottom: 32px;
+      font-size: 16px;
+      line-height: 20px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.fixed-day-section {
+  &__note {
+    padding: 12px 0;
+    color: #66798b;
+  }
+}
+
+.confirm-topup-time-button {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  left: 16px;
+}
+
+// .back-icon {
+//   @include icon("back");
+// }
+
+.picker {
+  position: relative;
+  font-size: 21px;
+  line-height: 25px;
+
+  &__window {
+    position: absolute;
+    border-top: 1px solid #e6e9ec;
+    border-bottom: 1px solid #e6e9ec;
+    height: 33px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    pointer-events: none;
+  }
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 83px;
+    pointer-events: none;
+  }
+
+  &:before {
+    top: 0;
+    background: linear-gradient(#fff, rgba(#fff, 0.5));
+  }
+
+  &:after {
+    bottom: 0;
+    background: linear-gradient(rgba(#fff, 0.5), #fff);
+  }
+
+  ul {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    max-height: 200px;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -ms-overflow-style: none; // IE 10+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 33px;
+      scroll-snap-align: center;
+      text-align: center;
+      transition: 0.2s;
+
+      &.active {
+        font-size: 23px;
+        line-height: 27px;
+      }
+    }
+  }
+}
