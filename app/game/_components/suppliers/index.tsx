@@ -2,6 +2,7 @@
 
 import gameAPI from '@/api-client/telco/game'
 import googlePlayAPI from '@/api-client/telco/google-play'
+import eventsAPI from '@/api-client/common/events'
 import Badge, { BadgeType, BadgeVariant } from '@/components/common/badge'
 import StaticImage from '@/components/common/static-image'
 import { API_PATH, AppID, EVENT, PackageStatus, SupplierStatus, TelcoCode } from '@/constants/telco'
@@ -92,6 +93,8 @@ export default function Suppliers({ innerRef }: SuppliersProps) {
     API_PATH[AppID.GOOGLEPLAY].GET_SUPPLIERS,
     googlePlayAPI.getSuppliers
   )
+  const { data: eventsData } = useCustomSWR('game_events', () => eventsAPI.getEvents())
+  const eventBadges = eventsData?.card_badges || {}
   const gameSuppliers = telcoModel.modelSuppliers(data)
   const [googlePlaySupplier] = telcoModel.modelSuppliers(googlePlaySuppliersData)
   const suppliers = googlePlaySupplier ? [...gameSuppliers, googlePlaySupplier] : gameSuppliers
@@ -221,11 +224,19 @@ export default function Suppliers({ innerRef }: SuppliersProps) {
                 </Badge>
               )} */}
 
-              {!isMaintained && ['ZING', 'GARENA'].includes(supplier.telcoCode) && (
-                <Badge type={BadgeType.Ribbon2} variant={BadgeVariant.Negative}>
-                  -3%
+              {!isMaintained && eventBadges[supplier.telcoCode] && (
+                <Badge type={BadgeType.Ribbon2} variant={BadgeVariant.Positive}>
+                  Sự kiện
                 </Badge>
               )}
+
+              {!isMaintained &&
+                !eventBadges[supplier.telcoCode] &&
+                ['ZING', 'GARENA'].includes(supplier.telcoCode) && (
+                  <Badge type={BadgeType.Ribbon2} variant={BadgeVariant.Negative}>
+                    -3%
+                  </Badge>
+                )}
             </li>
           )
         })}

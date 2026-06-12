@@ -11,6 +11,7 @@ import { createContext, useRef } from 'react'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import EmailInput from '../email-input'
 import EventBanner from '../event-banner'
+import EventNews from '../event-news'
 import HighlightBlogs from '../highlight-blogs'
 import OrderDetails from '../order-details'
 import Packages from '../packages'
@@ -301,6 +302,7 @@ export default function Main({ subCategoryID }: MainProps) {
 
               <div className="hidden md:block">
                 {/* <HighlightBanner banners={banners} /> */}
+                <EventNews />
 
                 <HighlightBlogs subCategoryID={subCategoryID} />
               </div>
