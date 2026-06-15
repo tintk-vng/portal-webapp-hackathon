@@ -10,7 +10,6 @@ import dynamic from 'next/dynamic'
 import { createContext, useRef } from 'react'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import EmailInput from '../email-input'
-import EventBanner from '../event-banner'
 import HighlightBlogs from '../highlight-blogs'
 import OrderDetails from '../order-details'
 import Packages from '../packages'
@@ -280,8 +279,6 @@ export default function Main({ subCategoryID }: MainProps) {
               <div className="block md:hidden">
                 <Promotion />
               </div>
-
-              <EventBanner />
 
               <Suppliers innerRef={suppliersRef} />
 
