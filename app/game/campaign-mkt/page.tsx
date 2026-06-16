@@ -259,25 +259,43 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
           {/* Banner Preview */}
           <div>
             <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Banner Preview</h3>
-            <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br from-[#E75648] via-[#F1865F] to-[#FFD58F] p-5 text-white shadow-lg min-h-[140px] flex flex-col justify-between`}>
-              <span className="absolute right-3 top-3 rounded-lg bg-white px-2.5 py-1 text-xs font-extrabold text-blue-600 shadow">
-                {proposal.discountText || `Giảm ${proposal.discountPercent}%`}
-              </span>
-              <div>
-                <h4 className="font-extrabold text-xl leading-tight mt-6 text-slate-900 drop-shadow-sm">
-                  {editFields?.bannerTitle || proposal.bannerTitle}
-                </h4>
-                <p className="text-sm text-slate-800 font-medium mt-1.5">
-                  {editFields?.bannerSubtitle || proposal.bannerSubtitle}
-                </p>
-              </div>
-              <div className="mt-5 flex items-center justify-between text-sm font-bold text-blue-700">
-                <span>{proposal.ctaText || 'Xem ưu đãi'}</span>
-                {(editFields?.bannerImageUrl || proposal.bannerImageUrl) && (
-                  <img src={editFields?.bannerImageUrl || proposal.bannerImageUrl} alt="Logo" className="h-10 w-10 object-contain rounded-lg bg-white/40 p-1" />
-                )}
-              </div>
-            </div>
+            {(() => {
+              const imgUrl = editFields?.bannerImageUrl || proposal.bannerImageUrl
+              const hasBgImage = !!imgUrl
+              return (
+                <div
+                  className="relative overflow-hidden rounded-xl shadow-lg min-h-[140px] flex flex-col justify-between"
+                  style={hasBgImage ? {
+                    backgroundImage: `url(${imgUrl})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  } : undefined}
+                >
+                  <div className={`absolute inset-0 rounded-xl ${hasBgImage ? 'bg-gradient-to-r from-black/70 via-black/40 to-transparent' : 'bg-gradient-to-br from-[#E75648] via-[#F1865F] to-[#FFD58F]'}`} />
+                  <div className="relative z-10 p-5 flex flex-col justify-between h-full min-h-[140px]">
+                    <span className="absolute right-3 top-3 rounded-lg bg-white px-2.5 py-1 text-xs font-extrabold text-blue-600 shadow">
+                      {proposal.discountText || `Giảm ${proposal.discountPercent}%`}
+                    </span>
+                    <div>
+                      <h4 className={`font-extrabold text-xl leading-tight mt-6 drop-shadow-sm ${hasBgImage ? 'text-white' : 'text-slate-900'}`}>
+                        {editFields?.bannerTitle || proposal.bannerTitle}
+                      </h4>
+                      <p className={`text-sm font-medium mt-1.5 ${hasBgImage ? 'text-white/80' : 'text-slate-800'}`}>
+                        {editFields?.bannerSubtitle || proposal.bannerSubtitle}
+                      </p>
+                    </div>
+                    <div className={`mt-5 flex items-center justify-between text-sm font-bold ${hasBgImage ? 'text-white' : 'text-blue-700'}`}>
+                      <span>{proposal.ctaText || 'Xem ưu đãi'}</span>
+                      {hasBgImage && (
+                        <span className="rounded-lg bg-white/20 backdrop-blur px-3 py-1 text-xs font-bold text-white border border-white/30">
+                          {proposal.ctaText || 'Xem ưu đãi →'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )
+            })()}
           </div>
 
           {/* Nạp ngay button */}
@@ -655,13 +673,28 @@ export default function CampaignMktPage() {
           ) : topBannerCampaign ? (
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               {/* Mini Banner Preview */}
-              <div className={`relative flex-1 overflow-hidden rounded-xl bg-gradient-to-br ${topBannerCampaign.themeClassName || 'from-blue-600 to-green-600'} p-4 text-white shadow-inner min-h-[100px]`}>
-                {topBannerCampaign.discountText && (
-                  <span className="absolute right-2 top-2 rounded bg-white px-2 py-0.5 text-xs font-extrabold text-blue-600">{topBannerCampaign.discountText}</span>
-                )}
-                <h3 className="font-bold text-lg leading-tight mt-4">{topBannerCampaign.title}</h3>
-                <p className="text-xs text-white/80 mt-1">{topBannerCampaign.subtitle}</p>
-              </div>
+              {(() => {
+                const hasBgImage = !!topBannerCampaign.bannerImageUrl
+                return (
+                  <div
+                    className="relative flex-1 overflow-hidden rounded-xl shadow-inner min-h-[100px]"
+                    style={hasBgImage ? {
+                      backgroundImage: `url(${topBannerCampaign.bannerImageUrl})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    } : undefined}
+                  >
+                    <div className={`absolute inset-0 rounded-xl ${hasBgImage ? 'bg-gradient-to-r from-black/60 via-black/30 to-transparent' : `bg-gradient-to-br ${topBannerCampaign.themeClassName || 'from-blue-600 to-green-600'}`}`} />
+                    <div className="relative z-10 p-4 min-h-[100px] flex flex-col justify-between">
+                      {topBannerCampaign.discountText && (
+                        <span className="absolute right-2 top-2 rounded bg-white px-2 py-0.5 text-xs font-extrabold text-blue-600">{topBannerCampaign.discountText}</span>
+                      )}
+                      <h3 className="font-bold text-lg leading-tight mt-4 text-white">{topBannerCampaign.title}</h3>
+                      <p className="text-xs text-white/80 mt-1">{topBannerCampaign.subtitle}</p>
+                    </div>
+                  </div>
+                )
+              })()}
               {/* Info */}
               <div className="sm:w-64 space-y-2 text-sm">
                 {[
