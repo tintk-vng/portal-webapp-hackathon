@@ -10,9 +10,15 @@ import BlogContent from './_components/blog-content'
 import EmptyState from './_components/empty-state'
 import LoadingState from './_components/loading-state'
 
-const extractBlogID = (slug: string): number | null => {
+function extractNumericBlogID(slug: string): number | null {
   const match = slug.match(/-(\d+)$/)
-  return match ? parseInt(match[1], 10) : null
+  if (!match) return null
+  const n = parseInt(match[1], 10)
+  return n > 0 ? n : null
+}
+
+function stripSuffix(slug: string): string {
+  return slug.replace(/-\d+$/, '')
 }
 
 function buildStaticBlog(slug: string, article: NewsArticle): Blog {
@@ -54,22 +60,22 @@ export default function Page() {
       }
 
       try {
-        const blogID = extractBlogID(slug)
+        const blogID = extractNumericBlogID(slug)
         if (!blogID) {
-          const cleanId = slug.replace(/-0$/, '')
+          const cleanId = stripSuffix(slug)
           const staticArticle = getArticleById(cleanId)
           if (staticArticle) {
             setBlog(buildStaticBlog(slug, staticArticle))
             return
           }
-          throw new Error('Failed to fetch blog: Missing blog ID')
+          throw new Error(`No static article found for slug: ${cleanId}`)
         }
 
         const data = await blogAPI.getBlogByID(blogID)
         setBlog(data)
       } catch (error) {
         console.error('Failed to fetch blog:', error)
-        const cleanId = slug.replace(/-(\d+)$/, '')
+        const cleanId = stripSuffix(slug)
         const staticArticle = getArticleById(cleanId)
         if (staticArticle) {
           setBlog(buildStaticBlog(slug, staticArticle))
@@ -93,7 +99,6 @@ export default function Page() {
   return (
     <ErrorBoundary>
       <Breadcrumb />
-
       <BlogContent blog={blog} />
     </ErrorBoundary>
   )
