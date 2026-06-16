@@ -498,6 +498,7 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
 export default function CampaignMktPage() {
   const [topBannerCampaign, setTopBannerCampaign] = useState<Campaign | null>(null)
   const [liveCampaigns, setLiveCampaigns] = useState<Campaign[]>([])
+  const [disabledCampaigns, setDisabledCampaigns] = useState<Campaign[]>([])
   const [proposals, setProposals] = useState<Proposal[]>([])
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
@@ -535,6 +536,7 @@ export default function CampaignMktPage() {
       if (res.ok) {
         setTopBannerCampaign(data.topBannerCampaign)
         setLiveCampaigns(data.liveCampaigns || [])
+        setDisabledCampaigns(data.disabledCampaigns || [])
         setProposals(data.proposals || [])
       }
     } catch (err) {
@@ -781,10 +783,19 @@ export default function CampaignMktPage() {
                           <span className={`inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${c.isTopBanner ? 'translate-x-6' : 'translate-x-1'}`} />
                         </button>
                       </td>
-                      <td className="py-3.5 text-right sticky right-0">
-                        <Link href="/game" target="_blank" className="rounded-lg bg-slate-700/60 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-700 transition whitespace-nowrap">
-                          Xem trên site
-                        </Link>
+                      <td className="py-3.5 text-right sticky right-0" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex justify-end gap-1.5">
+                          <Link href="/game" target="_blank" className="rounded-lg bg-slate-700/60 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-700 transition whitespace-nowrap">
+                            Xem trên site
+                          </Link>
+                          <button
+                            onClick={() => apiAction('deactivate', { campaignId: c.id })}
+                            disabled={actionLoading !== null}
+                            className="rounded-lg bg-rose-600/70 px-2.5 py-1.5 text-xs font-bold text-white hover:bg-rose-600 transition disabled:opacity-50 whitespace-nowrap"
+                          >
+                            Tắt
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -851,6 +862,39 @@ export default function CampaignMktPage() {
             )}
           />
         </Section>
+
+        {/* ═══ Section 4: Đã tắt ═══ */}
+        {disabledCampaigns.length > 0 && (
+          <Section title="Đã tắt" icon="⛔" count={disabledCampaigns.length} defaultOpen={false} accentColor="blue">
+            <div className="overflow-x-auto -mx-5 px-5">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-white/[0.06] text-xs uppercase tracking-wider text-slate-500">
+                    <th className="pb-3 pr-4 font-semibold">Chiến dịch</th>
+                    <th className="hidden pb-3 pr-4 font-semibold md:table-cell">Publisher</th>
+                    <th className="hidden pb-3 pr-4 font-semibold sm:table-cell">Giảm giá</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/[0.04]">
+                  {disabledCampaigns.map((c) => (
+                    <tr key={c.id} className="opacity-50">
+                      <td className="py-3.5 pr-4">
+                        <div className="font-semibold text-white truncate max-w-[240px]">{c.title}</div>
+                        <div className="text-xs text-slate-500 truncate max-w-[240px] mt-0.5">{c.id}</div>
+                      </td>
+                      <td className="hidden py-3.5 pr-4 md:table-cell">
+                        <span className="rounded-md bg-slate-800/80 px-2 py-1 text-xs font-semibold text-slate-300 uppercase">{c.targetPublisherId}</span>
+                      </td>
+                      <td className="hidden py-3.5 pr-4 sm:table-cell">
+                        {c.discountPercent ? <span className="font-bold text-slate-400">-{c.discountPercent}%</span> : '—'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Section>
+        )}
 
         {/* ═══ Slide-in Drawer ═══ */}
         {selectedProposal && (
