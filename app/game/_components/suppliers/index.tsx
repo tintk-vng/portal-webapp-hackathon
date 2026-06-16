@@ -15,6 +15,8 @@ import { MutableRefObject, useContext, useEffect } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { GameContext } from '../main'
 import { StateType } from '../state'
+import { getActiveCampaign } from '@/src/data/campaigns'
+import { getDiscountForPublisher } from '@/src/data/discounts'
 
 const getSupplierLogoByTelcoCode = (telcoCode: TelcoCode) => {
   if (telcoCode in TelcoCode && telcoCode !== TelcoCode.INVALID) {
@@ -83,7 +85,7 @@ interface SuppliersProps {
 export default function Suppliers({ innerRef }: SuppliersProps) {
   const searchParams = useSearchParams()
   const { control, setValue, setFocus } = useFormContext()
-  const { onScrollToView } = useContext(GameContext)
+  const { onScrollToView, setSuppliers, onSelectSupplier } = useContext(GameContext)
   const { data, error, isLoading } = useCustomSWR(
     API_PATH[AppID.GAME].GET_SUPPLIERS,
     gameAPI.getSuppliers
@@ -99,6 +101,41 @@ export default function Suppliers({ innerRef }: SuppliersProps) {
     control,
     name: 'supplier',
   }) as DataSupplier
+
+  const displaySuppliers = commonUtil.isEmpty(suppliers) ? defaultSuppliers : suppliers
+
+  const handleSupplierChange = (supplier: DataSupplier) => {
+    if (isLoading) {
+      return
+    }
+    commonUtil.trackEvent({
+      ID: EVENT[AppID.GAME].SELECT_SUPPLIER,
+      metaData: {
+        supplier: {
+          telco_code: supplier.telcoCode,
+          status: supplier.status,
+        },
+      },
+    })
+    setValue('supplier', supplier)
+    // setValue('quantity', 1)
+    if (supplier.status !== SupplierStatus.ACTIVE || commonUtil.isEmpty(supplier.packageGroups)) {
+      setValue('stateType', StateType.MAINTENANCE)
+    } else {
+      setValue('stateType', undefined)
+      onScrollToView('packages')
+    }
+  }
+
+  useEffect(() => {
+    if (displaySuppliers && displaySuppliers.length > 0) {
+      setSuppliers(displaySuppliers)
+    }
+  }, [displaySuppliers, setSuppliers])
+
+  useEffect(() => {
+    onSelectSupplier(handleSupplierChange)
+  }, [onSelectSupplier])
 
   const setDefaultParams = () => {
     try {
@@ -150,30 +187,7 @@ export default function Suppliers({ innerRef }: SuppliersProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading])
 
-  const displaySuppliers = commonUtil.isEmpty(suppliers) ? defaultSuppliers : suppliers
 
-  const handleSupplierChange = (supplier: DataSupplier) => {
-    if (isLoading) {
-      return
-    }
-    commonUtil.trackEvent({
-      ID: EVENT[AppID.GAME].SELECT_SUPPLIER,
-      metaData: {
-        supplier: {
-          telco_code: supplier.telcoCode,
-          status: supplier.status,
-        },
-      },
-    })
-    setValue('supplier', supplier)
-    // setValue('quantity', 1)
-    if (supplier.status !== SupplierStatus.ACTIVE || commonUtil.isEmpty(supplier.packageGroups)) {
-      setValue('stateType', StateType.MAINTENANCE)
-    } else {
-      setValue('stateType', undefined)
-      onScrollToView('packages')
-    }
-  }
 
   return (
     <div ref={innerRef} className="mb-6">
@@ -221,11 +235,17 @@ export default function Suppliers({ innerRef }: SuppliersProps) {
                 </Badge>
               )} */}
 
-              {!isMaintained && ['ZING', 'GARENA'].includes(supplier.telcoCode) && (
-                <Badge type={BadgeType.Ribbon2} variant={BadgeVariant.Negative}>
-                  -3%
-                </Badge>
-              )}
+              {(() => {
+                if (isMaintained) return null;
+                const activeCampaign = getActiveCampaign()
+                const badgeInfo = getDiscountForPublisher(activeCampaign, supplier.telcoCode.toLowerCase())
+                if (!badgeInfo) return null
+                return (
+                  <Badge type={BadgeType.Ribbon2} variant={BadgeVariant.Negative}>
+                    {badgeInfo.label}
+                  </Badge>
+                )
+              })()}
             </li>
           )
         })}
