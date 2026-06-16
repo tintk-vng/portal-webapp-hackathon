@@ -103,10 +103,10 @@ export default function CustomHeader() {
                 href="https://napthevui.vn"
                 rel="noopener noreferrer"
                 target="_blank"
-                className="flex h-full flex-1 cursor-pointer flex-col items-end justify-center gap-x-1 whitespace-break-spaces text-right text-label-xs font-bold text-blue-500 underline md:flex-row md:items-center md:justify-end md:whitespace-normal md:text-label-lg"
+                className="flex items-center gap-1 text-label-xs font-bold text-blue-500 underline md:text-label-lg"
               >
-                Web nạp thẻ
-                <span className="text-green-500">rẻ, nhanh và uy tín</span>
+                <span className="hidden sm:inline">Web nạp thẻ</span>
+                <span className="text-green-500">napthevui.vn</span>
               </a>
 
               <div
