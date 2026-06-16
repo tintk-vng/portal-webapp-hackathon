@@ -3,18 +3,30 @@ import { PackageStatus } from '@/constants/telco'
 import { DataPackage } from '@/types/telco'
 import commonUtil from '@/utils/common'
 import classNames from 'classnames'
+import { Campaign } from '@/src/data/campaigns'
+import { getEffectiveSku } from '@/src/data/discounts'
+import { TopupSku } from '@/src/data/catalog'
 
 interface GamePackageProps {
   dataPackage: DataPackage
   selectedPackage: DataPackage | undefined
+  campaign: Campaign
 }
 
-export default function GamePackage({ dataPackage, selectedPackage }: GamePackageProps) {
+export default function GamePackage({ dataPackage, selectedPackage, campaign }: GamePackageProps) {
   const { amount, originalAmount, status, badgeText } = dataPackage
   const isMaintained = status === PackageStatus.MAINTENANCE
   const isSelected = amount === selectedPackage?.amount
-  const hasOriginalAmount = (originalAmount ?? 0) > 0
-  const headerAmount = hasOriginalAmount ? originalAmount! : amount
+  const tempSku: TopupSku = {
+    id: `${dataPackage.telcoCode.toLowerCase()}-${dataPackage.originalAmount || dataPackage.amount}`,
+    publisherId: dataPackage.telcoCode.toLowerCase(),
+    amount: dataPackage.originalAmount || dataPackage.amount,
+    displayAmount: `${(dataPackage.originalAmount || dataPackage.amount) / 1000}.000đ`
+  }
+  const effectiveSku = getEffectiveSku(campaign, tempSku)
+  const hasCampaignDiscount = (effectiveSku.discountPercent ?? 0) > 0
+  const displayedSalePrice = hasCampaignDiscount ? effectiveSku.salePrice : dataPackage.amount
+  const displayedOriginalPrice = hasCampaignDiscount ? effectiveSku.basePrice : (dataPackage.originalAmount || dataPackage.amount)
 
   return (
     <div
@@ -33,9 +45,10 @@ export default function GamePackage({ dataPackage, selectedPackage }: GamePackag
           'cursor-pointer md:group-hover:text-blue-500': !isMaintained,
           'cursor-not-allowed text-dark-200': isMaintained,
           'text-blue-500': isSelected,
+          'line-through text-dark-200 text-label-sm': hasCampaignDiscount
         })}
       >
-        {commonUtil.formatCurrency(headerAmount)}
+        {commonUtil.formatCurrency(displayedOriginalPrice)}
       </label>
 
       <hr className="w-full border-t border-dashed border-dark-100" />
@@ -53,12 +66,12 @@ export default function GamePackage({ dataPackage, selectedPackage }: GamePackag
 
         <label
           className={classNames({
-            'text-label-xs text-green-600': true,
+            'text-label-xs text-green-600 font-bold': true,
             'cursor-pointer': !isMaintained,
             'cursor-not-allowed !text-dark-200': isMaintained,
           })}
         >
-          {commonUtil.formatCurrency(amount)}
+          {commonUtil.formatCurrency(displayedSalePrice)}
         </label>
       </div>
 
@@ -68,9 +81,9 @@ export default function GamePackage({ dataPackage, selectedPackage }: GamePackag
         </Badge>
       )}
 
-      {status === PackageStatus.ACTIVE && badgeText && (
+      {status === PackageStatus.ACTIVE && (badgeText || hasCampaignDiscount) && (
         <Badge type={BadgeType.Ribbon2} variant={BadgeVariant.Negative}>
-          {badgeText}
+          {hasCampaignDiscount ? `-${effectiveSku.discountPercent}%` : badgeText}
         </Badge>
       )}
     </div>

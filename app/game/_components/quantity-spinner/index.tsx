@@ -22,10 +22,14 @@ export default function QuantitySpinner() {
 
   useEffect(() => {
     setValue('quantity', 1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedSupplier?.telcoCode])
+
+  useEffect(() => {
     const packageAmount = selectedPackage?.amount || 0
     setValue('amount', packageAmount)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(selectedSupplier)])
+  }, [selectedPackage?.ID])
 
   const handleQuantityChange = (
     quantity: number,

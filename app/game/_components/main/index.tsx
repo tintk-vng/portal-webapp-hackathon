@@ -7,8 +7,15 @@ import { useLoadPageEventTracking } from '@/hooks/use-load-page-event-tracking'
 import { SOF } from '@/types/common'
 import { DataPackage, DataSupplier } from '@/types/telco'
 import dynamic from 'next/dynamic'
-import { createContext, useRef } from 'react'
+import { createContext, useCallback, useRef, useState } from 'react'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
+import { getPopularSearchItems, topupItems, resolveGameToPublisher } from '@/src/data/catalog'
+import { getActiveCampaign } from '@/src/data/campaigns'
+import { getEnabledArticles } from '@/src/data/newsArticles'
+import SearchBar from '../search/SearchBar'
+import PopularSearchChips from '../search/PopularSearchChips'
+import BannerSlot from '../banner-slot/BannerSlot'
+import NewsCards from '../news-cards/NewsCards'
 import EmailInput from '../email-input'
 import HighlightBlogs from '../highlight-blogs'
 import OrderDetails from '../order-details'
@@ -25,6 +32,9 @@ const State = dynamic(() => import('../state'), {
 
 interface GameContextType {
   onScrollToView: (view: string) => void
+  suppliers: DataSupplier[]
+  setSuppliers: (suppliers: DataSupplier[]) => void
+  onSelectSupplier: (cb: (supplier: DataSupplier) => void) => void
 }
 
 export const GameContext = createContext({} as GameContextType)
@@ -239,6 +249,9 @@ export default function Main({ subCategoryID }: MainProps) {
   const emailInputRef = useRef<HTMLInputElement | null>(null)
   const orderDetailsRef = useRef<HTMLDivElement | null>(null)
 
+  const [suppliersList, setSuppliersList] = useState<DataSupplier[]>([])
+  const [supplierSelectCallback, setSupplierSelectCallback] = useState<((supplier: DataSupplier) => void) | null>(null)
+
   const handleScrollToView = (view: string) => {
     switch (view) {
       case 'suppliers':
@@ -270,15 +283,48 @@ export default function Main({ subCategoryID }: MainProps) {
     }
   }
 
+  const handleResolveTopupItem = (item: any) => {
+    const publisher = resolveGameToPublisher(item.id)
+    if (!publisher) return
+
+    const matchedSupplier = suppliersList.find(
+      (s) => s.telcoCode.toUpperCase() === publisher.id.toUpperCase()
+    )
+    if (matchedSupplier && supplierSelectCallback) {
+      supplierSelectCallback(matchedSupplier)
+    }
+  }
+
+  const popularSearchItems = getPopularSearchItems()
+  const activeCampaign = getActiveCampaign()
+  const activeArticles = getEnabledArticles()
+
+  const handleSelectSupplier = useCallback(
+    (cb: (supplier: DataSupplier) => void) => setSupplierSelectCallback(() => cb),
+    []
+  )
+
   return (
     <ErrorBoundary appID={AppID.GAME}>
-      <GameContext.Provider value={{ onScrollToView: handleScrollToView }}>
+      <GameContext.Provider
+        value={{
+          onScrollToView: handleScrollToView,
+          suppliers: suppliersList,
+          setSuppliers: setSuppliersList,
+          onSelectSupplier: handleSelectSupplier,
+        }}
+      >
         <FormProvider {...methods}>
           <div className="grid grid-cols-1 md:grid-cols-3 md:gap-x-6">
             <div className="col-span-2">
               <div className="block md:hidden">
                 <Promotion />
               </div>
+
+              <BannerSlot campaign={activeCampaign} />
+
+              <SearchBar items={topupItems} onSelect={handleResolveTopupItem} />
+              <PopularSearchChips items={popularSearchItems} onSelect={handleResolveTopupItem} />
 
               <Suppliers innerRef={suppliersRef} />
 
@@ -296,10 +342,12 @@ export default function Main({ subCategoryID }: MainProps) {
                 )
               })()}
 
-              <div className="hidden md:block">
-                {/* <HighlightBanner banners={banners} /> */}
-
-                <HighlightBlogs subCategoryID={subCategoryID} />
+              <div className="hidden md:block mt-8">
+                {activeArticles.length > 0 ? (
+                  <NewsCards articles={activeArticles} />
+                ) : (
+                  <HighlightBlogs subCategoryID={subCategoryID} />
+                )}
               </div>
             </div>
 
@@ -314,12 +362,12 @@ export default function Main({ subCategoryID }: MainProps) {
 
               <OrderDetails innerRef={orderDetailsRef} />
 
-              <div className="md:hidden">
-                {/* <div className="mx-[-16px] mb-6 mt-4">
-                  <HighlightBanner banners={banners} />
-                </div> */}
-
-                <HighlightBlogs subCategoryID={subCategoryID} />
+              <div className="md:hidden mt-6">
+                {activeArticles.length > 0 ? (
+                  <NewsCards articles={activeArticles} />
+                ) : (
+                  <HighlightBlogs subCategoryID={subCategoryID} />
+                )}
               </div>
             </div>
           </div>

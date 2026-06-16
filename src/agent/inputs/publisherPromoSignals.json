@@ -1,0 +1,22 @@
+{
+  "updatedAt": "2026-06-14T17:30:00+07:00",
+  "signals": [
+    {
+      "publisherId": "garena",
+      "discountPercent": 5,
+      "priority": 90,
+      "reason": "Manual promo signal for Garena cards this week.",
+      "targetGameIds": ["free-fire", "lien-quan-mobile", "fc-online"],
+      "bannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+      "mobileBannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png"
+    },
+    {
+      "publisherId": "googleplay",
+      "discountPercent": 2,
+      "priority": 45,
+      "reason": "Manual promo signal for Google Play store cards.",
+      "targetGameIds": ["google-play-game"],
+      "bannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/googleplay.png"
+    }
+  ]
+}

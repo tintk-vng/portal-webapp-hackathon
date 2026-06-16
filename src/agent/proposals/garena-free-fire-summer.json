@@ -1,0 +1,67 @@
+{
+  "id": "garena-free-fire-summer",
+  "title": "Garena Free Fire summer campaign proposal",
+  "targetPublisherId": "garena",
+  "targetGameIds": [
+    "free-fire",
+    "lien-quan-mobile",
+    "fc-online"
+  ],
+  "discountPercent": 5,
+  "bannerTitle": "Garena hè rực lửa",
+  "bannerSubtitle": "Nạp Garena cho Free Fire, Liên Quân Mobile và FC Online với ưu đãi đồng bộ.",
+  "bannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+  "mobileBannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+  "ctaText": "Xem ưu đãi",
+  "articleTitle": "Garena hè rực lửa: ưu đãi nạp thẻ cho game thủ",
+  "articleSummary": "Chiến dịch đề xuất cho Garena, tập trung vào Free Fire, Liên Quân Mobile và FC Online với mức giảm đồng bộ.",
+  "articleContent": "<h3>Ưu Đãi Nạp GARENA Giảm 5%</h3>\n<p><strong>Áp dụng cho:</strong> free-fire, lien-quan-mobile, fc-online.</p>\n<p><strong>Mức ưu đãi:</strong> Giảm 5% khi nạp qua NapTheVui.</p>\n\n<h4>Nội dung từ nhà phát hành chính thức:</h4>\n<p>Cập nhật ưu đãi mới nhất từ trang chính thức GARENA tại <a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a>.</p>\n\n<h4>Hướng dẫn nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>GARENA</strong> hoặc tên tựa game trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp.</li>\n<li>Kiểm tra chiết khấu hiển thị tại màn hình thanh toán trước khi xác nhận.</li>\n</ol>\n\n<p><em>Nguồn: <a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a>. Nội dung được tổng hợp tự động — kiểm tra và xác nhận trước khi xuất bản.</em></p>",
+  "recommendedPopularSearchItems": [
+    {
+      "id": "agent-free-fire",
+      "targetId": "free-fire",
+      "targetType": "game",
+      "label": "Free Fire",
+      "priority": 1,
+      "campaignBoost": 30,
+      "enabled": true,
+      "source": "agent"
+    },
+    {
+      "id": "agent-lien-quan-mobile",
+      "targetId": "lien-quan-mobile",
+      "targetType": "game",
+      "label": "Liên Quân Mobile",
+      "priority": 2,
+      "campaignBoost": 25,
+      "enabled": true,
+      "source": "agent"
+    },
+    {
+      "id": "agent-fc-online",
+      "targetId": "fc-online",
+      "targetType": "game",
+      "label": "FC Online",
+      "priority": 3,
+      "campaignBoost": 20,
+      "enabled": true,
+      "source": "agent"
+    },
+    {
+      "id": "agent-google-play",
+      "targetId": "googleplay",
+      "targetType": "store",
+      "label": "Google Play",
+      "priority": 4,
+      "enabled": true,
+      "source": "agent"
+    }
+  ],
+  "proposedFileChanges": [
+    "src/data/campaigns.ts",
+    "src/data/newsArticles.ts",
+    "src/data/catalog.ts"
+  ],
+  "createdAt": "2026-06-14T17:00:00+07:00",
+  "status": "rejected"
+}

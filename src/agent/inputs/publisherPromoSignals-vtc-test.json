@@ -1,0 +1,19 @@
+{
+  "updatedAt": "2026-06-14T23:20:00+07:00",
+  "signals": [
+    {
+      "publisherId": "vtc",
+      "discountPercent": 4,
+      "priority": 96,
+      "reason": "Manual test promo signal for VTC cards so the approval workflow can be tested with a SKU-backed non-Garena, non-Google Play campaign.",
+      "targetGameIds": ["audition", "dot-kich"],
+      "bannerTitle": "VTC weekly offer",
+      "bannerSubtitle": "4% for VTC top-ups this week.",
+      "ctaText": "Xem ưu đãi",
+      "articleTitle": "VTC campaign proposal for this week",
+      "articleSummary": "Draft proposal for VTC, generated from the local test promo signal and mock analytics.",
+      "bannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/vtc.png",
+      "mobileBannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/vtc.png"
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "id": "weekly-vtc-test-2026-06-14",
+  "title": "VTC weekly campaign proposal",
+  "targetPublisherId": "vtc",
+  "targetGameIds": [
+    "audition",
+    "dot-kich"
+  ],
+  "discountPercent": 4,
+  "bannerTitle": "VTC weekly offer",
+  "bannerSubtitle": "4% for VTC top-ups this week.",
+  "bannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/vtc.png",
+  "mobileBannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/vtc.png",
+  "ctaText": "Xem ưu đãi",
+  "articleTitle": "VTC campaign proposal for this week",
+  "articleSummary": "Draft proposal for VTC, generated from the local test promo signal and mock analytics.",
+  "articleContent": "VTC campaign proposal for this week.\n\nThis draft was generated from: Weekly campaign brief.\nTarget publisher: VTC.\nTarget games: Audition, Đột Kích.\nCampaign discount: 4%.\n\nThe proposal is intentionally draft-only. It should be reviewed in the local preview page, approved by changing status to \"approved\", and then applied through the existing proposal apply script.",
+  "recommendedPopularSearchItems": [
+    {
+      "id": "agent-weekly-vtc-test-2026-06-14-audition",
+      "targetId": "audition",
+      "targetType": "game",
+      "label": "Audition",
+      "priority": 1,
+      "aiScore": 127,
+      "searchCount": 2800,
+      "clickCount": 720,
+      "purchaseCount": 140,
+      "campaignBoost": 25,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-14T16:41:21.691Z"
+    },
+    {
+      "id": "agent-weekly-vtc-test-2026-06-14-dot-kich",
+      "targetId": "dot-kich",
+      "targetType": "game",
+      "label": "Đột Kích",
+      "priority": 2,
+      "campaignBoost": 25,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-14T16:41:21.691Z"
+    },
+    {
+      "id": "agent-weekly-vtc-test-2026-06-14-free-fire",
+      "targetId": "free-fire",
+      "targetType": "game",
+      "label": "Free Fire",
+      "priority": 3,
+      "aiScore": 194,
+      "searchCount": 12840,
+      "clickCount": 4320,
+      "purchaseCount": 980,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-14T16:41:21.691Z"
+    },
+    {
+      "id": "agent-weekly-vtc-test-2026-06-14-lien-quan-mobile",
+      "targetId": "lien-quan-mobile",
+      "targetType": "game",
+      "label": "Liên Quân Mobile",
+      "priority": 4,
+      "aiScore": 187,
+      "searchCount": 10820,
+      "clickCount": 3900,
+      "purchaseCount": 860,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-14T16:41:21.691Z"
+    },
+    {
+      "id": "agent-weekly-vtc-test-2026-06-14-googleplay",
+      "targetId": "googleplay",
+      "targetType": "store",
+      "label": "Google Play",
+      "priority": 5,
+      "aiScore": 173,
+      "searchCount": 7400,
+      "clickCount": 2500,
+      "purchaseCount": 510,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-14T16:41:21.691Z"
+    },
+    {
+      "id": "agent-weekly-vtc-test-2026-06-14-roblox",
+      "targetId": "roblox",
+      "targetType": "game",
+      "label": "Roblox",
+      "priority": 6,
+      "aiScore": 169,
+      "searchCount": 6920,
+      "clickCount": 2210,
+      "purchaseCount": 430,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-14T16:41:21.691Z"
+    }
+  ],
+  "proposedFileChanges": [
+    "src/data/campaigns.ts",
+    "src/data/newsArticles.ts",
+    "src/data/catalog.ts"
+  ],
+  "createdAt": "2026-06-14T16:41:21.691Z",
+  "status": "applied",
+  "reasoningSummary": "Selected VTC because it had the strongest combined score from promo priority, discount signal, search demand, purchase demand, and brief relevance.\nPromotion signal reason: Manual test promo signal for VTC cards so the approval workflow can be tested with a SKU-backed non-Garena, non-Google Play campaign.\nTop target games: Audition, Đột Kích.\nCurrent popular search recommendations considered: 6.\nNo live web research was used.",
+  "validationWarnings": [],
+  "inputSnapshot": {
+    "weeklyBriefPath": "src\\agent\\inputs\\weeklyBrief.md",
+    "analyticsPath": "src\\agent\\inputs\\mockAnalytics.json",
+    "publisherPromoSignalsPath": "src\\agent\\inputs\\publisherPromoSignals-vtc-test.json",
+    "generatedBy": "Campaign & Merchandising Agent v0"
+  }
+}

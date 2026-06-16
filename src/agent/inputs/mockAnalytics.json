@@ -1,0 +1,53 @@
+{
+  "updatedAt": "2026-06-14T17:30:00+07:00",
+  "items": [
+    {
+      "targetId": "free-fire",
+      "targetType": "game",
+      "trendScore": 96,
+      "searchCount": 12840,
+      "clickCount": 4320,
+      "purchaseCount": 980
+    },
+    {
+      "targetId": "lien-quan-mobile",
+      "targetType": "game",
+      "trendScore": 91,
+      "searchCount": 10820,
+      "clickCount": 3900,
+      "purchaseCount": 860
+    },
+    {
+      "targetId": "fc-online",
+      "targetType": "game",
+      "trendScore": 78,
+      "searchCount": 6120,
+      "clickCount": 2140,
+      "purchaseCount": 420
+    },
+    {
+      "targetId": "googleplay",
+      "targetType": "store",
+      "trendScore": 83,
+      "searchCount": 7400,
+      "clickCount": 2500,
+      "purchaseCount": 510
+    },
+    {
+      "targetId": "roblox",
+      "targetType": "game",
+      "trendScore": 81,
+      "searchCount": 6920,
+      "clickCount": 2210,
+      "purchaseCount": 430
+    },
+    {
+      "targetId": "audition",
+      "targetType": "game",
+      "trendScore": 55,
+      "searchCount": 2800,
+      "clickCount": 720,
+      "purchaseCount": 140
+    }
+  ]
+}

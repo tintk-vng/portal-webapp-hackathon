@@ -123,7 +123,6 @@ export default function Suppliers({ innerRef }: SuppliersProps) {
       setValue('stateType', StateType.MAINTENANCE)
     } else {
       setValue('stateType', undefined)
-      onScrollToView('packages')
     }
   }
 

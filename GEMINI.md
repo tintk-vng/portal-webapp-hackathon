@@ -1,0 +1,13 @@
+@./.skills/using-superpowers/SKILL.md
+@./.skills/using-superpowers/references/gemini-tools.md
+@./.skills/brainstorming/SKILL.md
+@./.skills/writing-plans/SKILL.md
+@./.skills/executing-plans/SKILL.md
+@./.skills/test-driven-development/SKILL.md
+@./.skills/systematic-debugging/SKILL.md
+@./.skills/verification-before-completion/SKILL.md
+@./.skills/requesting-code-review/SKILL.md
+@./.skills/receiving-code-review/SKILL.md
+@./.skills/subagent-driven-development/SKILL.md
+@./.skills/using-git-worktrees/SKILL.md
+@./.skills/finishing-a-development-branch/SKILL.md

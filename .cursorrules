@@ -1,0 +1,11 @@
+# Superpowers Cursor Integration
+
+This project uses the Superpowers framework (located at `.skills/`) for systematic development.
+
+Before performing any task or modifying any code:
+1. Stop and brainstorm the design first. Refer to the `brainstorming` skill at `.skills/brainstorming/SKILL.md`.
+2. Write a detailed implementation plan. Refer to the `writing-plans` skill at `.skills/writing-plans/SKILL.md`.
+3. Follow Test-Driven Development (TDD) rules. Refer to the `test-driven-development` skill at `.skills/test-driven-development/SKILL.md`.
+4. If debugging, follow the systematic debugging phases. Refer to the `systematic-debugging` skill at `.skills/systematic-debugging/SKILL.md`.
+
+You must search and apply these skills from `.skills/` before replying.

@@ -1,0 +1,19 @@
+{
+  "updatedAt": "2026-06-14T23:05:00+07:00",
+  "signals": [
+    {
+      "publisherId": "googleplay",
+      "discountPercent": 3,
+      "priority": 95,
+      "reason": "Manual test promo signal for Google Play store cards so the approval workflow can be tested with a non-Garena campaign.",
+      "targetGameIds": ["google-play-game"],
+      "bannerTitle": "Google Play weekly offer",
+      "bannerSubtitle": "3% for Google Play top-ups this week.",
+      "ctaText": "Xem ưu đãi",
+      "articleTitle": "Google Play campaign proposal for this week",
+      "articleSummary": "Draft proposal for Google Play, generated from the local test promo signal and mock analytics.",
+      "bannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/googleplay.png",
+      "mobileBannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/googleplay.png"
+    }
+  ]
+}

@@ -48,22 +48,38 @@ export default function HighlightBlogs({ subCategoryID }: HighlightBlogsProps) {
 
   return (
     <>
-      <div className="mb-3 text-heading-md md:mb-4 md:text-heading-lg">Tin tức</div>
+      <div className="mb-4 flex items-center justify-between">
+        <Link
+          href="/mua-the-game/tat-ca-tin-tuc"
+          className="text-heading-md md:text-heading-lg font-bold text-dark-500 hover:text-blue-500 transition-colors flex items-center gap-1 group/title"
+        >
+          Tin tức
+          <span className="inline-block transition-transform duration-200 group-hover/title:translate-x-1 text-blue-500">
+            &rarr;
+          </span>
+        </Link>
+        <Link
+          href="/mua-the-game/tat-ca-tin-tuc"
+          className="text-label-md font-bold text-blue-500 hover:text-blue-600 transition-colors"
+        >
+          Xem tất cả
+        </Link>
+      </div>
 
-      <div className="no-scrollbar mx-[-16px] flex gap-4 overflow-y-scroll px-4 md:mx-0 md:gap-6 md:px-0">
+      <div className="no-scrollbar mx-[-16px] flex gap-4 overflow-y-scroll px-4 md:mx-0 md:gap-6 md:px-0 pb-4">
         {data.blogs.map((blog) => {
           const thumbnailUrl = blog.thumbnail?.url || blog.avatar
 
           return (
             <Link
               key={blog.ID}
-              className="w-[calc(75vw-48px)] min-w-[calc(75vw-48px)] cursor-pointer md:w-1/3 md:min-w-0"
+              className="w-[calc(75vw-48px)] min-w-[calc(75vw-48px)] cursor-pointer md:w-1/3 md:min-w-0 bg-white rounded-2xl p-3 border border-dark-50 shadow-sm transition-all duration-300 hover:shadow-md hover:border-blue-100 hover:-translate-y-1 group"
               href={`/tin-tuc?slug=${blog.slug}-${blog.ID}`}
             >
-              <div className="relative aspect-[2/1] h-auto w-full overflow-hidden rounded-lg">
+              <div className="relative aspect-[2/1] h-auto w-full overflow-hidden rounded-lg bg-dark-25 border border-dark-50">
                 {thumbnailUrl && (
                   <Image
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                     src={thumbnailUrl}
                     alt={blog.title}
                     fill
@@ -72,7 +88,7 @@ export default function HighlightBlogs({ subCategoryID }: HighlightBlogsProps) {
                 )}
               </div>
 
-              <div className="mt-4 line-clamp-2 font-bold">{blog.title}</div>
+              <div className="mt-4 line-clamp-2 font-bold text-dark-500 group-hover:text-blue-500 transition-colors">{blog.title}</div>
 
               <div className="mt-2 line-clamp-2 text-sm text-dark-300">{blog.description}</div>
             </Link>
@@ -82,3 +98,4 @@ export default function HighlightBlogs({ subCategoryID }: HighlightBlogsProps) {
     </>
   )
 }
+

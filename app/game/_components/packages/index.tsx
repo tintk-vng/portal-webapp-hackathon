@@ -1,8 +1,9 @@
 import { AppID, EVENT, PackageStatus, TelcoCode } from '@/constants/telco'
 import { DataPackage, DataSupplier } from '@/types/telco'
 import commonUtil from '@/utils/common'
-import { RefObject, useContext, useEffect } from 'react'
+import { RefObject, useContext, useEffect, useMemo } from 'react'
 import { Controller, useFormContext, useWatch } from 'react-hook-form'
+import { getActiveCampaign } from '@/src/data/campaigns'
 import { GameContext } from '../main'
 import GamePackage from './GamePackage'
 
@@ -23,6 +24,8 @@ export default function Packages({ innerRef }: PackagesProps) {
       ? 'Chọn mệnh giá'
       : 'Chọn mệnh giá & số lượng'
 
+  const activeCampaign = useMemo(() => getActiveCampaign(), [])
+
   const setDefaultPackage = () => {
     packageGroups.every((packageGroup) => {
       const activePackage = packageGroup.packages.find(
@@ -39,7 +42,7 @@ export default function Packages({ innerRef }: PackagesProps) {
   useEffect(() => {
     setDefaultPackage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(selectedSupplier)])
+  }, [selectedSupplier?.telcoCode])
 
   const handlePackageSelect = (dataPackage: DataPackage, cb: (...event: any[]) => void) => {
     const isMaintained = dataPackage.status === PackageStatus.MAINTENANCE
@@ -51,10 +54,6 @@ export default function Packages({ innerRef }: PackagesProps) {
       metaData: { package: dataPackage },
     })
     cb(dataPackage)
-    onScrollToView('email-input')
-    setTimeout(() => {
-      setFocus('email')
-    }, 500)
   }
 
   return (
@@ -76,7 +75,7 @@ export default function Packages({ innerRef }: PackagesProps) {
               }
               return packages.map((dataPackage) => (
                 <li key={dataPackage.ID} onClick={() => handlePackageSelect(dataPackage, onChange)}>
-                  <GamePackage dataPackage={dataPackage} selectedPackage={value} />
+                  <GamePackage dataPackage={dataPackage} selectedPackage={value} campaign={activeCampaign} />
                 </li>
               ))
             })}

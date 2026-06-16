@@ -41,9 +41,19 @@ hooks/  utils/  types/
 - `constants/telco.ts` — `ProductID` (TOPUP=61, PHONE_CARD=12, DATA_TOPUP=441, POST_PAID=451, COMBO=455, GAME=2391, GOOGLEPLAY=3628), `API_PATH` map theo AppID.
 - Convention App Router: `_folder/` = private (không route), `(folder)/` = group, `[folder]/` = dynamic.
 
+## Data Layer (Agent-Editable)
+
+We added a structured static data layer inside `src/data/` for AI agent vibe-coding and content updates:
+- `src/data/catalog.ts` — Game items, SKU configurations, and popular search recommendations.
+- `src/data/campaigns.ts` — Active promotional campaign definitions, banner targets, and discount percentages.
+- `src/data/newsArticles.ts` — Game articles, top-up guides, and campaign details.
+- `src/data/discounts.ts` — Derived pricing & badge helpers (agents must not edit).
+- `AGENT_CONTRACT.md` — Rules for agents editing data configurations.
+
 ## Quy ước code
 
 - Theo `.cursor/rules/` (next-js, react, tailwind, typescript, zustand) — đọc trước khi sửa.
+- **Tích hợp Superpowers**: Dự án được tích hợp với thư viện Superpowers (nằm tại thư mục cục bộ `.skills/`). AI agent bắt buộc phải kiểm tra và áp dụng các skill tương ứng (như `brainstorming`, `writing-plans`, `test-driven-development`, `systematic-debugging` nằm tại `.skills/[tên-skill]/SKILL.md`) TRƯỚC KHI thực hiện bất kỳ task hoặc chỉnh sửa mã nguồn nào.
 - TypeScript strict; props có type rõ ràng; tránh `any`.
 - Đặt tên: component PascalCase, hook `useXxx`, CSS kebab-case.
 - Format: Prettier + ESLint (`.prettierrc`, `.eslintrc.json`). Husky pre-commit + lint-staged.

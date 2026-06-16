@@ -11,11 +11,11 @@ interface BlogContentProps {
 
 export default function BlogContent({ blog }: BlogContentProps) {
   const publishDate = blog.publishTimer || blog.publishedAt || blog.createdAt
-  // const thumbnailUrl = blog.thumbnail?.url || blog.avatar
+  const thumbnailUrl = blog.thumbnail?.url || blog.avatar
 
   return (
     <div>
-      {/* {thumbnailUrl && (
+      {thumbnailUrl && (
         <div className="relative mb-6 aspect-[16/9] w-full overflow-hidden rounded-xl">
           <StaticImage
             className="object-cover"
@@ -25,7 +25,7 @@ export default function BlogContent({ blog }: BlogContentProps) {
             loader={({ src }) => src}
           />
         </div>
-      )} */}
+      )}
 
       <div className="mb-3 text-heading-lg md:mb-4">{blog.title}</div>
 

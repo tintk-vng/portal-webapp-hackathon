@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const getAssetPrefix = () => {
-  switch (process.env.APP_ENV) {
+  const env = process.env.APP_ENV || 'local'
+  switch (env) {
     case 'local':
       return undefined
     case 'development':
@@ -78,6 +79,7 @@ const nextConfig = {
     return config
   },
   reactStrictMode: true,
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },
