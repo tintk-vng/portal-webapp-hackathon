@@ -47,3 +47,6 @@ jspm_packages
 yarn.lock
 
 *.swp
+# Build artifacts
+next-build-temp/
+tsconfig.tsbuildinfo
