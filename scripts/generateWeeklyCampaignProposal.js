@@ -661,8 +661,12 @@ async function generateWeeklyCampaignProposal(options) {
   const proposalRepository = require(path.join(root, 'src', 'agent', 'proposalRepository.ts'))
 
   const briefText = readTextIfExists(options.briefPath)
-  const analytics = readJsonIfExists(options.analyticsPath, { items: [] })
-  const manualPromoSignals = readJsonIfExists(options.signalsPath, { signals: [] })
+  const analytics = options.runResearch
+    ? { items: [] }  // skip mock analytics during research mode; rely on AI judgment
+    : readJsonIfExists(options.analyticsPath, { items: [] })
+  const manualPromoSignals = options.runResearch
+    ? { signals: [] }  // skip manual signals during research mode; use generated signals only
+    : readJsonIfExists(options.signalsPath, { signals: [] })
   const generatedPromoSignals = readJsonIfExists(options.generatedSignalsPath, { signals: [] })
   const analyticsItems = getAnalyticsItems(analytics)
   const currentPopularItems =
