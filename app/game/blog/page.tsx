@@ -10,6 +10,8 @@ import BlogContent from './_components/blog-content'
 import EmptyState from './_components/empty-state'
 import LoadingState from './_components/loading-state'
 
+// Links to static articles always append "-0" (articleId + "-0"). Any trailing
+// number > 0 is a real CMS blog ID; "-0" means: look up the static article.
 function extractNumericBlogID(slug: string): number | null {
   const match = slug.match(/-(\d+)$/)
   if (!match) return null
