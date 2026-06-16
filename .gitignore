@@ -46,4 +46,6 @@ jspm_packages
 
 yarn.lock
 
-*.swp
+*.swp.greennode.json
+.greennode.json
+.agentbase/
