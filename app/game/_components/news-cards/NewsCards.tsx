@@ -31,7 +31,7 @@ export default function NewsCards({ articles }: { articles: NewsArticle[] }) {
             href={`/mua-the-game/tin-tuc?slug=${article.id}-0`}
           >
             {/* Aspect Ratio 16:9 for cover image box */}
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-dark-50 bg-dark-25">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-dark-50 bg-dark-25 pointer-events-none">
               {article.coverImageUrl && (
                 <Image
                   className="object-cover transition-transform duration-500 group-hover:scale-105"

@@ -1,676 +1,754 @@
-# Campaign MKT — 4 Improvements Implementation Plan
+# Campaign MKT Page — Fix & Improvements Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Fix 4 UX/feature bugs in the campaign-mkt dashboard: real news content scraping, exclusive top-banner toggle, sort-by-latest in Draft & Rejected, remove priority field, and full-image banner preview.
+**Goal:** Fix production bugs and improve the campaign-mkt dashboard with deactivate action, image sync, mock data removal, and UI cleanup.
 
-**Architecture:** All changes are in `portal-webapp-frontend-active`. Issues 1 and 2 touch the API route (`pages/api/campaign/index.ts`). Issues 3–5 are pure UI fixes in `app/game/campaign-mkt/page.tsx`. Issue 1 also adds a new Node.js script for content scraping.
+**Architecture:** Single Next.js page (`app/game/campaign-mkt/page.tsx`) backed by a Pages API route (`pages/api/campaign/index.ts`). Campaign state persists via `src/data/campaigns.ts` (static) and `src/agent/campaignState.json` (runtime overrides). Proposals stored as JSON in `src/agent/proposals/`.
 
-**Tech Stack:** Next.js 14 App Router, TypeScript, Tailwind CSS, Node.js `child_process.exec` for scripts.
-
----
-
-## File Map
-
-| File | Change |
-|---|---|
-| `app/game/campaign-mkt/page.tsx` | Issues 2–5: sort, remove priority, banner image UX, enrich button |
-| `pages/api/campaign/index.ts` | Issue 1: `enrich-content` action; Issue 2: `set-top-banner` toggle-off |
-| `src/data/campaigns.ts` | Issue 2: export `unsetTopBanner()` |
-| `scripts/enrichArticleContent.js` (new) | Issue 1: fetch real content from publisher URLs |
+**Tech Stack:** Next.js 14 App Router, TypeScript, Tailwind CSS, Node.js child_process for agent scripts.
 
 ---
 
-## Task 1 — Export `unsetTopBanner` from campaigns.ts
+## Task Overview
 
-**Files:**
-- Modify: `src/data/campaigns.ts:496-500`
+| # | Task | Files Changed | Risk |
+|---|------|--------------|------|
+| 1 | Cleanup dummy entries in campaigns.ts + delete stale proposals | `src/data/campaigns.ts`, 9 `.json` deletions | Low |
+| 2 | Fix generateWeeklyCampaignProposal.js to skip mock data | `scripts/generateWeeklyCampaignProposal.js` | Low |
+| 3 | Add `campaignState.json` + `disableCampaign()` in campaigns.ts | `src/agent/campaignState.json`, `src/data/campaigns.ts` | Medium |
+| 4 | API — add `deactivate` + `delete-proposal` actions, update GET | `pages/api/campaign/index.ts`, `src/data/campaigns.ts` | Medium |
+| 5 | UI — "Tắt" button in live campaigns table + "Đã tắt" section | `app/game/campaign-mkt/page.tsx` | Medium |
+| 6 | UI — Image sync button, rename enrich button, add delete button | `app/game/campaign-mkt/page.tsx` | Medium |
 
-- [ ] **Step 1: Add `unsetTopBanner` after `setTopBanner`**
+---
 
-```ts
-export function unsetTopBanner() {
-  for (const campaign of campaigns) {
-    campaign.isTopBanner = false
+## TASK 1 — Cleanup: Remove dummy entries from campaigns.ts + delete test proposal files
+
+**Rationale:** Multiple stale test campaigns and proposal JSON files pollute the data layer and cause the live campaigns table to show entries that should never reach production.
+
+**Files affected:**
+- Modify: `src/data/campaigns.ts`
+- Delete (use `rm -f`): `src/agent/proposals/weekly-vtc-test-2026-06-14.json`
+- Delete (use `rm -f`): `src/agent/proposals/weekly-googleplay-test-2026-06-14.json`
+- Delete (use `rm -f`): `src/agent/proposals/weekly-googleplay-clean-slate-2026-06-14.json`
+- Delete (use `rm -f`): `src/agent/proposals/weekly-garena-2026-06-14.json`
+- Delete (use `rm -f`): `src/agent/proposals/weekly-garena-2026-06-15.json`
+- Delete (use `rm -f`): `src/agent/proposals/weekly-googleplay-v1a-2026-06-15.json`
+- Delete (use `rm -f`): `src/agent/proposals/weekly-garena-v1a-2026-06-15.json`
+- Delete (use `rm -f`): `src/agent/proposals/weekly-garena-2026-06-16-2.json`
+- Delete (use `rm -f`): `src/agent/proposals/weekly-garena-2026-06-16.json`
+
+**Entries to keep in `campaigns` array (the main editable block, lines ~41–316 of `src/data/campaigns.ts`):**
+- `weekly-garena-2026-06-16-4` — the only active campaign (`enabled: true`, `isTopBanner: true`)
+
+**Entries to keep in `lastKnownValidCampaigns` array (lines ~319–346):**
+- `garena-free-fire-week-safe` — marked `// FALLBACK_SAFE`
+
+**Entries to keep in `fallbackCampaigns` array (lines ~348–371):**
+- `fallback-garena-discount`
+
+**Entries to REMOVE from the `campaigns` array:**
+- `garena-free-fire-week` (lines ~43–67)
+- `google-play-store` (lines ~68–79)
+- `weekly-garena-2026-06-14` (lines ~81–109)
+- `weekly-googleplay-test-2026-06-14` (lines ~110–138)
+- `weekly-vtc-test-2026-06-14` (lines ~140–166)
+- `weekly-googleplay-clean-slate-2026-06-14` (lines ~168–195)
+- `weekly-googleplay-v1a-2026-06-15` (lines ~196–224)
+- `weekly-garena-v1a-2026-06-15` (lines ~225–254)
+- `weekly-garena-2026-06-16-2` (lines ~255–284)
+
+After cleanup, the `campaigns` array should contain exactly ONE entry: `weekly-garena-2026-06-16-4`.
+
+### Steps
+
+- [ ] **1.1** Read `src/data/campaigns.ts` fully to confirm the current line positions of entries before editing
+- [ ] **1.2** Remove the 9 entries from the `campaigns: Campaign[]` array. After cleanup the array body must be exactly:
+
+```typescript
+// AI_AGENT_EDITABLE: update active campaigns and banner slot content
+export const campaigns: Campaign[] = [
+  {
+    id: "weekly-garena-2026-06-16-4",
+    title: "Ưu đãi nạp Garena trong tuần",
+    subtitle: "Giảm 5% cho Free Fire, Liên Quân Mobile trên NapTheVui.",
+    bannerImageUrl: "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+    mobileBannerImageUrl: "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+    altText: "Garena promotion banner",
+    targetPublisherId: "garena",
+    targetGameIds: [
+      "free-fire",
+      "lien-quan-mobile",
+      "fc-online",
+      "lien-minh-huyen-thoai"
+    ],
+    discountPercent: 5,
+    discountText: "Giảm 5%",
+    skuDiscounts: [
+      {
+        id: "weekly-garena-2026-06-16-4-garena-eligible-skus",
+        publisherId: "garena",
+        discountPercent: 5,
+        enabled: true
+      }
+    ],
+    ctaText: "Xem ưu đãi",
+    articleId: "weekly-garena-2026-06-16-4",
+    enabled: true,
+    priority: 260,
+    isTopBanner: true,
+    themeClassName: "from-[#E75648] via-[#F1865F] to-[#FFD58F]"
+  }
+]
+```
+
+- [ ] **1.3** Delete the 9 stale proposal JSON files (use `rm -f` to avoid errors if some do not exist on disk):
+```bash
+rm -f src/agent/proposals/weekly-vtc-test-2026-06-14.json
+rm -f src/agent/proposals/weekly-googleplay-test-2026-06-14.json
+rm -f src/agent/proposals/weekly-googleplay-clean-slate-2026-06-14.json
+rm -f src/agent/proposals/weekly-garena-2026-06-14.json
+rm -f src/agent/proposals/weekly-garena-2026-06-15.json
+rm -f src/agent/proposals/weekly-googleplay-v1a-2026-06-15.json
+rm -f src/agent/proposals/weekly-garena-v1a-2026-06-15.json
+rm -f src/agent/proposals/weekly-garena-2026-06-16-2.json
+rm -f src/agent/proposals/weekly-garena-2026-06-16.json
+```
+
+- [ ] **1.4** Run `npm run build` and confirm zero TypeScript errors
+- [ ] **1.5** Commit: `chore: remove stale test campaigns and proposal files from data layer`
+
+---
+
+## TASK 2 — Fix generateWeeklyCampaignProposal.js: Skip mock data when `--run-research` is passed
+
+**Rationale:** When the API calls the scan script with `--run-research` (API route line 55), the script should rely exclusively on real researched data. Currently it loads `mockAnalytics.json` and `publisherPromoSignals.json` (manual static fixtures) even in research mode, diluting AI output with hardcoded values.
+
+**File affected:** `scripts/generateWeeklyCampaignProposal.js`
+
+**Key locations (verified):**
+- Line 8: `const defaultAnalyticsPath = path.join(root, 'src', 'agent', 'inputs', 'mockAnalytics.json')`
+- Line 9: `const defaultSignalsPath = path.join(root, 'src', 'agent', 'inputs', 'publisherPromoSignals.json')`
+- Line 59: `runResearch: false` (set to `true` by `--run-research` flag at line 82)
+- Line 664: `const analytics = readJsonIfExists(options.analyticsPath, { items: [] })`
+- Line 665: `const manualPromoSignals = readJsonIfExists(options.signalsPath, { signals: [] })`
+
+### Steps
+
+- [ ] **2.1** Read `scripts/generateWeeklyCampaignProposal.js` lines 650–690 to confirm exact line numbers before editing
+
+- [ ] **2.2** Apply Change 1 — replace the `analytics` assignment at line ~664:
+
+```javascript
+// BEFORE:
+const analytics = readJsonIfExists(options.analyticsPath, { items: [] })
+```
+```javascript
+// AFTER:
+const analytics = options.runResearch
+  ? { items: [] }  // skip mock analytics during research mode; rely on AI judgment
+  : readJsonIfExists(options.analyticsPath, { items: [] })
+```
+
+- [ ] **2.3** Apply Change 2 — replace the `manualPromoSignals` assignment at line ~665:
+
+```javascript
+// BEFORE:
+const manualPromoSignals = readJsonIfExists(options.signalsPath, { signals: [] })
+```
+```javascript
+// AFTER:
+const manualPromoSignals = options.runResearch
+  ? { signals: [] }  // skip manual signals during research mode; use generated signals only
+  : readJsonIfExists(options.signalsPath, { signals: [] })
+```
+
+- [ ] **2.4** Verify warning messages at lines ~677–684 still make sense — they will now correctly warn that analytics/signals are empty during research mode (expected and acceptable; the warnings are informational only)
+
+- [ ] **2.5** Verify script parses without syntax errors:
+```bash
+node --check scripts/generateWeeklyCampaignProposal.js
+```
+Expected: no output (clean parse)
+
+- [ ] **2.6** Commit: `fix: skip mockAnalytics and manual signals when generateWeeklyCampaignProposal runs with --run-research`
+
+---
+
+## TASK 3 — Add campaignState.json + disableCampaign() in campaigns.ts
+
+**Rationale:** The `set-top-banner` toggle updates in-memory state only and does not survive server restarts. The new `deactivate` action (TASK 4) needs the same durability. This task adds the persistence file and the mutation/read functions before the API wires them up.
+
+**Files affected:**
+- Create: `src/agent/campaignState.json`
+- Modify: `src/data/campaigns.ts`
+
+### Steps
+
+- [ ] **3.1** Create `src/agent/campaignState.json` with this exact content:
+```json
+{
+  "disabledCampaigns": []
+}
+```
+
+- [ ] **3.2** Read `src/data/campaigns.ts` to confirm the current top-of-file imports block (currently only `import { getItemById, topupSkus } from './catalog'`)
+
+- [ ] **3.3** Add `fs` and `path` imports at the very top of `src/data/campaigns.ts`, before the existing import:
+```typescript
+import fs from 'fs'
+import path from 'path'
+import { getItemById, topupSkus } from './catalog'
+```
+
+- [ ] **3.4** Locate the existing exported functions near the bottom of `src/data/campaigns.ts` — specifically `setTopBanner` and `unsetTopBanner`. Add the four new functions immediately after `unsetTopBanner`:
+
+```typescript
+function getCampaignStatePath() {
+  return path.join(process.cwd(), 'src', 'agent', 'campaignState.json')
+}
+
+function loadCampaignState(): { disabledCampaigns: string[] } {
+  try {
+    const raw = fs.readFileSync(getCampaignStatePath(), 'utf8')
+    return JSON.parse(raw)
+  } catch {
+    return { disabledCampaigns: [] }
+  }
+}
+
+function writeCampaignState(state: { disabledCampaigns: string[] }) {
+  fs.writeFileSync(getCampaignStatePath(), JSON.stringify(state, null, 2))
+}
+
+export function disableCampaign(campaignId: string) {
+  const campaign = campaigns.find(c => c.id === campaignId)
+  if (campaign) campaign.enabled = false
+  const state = loadCampaignState()
+  if (!state.disabledCampaigns.includes(campaignId)) {
+    state.disabledCampaigns.push(campaignId)
+    writeCampaignState(state)
   }
 }
 ```
 
-- [ ] **Step 2: Verify the file compiles**
+- [ ] **3.5** Update the existing `isCampaignVisible` function (currently at line ~444). Replace its body:
 
-Run: `npm run build 2>&1 | grep -E "error|Error" | head -20`
-Expected: no TypeScript errors
+```typescript
+// BEFORE:
+function isCampaignVisible(campaign: Campaign) {
+  if (!campaign.enabled) {
+    return false
+  }
 
-- [ ] **Step 3: Commit**
-
-```bash
-git add src/data/campaigns.ts
-git commit -m "feat: add unsetTopBanner helper to campaigns data"
+  const now = new Date()
+  if (campaign.validFrom && now < new Date(campaign.validFrom)) {
+    return false
+  }
+  if (campaign.validTo && now > new Date(campaign.validTo)) {
+    return false
+  }
+  return true
+}
 ```
+```typescript
+// AFTER:
+function isCampaignVisible(campaign: Campaign) {
+  if (!campaign.enabled) return false
+
+  const state = loadCampaignState()
+  if (state.disabledCampaigns.includes(campaign.id)) return false
+
+  const now = new Date()
+  if (campaign.validFrom && now < new Date(campaign.validFrom)) return false
+  if (campaign.validTo && now > new Date(campaign.validTo)) return false
+  return true
+}
+```
+
+- [ ] **3.6** Run `npm run build` and confirm zero TypeScript errors
+- [ ] **3.7** Commit: `feat: add campaignState.json persistence layer and disableCampaign() export`
 
 ---
 
-## Task 2 — Fix Top Banner Toggle (Exclusive Radio Behavior)
+## TASK 4 — API: Add deactivate + delete-proposal actions; update GET response
 
-**Context:** `setTopBanner(id)` already makes all others false. Bug: clicking the currently-active banner re-sets it instead of toggling OFF. Fix: if the target campaign is already `isTopBanner: true`, call `unsetTopBanner()` instead.
+**Rationale:** The dashboard needs server-side endpoints for the new deactivate and delete-proposal UI actions, and the GET response must include `disabledCampaigns` so the new "Đã tắt" section in the UI can render.
 
-**Files:**
-- Modify: `pages/api/campaign/index.ts`
-  - Import `unsetTopBanner` at line 4
-  - Replace `set-top-banner` block at line 117-124
+**Files affected:**
+- Modify: `src/data/campaigns.ts` — add `getDisabledCampaigns()` export
+- Modify: `pages/api/campaign/index.ts` — update import, GET handler, and add two new POST action blocks
 
-- [ ] **Step 1: Update the import**
+### Steps
 
-Replace:
-```ts
-import { getActiveCampaign, setTopBanner, campaigns } from '@/src/data/campaigns'
+- [ ] **4.1** Add `getDisabledCampaigns()` to `src/data/campaigns.ts`, immediately after `disableCampaign` (added in TASK 3):
+
+```typescript
+export function getDisabledCampaigns(): Campaign[] {
+  const state = loadCampaignState()
+  return campaigns.filter(c => state.disabledCampaigns.includes(c.id))
+}
 ```
-With:
-```ts
+
+- [ ] **4.2** Read `pages/api/campaign/index.ts` line 1–10 to see the current import block. Update the `campaigns` import at line 4:
+
+```typescript
+// BEFORE:
 import { getActiveCampaign, setTopBanner, unsetTopBanner, campaigns } from '@/src/data/campaigns'
 ```
-
-- [ ] **Step 2: Replace the `set-top-banner` handler**
-
-Replace:
-```ts
-      if (action === 'set-top-banner') {
-        if (!campaignId) {
-          return res.status(400).json({ error: 'Missing campaignId parameter' })
-        }
-        setTopBanner(campaignId)
-        const activeCampaign = getActiveCampaign()
-        return res.status(200).json({ status: 'success', activeCampaign })
-      }
-```
-With:
-```ts
-      if (action === 'set-top-banner') {
-        if (!campaignId) {
-          return res.status(400).json({ error: 'Missing campaignId parameter' })
-        }
-        const alreadyActive = campaigns.find((c) => c.isTopBanner && c.id === campaignId)
-        if (alreadyActive) {
-          unsetTopBanner()
-        } else {
-          setTopBanner(campaignId)
-        }
-        const activeCampaign = getActiveCampaign()
-        return res.status(200).json({ status: 'success', activeCampaign })
-      }
+```typescript
+// AFTER:
+import { getActiveCampaign, setTopBanner, unsetTopBanner, campaigns, disableCampaign, getDisabledCampaigns } from '@/src/data/campaigns'
 ```
 
-- [ ] **Step 3: Verify the type-check passes**
+- [ ] **4.3** Add `import fs from 'fs'` to the top of `pages/api/campaign/index.ts` if not already present. Place it as the first import:
 
-Run: `npm run build 2>&1 | grep -E "error|Error" | head -20`
-Expected: no TypeScript errors
-
-- [ ] **Step 4: Manual test**
-
-Visit `http://localhost:8080/game/campaign-mkt`
-- Toggle ON a campaign → it becomes top banner (green dot moves right)
-- Toggle the same campaign again → it turns OFF (green dot moves left, "Chưa có chiến dịch nào được kích hoạt" shows)
-- Toggle campaign A → ON; toggle campaign B → B turns ON, A turns OFF automatically
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add pages/api/campaign/index.ts
-git commit -m "fix: top banner toggle now works as exclusive radio (click same to unset)"
+```typescript
+import fs from 'fs'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { exec } from 'child_process'
+import path from 'path'
 ```
 
----
-
-## Task 3 — Sort Draft & Rejected by Latest Update (Descending)
-
-**Context:** `draftAndRejected` proposals come in filesystem order. User wants most recently updated shown first. Each proposal has `statusHistory: { status, timestamp }[]` — the last entry is the latest status change. Fall back to `createdAt` if no history.
-
-**Files:**
-- Modify: `app/game/campaign-mkt/page.tsx:569`
-
-- [ ] **Step 1: Add a sort helper above the existing splits**
-
-In `page.tsx`, find the block at line 566:
-```ts
-  // Split proposals into sections
-  const scannedProposals = proposals.filter(p => p.status === 'scanned')
-  const appliedProposals = proposals.filter(p => p.status === 'applied' || p.status === 'approved')
-  const draftAndRejected = proposals.filter(p => p.status === 'draft' || p.status === 'rejected')
-```
-
-Replace with:
-```ts
-  // Split proposals into sections
-  const scannedProposals = proposals.filter(p => p.status === 'scanned')
-  const appliedProposals = proposals.filter(p => p.status === 'applied' || p.status === 'approved')
-
-  function latestUpdateTs(p: Proposal): number {
-    if (p.statusHistory && p.statusHistory.length > 0) {
-      return new Date(p.statusHistory[p.statusHistory.length - 1].timestamp).getTime()
-    }
-    return new Date(p.createdAt).getTime()
-  }
-
-  const draftAndRejected = proposals
-    .filter(p => p.status === 'draft' || p.status === 'rejected')
-    .sort((a, b) => latestUpdateTs(b) - latestUpdateTs(a))
-```
-
-- [ ] **Step 2: Verify no TypeScript errors**
-
-Run: `npm run build 2>&1 | grep -E "error|Error" | head -20`
-Expected: no errors
-
-- [ ] **Step 3: Verify in browser**
-
-Visit `http://localhost:8080/game/campaign-mkt`
-Check "Draft & Từ chối" section: the most recently modified proposal appears at the top.
-
-- [ ] **Step 4: Commit**
-
-```bash
-git add app/game/campaign-mkt/page.tsx
-git commit -m "feat: sort Draft & Từ chối proposals by latest update descending"
-```
-
----
-
-## Task 4 — Remove "Ưu tiên" from Top Banner Info Card
-
-**Context:** The top banner card shows Publisher, Giảm giá, Ưu tiên. Priority is an internal field — remove it.
-
-**Files:**
-- Modify: `app/game/campaign-mkt/page.tsx:657-665`
-
-- [ ] **Step 1: Remove the priority row**
-
-Find in `page.tsx` (inside the top banner info `div`):
-```ts
-              {[
-                { l: 'Publisher', v: topBannerCampaign.targetPublisherId || 'Tất cả' },
-                { l: 'Giảm giá', v: topBannerCampaign.discountPercent ? `${topBannerCampaign.discountPercent}%` : '—' },
-                { l: 'Ưu tiên', v: String(topBannerCampaign.priority) },
-              ].map(({ l, v }) => (
-```
-
-Replace with:
-```ts
-              {[
-                { l: 'Publisher', v: topBannerCampaign.targetPublisherId || 'Tất cả' },
-                { l: 'Giảm giá', v: topBannerCampaign.discountPercent ? `${topBannerCampaign.discountPercent}%` : '—' },
-              ].map(({ l, v }) => (
-```
-
-- [ ] **Step 2: Verify no TypeScript errors**
-
-Run: `npm run build 2>&1 | grep -E "error|Error" | head -20`
-Expected: no errors
-
-- [ ] **Step 3: Verify in browser**
-
-Visit `http://localhost:8080/game/campaign-mkt`
-Top banner card info section shows only "Publisher" and "Giảm giá" — no "Ưu tiên" row.
-
-- [ ] **Step 4: Commit**
-
-```bash
-git add app/game/campaign-mkt/page.tsx
-git commit -m "feat: remove priority field from top banner info card"
-```
-
----
-
-## Task 5 — Banner Image as Full Background in Preview
-
-**Context:** `bannerImageUrl` currently shows as a tiny 40×40 logo. User wants it as the full banner background (like the LoL Wild Rift screenshot: full game art fills the banner, text overlays it). The banner keeps its current size (min-h-[140px] in drawer, min-h-[100px] in live section). When no image URL is set or it's just a logo icon, fall back to the gradient.
-
-**Files:**
-- Modify: `app/game/campaign-mkt/page.tsx`
-  - Drawer Banner Preview block (lines 259–281)
-  - Live campaigns mini banner preview (lines 647–654)
-
-- [ ] **Step 1: Update the Drawer banner preview**
-
-Find and replace the entire banner preview div (the outer `<div className={...}>` that wraps the banner content with the gradient):
-
-Replace:
-```tsx
-            <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br from-[#E75648] via-[#F1865F] to-[#FFD58F] p-5 text-white shadow-lg min-h-[140px] flex flex-col justify-between`}>
-              <span className="absolute right-3 top-3 rounded-lg bg-white px-2.5 py-1 text-xs font-extrabold text-blue-600 shadow">
-                {proposal.discountText || `Giảm ${proposal.discountPercent}%`}
-              </span>
-              <div>
-                <h4 className="font-extrabold text-xl leading-tight mt-6 text-slate-900 drop-shadow-sm">
-                  {editFields?.bannerTitle || proposal.bannerTitle}
-                </h4>
-                <p className="text-sm text-slate-800 font-medium mt-1.5">
-                  {editFields?.bannerSubtitle || proposal.bannerSubtitle}
-                </p>
-              </div>
-              <div className="mt-5 flex items-center justify-between text-sm font-bold text-blue-700">
-                <span>{proposal.ctaText || 'Xem ưu đãi'}</span>
-                {(editFields?.bannerImageUrl || proposal.bannerImageUrl) && (
-                  <img src={editFields?.bannerImageUrl || proposal.bannerImageUrl} alt="Logo" className="h-10 w-10 object-contain rounded-lg bg-white/40 p-1" />
-                )}
-              </div>
-            </div>
-```
-
-With:
-```tsx
-            {(() => {
-              const imgUrl = editFields?.bannerImageUrl || proposal.bannerImageUrl
-              const hasBgImage = !!imgUrl
-              return (
-                <div
-                  className="relative overflow-hidden rounded-xl shadow-lg min-h-[140px] flex flex-col justify-between"
-                  style={hasBgImage ? {
-                    backgroundImage: `url(${imgUrl})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  } : undefined}
-                >
-                  {/* gradient overlay — always present; stronger when image behind */}
-                  <div className={`absolute inset-0 ${hasBgImage ? 'bg-gradient-to-r from-black/70 via-black/40 to-transparent' : 'bg-gradient-to-br from-[#E75648] via-[#F1865F] to-[#FFD58F]'} rounded-xl`} />
-                  <div className="relative z-10 p-5 flex flex-col justify-between h-full min-h-[140px]">
-                    <span className="absolute right-3 top-3 rounded-lg bg-white px-2.5 py-1 text-xs font-extrabold text-blue-600 shadow">
-                      {proposal.discountText || `Giảm ${proposal.discountPercent}%`}
-                    </span>
-                    <div>
-                      <h4 className={`font-extrabold text-xl leading-tight mt-6 drop-shadow-sm ${hasBgImage ? 'text-white' : 'text-slate-900'}`}>
-                        {editFields?.bannerTitle || proposal.bannerTitle}
-                      </h4>
-                      <p className={`text-sm font-medium mt-1.5 ${hasBgImage ? 'text-white/80' : 'text-slate-800'}`}>
-                        {editFields?.bannerSubtitle || proposal.bannerSubtitle}
-                      </p>
-                    </div>
-                    <div className={`mt-5 flex items-center justify-between text-sm font-bold ${hasBgImage ? 'text-white' : 'text-blue-700'}`}>
-                      <span>{proposal.ctaText || 'Xem ưu đãi'}</span>
-                      {hasBgImage && (
-                        <span className="rounded-lg bg-white/20 backdrop-blur px-3 py-1 text-xs font-bold text-white border border-white/30">
-                          {proposal.ctaText || 'Xem ưu đãi →'}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )
-            })()}
-```
-
-- [ ] **Step 2: Update the live campaigns mini banner preview**
-
-Find in the live campaigns section (around line 647):
-```tsx
-              <div className={`relative flex-1 overflow-hidden rounded-xl bg-gradient-to-br ${topBannerCampaign.themeClassName || 'from-blue-600 to-green-600'} p-4 text-white shadow-inner min-h-[100px]`}>
-                {topBannerCampaign.discountText && (
-                  <span className="absolute right-2 top-2 rounded bg-white px-2 py-0.5 text-xs font-extrabold text-blue-600">{topBannerCampaign.discountText}</span>
-                )}
-                <h3 className="font-bold text-lg leading-tight mt-4">{topBannerCampaign.title}</h3>
-                <p className="text-xs text-white/80 mt-1">{topBannerCampaign.subtitle}</p>
-              </div>
-```
-
-Replace with:
-```tsx
-              {(() => {
-                const hasBgImage = !!topBannerCampaign.bannerImageUrl
-                return (
-                  <div
-                    className="relative flex-1 overflow-hidden rounded-xl shadow-inner min-h-[100px]"
-                    style={hasBgImage ? {
-                      backgroundImage: `url(${topBannerCampaign.bannerImageUrl})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    } : undefined}
-                  >
-                    <div className={`absolute inset-0 rounded-xl ${hasBgImage ? 'bg-gradient-to-r from-black/60 via-black/30 to-transparent' : `bg-gradient-to-br ${topBannerCampaign.themeClassName || 'from-blue-600 to-green-600'}`}`} />
-                    <div className="relative z-10 p-4 min-h-[100px] flex flex-col justify-between">
-                      {topBannerCampaign.discountText && (
-                        <span className="absolute right-2 top-2 rounded bg-white px-2 py-0.5 text-xs font-extrabold text-blue-600">{topBannerCampaign.discountText}</span>
-                      )}
-                      <h3 className="font-bold text-lg leading-tight mt-4 text-white">{topBannerCampaign.title}</h3>
-                      <p className="text-xs text-white/80 mt-1">{topBannerCampaign.subtitle}</p>
-                    </div>
-                  </div>
-                )
-              })()}
-```
-
-- [ ] **Step 3: Verify no TypeScript errors**
-
-Run: `npm run build 2>&1 | grep -E "error|Error" | head -20`
-Expected: no errors
-
-- [ ] **Step 4: Verify in browser**
-
-Visit `http://localhost:8080/game/campaign-mkt`
-- Open a proposal's drawer
-- In "URL ảnh Banner (Desktop)" field, paste a real game banner URL (e.g., `https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80`)
-- Click "Lưu chỉnh sửa"
-- Reopen drawer → banner preview now shows the image as full background with text overlaid
-- The live campaign mini-banner in "Đang chạy" also shows full-image when bannerImageUrl is a game banner
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add app/game/campaign-mkt/page.tsx
-git commit -m "feat: banner preview uses full background image with gradient text overlay"
-```
-
----
-
-## Task 6 — Real News Content: Create enrichArticleContent.js Script
-
-**Context:** Proposal `articleContent` currently contains AI-generated template HTML. This script fetches real content from official publisher URLs in `publisherResearchSources.json`, extracts promo/event text, and writes enriched HTML back into the proposal JSON.
-
-**Files:**
-- Create: `scripts/enrichArticleContent.js`
-
-- [ ] **Step 1: Create the script**
-
-```js
-#!/usr/bin/env node
-/**
- * enrichArticleContent.js
- *
- * Fetches real promotional content from official publisher websites and updates
- * a proposal's articleContent with real, useful information.
- *
- * Usage: node scripts/enrichArticleContent.js <proposalId>
- */
-
-const fs = require('fs')
-const path = require('path')
-const https = require('https')
-const http = require('http')
-
-const root = path.resolve(__dirname, '..')
-const proposalDir = path.join(root, 'src', 'agent', 'proposals')
-const researchSourcesPath = path.join(root, 'src', 'agent', 'inputs', 'publisherResearchSources.json')
-
-function readJson(filePath) {
-  return JSON.parse(fs.readFileSync(filePath, 'utf8'))
-}
-
-function writeJson(filePath, value) {
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8')
-}
-
-function fetchUrl(url, timeoutMs = 8000) {
-  return new Promise((resolve, reject) => {
-    const protocol = url.startsWith('https') ? https : http
-    const req = protocol.get(url, { headers: { 'User-Agent': 'NapTheVui-ContentBot/1.0' } }, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetchUrl(res.headers.location, timeoutMs).then(resolve).catch(reject)
-      }
-      let body = ''
-      res.setEncoding('utf8')
-      res.on('data', (chunk) => { body += chunk })
-      res.on('end', () => resolve(body))
-    })
-    req.setTimeout(timeoutMs, () => { req.destroy(); reject(new Error(`Timeout: ${url}`)) })
-    req.on('error', reject)
-  })
-}
-
-function decodeHtmlEntities(value) {
-  return String(value || '')
-    .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
-    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
-}
-
-function stripHtml(html) {
-  return decodeHtmlEntities(
-    String(html || '')
-      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/\s{2,}/g, ' ')
-      .trim()
-  )
-}
-
-function extractTextBlocks(html, keywords) {
-  // Extract paragraphs and headings that contain any keyword
-  const blocks = []
-  const tagPattern = /<(h[1-4]|p|li)[^>]*>([\s\S]*?)<\/\1>/gi
-  let match
-  while ((match = tagPattern.exec(html)) !== null) {
-    const text = stripHtml(match[2]).trim()
-    if (text.length < 20) continue
-    const lower = text.toLowerCase()
-    const relevant = keywords.some(kw => lower.includes(kw.toLowerCase()))
-    if (relevant) blocks.push({ tag: match[1], text })
-    if (blocks.length >= 15) break
-  }
-  return blocks
-}
-
-function buildArticleHtml(proposal, blocks, sourceUrl) {
-  const discount = proposal.discountPercent ? `${proposal.discountPercent}%` : ''
-  const publisher = proposal.targetPublisherId || ''
-  const games = (proposal.targetGameIds || []).join(', ')
-
-  const blockHtml = blocks.length > 0
-    ? blocks.map(b => {
-        if (b.tag.startsWith('h')) return `<h4>${b.text}</h4>`
-        return `<p>${b.text}</p>`
-      }).join('\n')
-    : `<p>Cập nhật ưu đãi mới nhất từ trang chính thức ${publisher.toUpperCase()} tại <a href="${sourceUrl}" target="_blank" rel="noopener">${sourceUrl}</a>.</p>`
-
-  return `<h3>Ưu Đãi Nạp ${publisher.toUpperCase()} ${discount ? `Giảm ${discount}` : ''}</h3>
-<p><strong>Áp dụng cho:</strong> ${games || publisher.toUpperCase()}.</p>
-<p><strong>Mức ưu đãi:</strong> ${discount ? `Giảm ${discount}` : 'Xem chi tiết tại trang nạp'} khi nạp qua NapTheVui.</p>
-
-<h4>Nội dung từ nhà phát hành chính thức:</h4>
-${blockHtml}
-
-<h4>Hướng dẫn nạp và nhận ưu đãi:</h4>
-<ol>
-<li>Tìm kiếm <strong>${publisher.toUpperCase()}</strong> hoặc tên tựa game trong ô tìm kiếm NapTheVui.</li>
-<li>Chọn mệnh giá thẻ nạp phù hợp.</li>
-<li>Kiểm tra chiết khấu hiển thị tại màn hình thanh toán trước khi xác nhận.</li>
-</ol>
-
-<p><em>Nguồn: <a href="${sourceUrl}" target="_blank" rel="noopener">${sourceUrl}</a>. Nội dung được tổng hợp tự động — kiểm tra và xác nhận trước khi xuất bản.</em></p>`
-}
-
-async function enrichProposal(proposalId) {
-  const proposalPath = path.join(proposalDir, `${proposalId}.json`)
-  if (!fs.existsSync(proposalPath)) {
-    console.error(`Proposal not found: ${proposalPath}`)
-    process.exit(1)
-  }
-
-  const proposal = readJson(proposalPath)
-  const sources = readJson(researchSourcesPath)
-
-  // Find the source for this proposal's publisher
-  const source = sources.sources.find(
-    s => s.publisherId === proposal.targetPublisherId && s.enabled
-  )
-
-  if (!source) {
-    console.log(`No research source found for publisher: ${proposal.targetPublisherId}`)
-    console.log('Writing placeholder with source attribution only.')
-    proposal.articleContent = buildArticleHtml(proposal, [], proposal.targetPublisherId)
-    writeJson(proposalPath, proposal)
-    return
-  }
-
-  console.log(`Fetching content from: ${source.url}`)
-  let html = ''
-  try {
-    html = await fetchUrl(source.url)
-    console.log(`Fetched ${html.length} bytes from ${source.url}`)
-  } catch (err) {
-    console.warn(`Failed to fetch ${source.url}: ${err.message}`)
-  }
-
-  const blocks = html ? extractTextBlocks(html, source.keywords) : []
-  console.log(`Extracted ${blocks.length} relevant text blocks`)
-
-  proposal.articleContent = buildArticleHtml(proposal, blocks, source.url)
-  writeJson(proposalPath, proposal)
-  console.log(`Updated articleContent for proposal: ${proposalId}`)
-}
-
-const proposalId = process.argv[2]
-if (!proposalId) {
-  console.error('Usage: node scripts/enrichArticleContent.js <proposalId>')
-  process.exit(1)
-}
-
-enrichArticleContent(proposalId).catch(err => {
-  console.error(err)
-  process.exit(1)
+- [ ] **4.4** Update the GET handler's `res.status(200).json(...)` call (currently lines ~36–41). Replace:
+
+```typescript
+// BEFORE:
+return res.status(200).json({
+  activeCampaign,
+  topBannerCampaign,
+  liveCampaigns,
+  proposals
 })
+```
+```typescript
+// AFTER:
+const disabledCampaigns = getDisabledCampaigns()
+return res.status(200).json({
+  activeCampaign,
+  topBannerCampaign,
+  liveCampaigns,
+  disabledCampaigns,
+  proposals
+})
+```
 
-async function enrichArticleContent(id) {
-  await enrichProposal(id)
+- [ ] **4.5** Add the `deactivate` action block after the `set-top-banner` block (currently ending around line 129), before the `if (action === 'update')` block:
+
+```typescript
+if (action === 'deactivate') {
+  const { campaignId } = req.body
+  if (!campaignId) {
+    return res.status(400).json({ error: 'Missing campaignId parameter' })
+  }
+  const found = campaigns.find((c) => c.id === campaignId)
+  if (!found) {
+    return res.status(404).json({ error: 'Campaign not found' })
+  }
+  disableCampaign(campaignId)
+  return res.status(200).json({ status: 'success', message: `Campaign "${campaignId}" đã bị tắt.` })
 }
 ```
 
-- [ ] **Step 2: Test the script manually**
+- [ ] **4.6** Update the `proposalId`-required action guard at line ~83 to include `delete-proposal`:
 
-```bash
-# Use an existing proposal id
-PROPOSAL_ID=$(ls src/agent/proposals/ | head -1 | sed 's/.json//')
-node scripts/enrichArticleContent.js $PROPOSAL_ID
+```typescript
+// BEFORE:
+if (action === 'acknowledge' || action === 'approve' || action === 'reject' || action === 'apply' || action === 'revert' || action === 'update' || action === 'enrich-content') {
 ```
-Expected: script fetches URL, logs byte count and block count, writes updated proposal JSON.
-
-- [ ] **Step 3: Check the updated proposal**
-
-```bash
-cat src/agent/proposals/${PROPOSAL_ID}.json | grep -A 20 '"articleContent"'
+```typescript
+// AFTER:
+if (action === 'acknowledge' || action === 'approve' || action === 'reject' || action === 'apply' || action === 'revert' || action === 'update' || action === 'enrich-content' || action === 'delete-proposal') {
 ```
-Expected: real paragraph text from the publisher site, not template boilerplate like "được tạo tự động dựa trên Weekly campaign brief".
 
-- [ ] **Step 4: Commit**
+- [ ] **4.7** Add the `delete-proposal` action block after the `deactivate` block:
 
-```bash
-git add scripts/enrichArticleContent.js
-git commit -m "feat: add enrichArticleContent script to fetch real publisher content"
+```typescript
+if (action === 'delete-proposal') {
+  if (!proposalId) {
+    return res.status(400).json({ error: 'Missing proposalId parameter' })
+  }
+  const proposal = getCampaignProposal(proposalId)
+  if (!proposal) {
+    return res.status(404).json({ error: 'Proposal not found' })
+  }
+  if (proposal.status === 'applied') {
+    return res.status(400).json({ error: 'Không thể xóa proposal đang được áp dụng.' })
+  }
+  const proposalFilePath = path.join(process.cwd(), 'src', 'agent', 'proposals', `${proposalId}.json`)
+  if (fs.existsSync(proposalFilePath)) {
+    fs.unlinkSync(proposalFilePath)
+  }
+  return res.status(200).json({ status: 'success', message: `Proposal "${proposalId}" đã bị xóa.` })
+}
 ```
+
+- [ ] **4.8** Run `npm run build` and confirm zero TypeScript errors
+- [ ] **4.9** Commit: `feat: add deactivate and delete-proposal API actions; expose disabledCampaigns in GET response`
 
 ---
 
-## Task 7 — Add `enrich-content` API Action and UI Button
+## TASK 5 — UI: "Tắt" button in live campaigns table + "Đã tắt" section
 
-**Context:** Wire the script from Task 6 into the campaign API and surface it as a button in the proposal drawer.
+**Rationale:** Users need a visible one-click way to deactivate a live campaign. Deactivated campaigns should move to a new collapsed "Đã tắt" section so they remain auditable without cluttering the main view.
 
-**Files:**
-- Modify: `pages/api/campaign/index.ts` — add `enrich-content` action after the `update` handler
-- Modify: `app/game/campaign-mkt/page.tsx` — add button in Drawer footer
+**File affected:** `app/game/campaign-mkt/page.tsx`
 
-- [ ] **Step 1: Add the `enrich-content` action to the API**
+### Steps
 
-In `pages/api/campaign/index.ts`, find the closing of the `update` action block (around line 160), and add after it:
+- [ ] **5.1** Add `disabledCampaigns` state in `CampaignMktPage` (in the state declarations block, currently lines 499–511). Add after the `editFields` state:
 
-```ts
-      if (action === 'enrich-content') {
-        if (!proposalId) {
-          return res.status(400).json({ error: 'Missing proposalId parameter' })
-        }
-        const proposal = getCampaignProposal(proposalId)
-        if (!proposal) {
-          return res.status(404).json({ error: 'Proposal not found' })
-        }
-        const scriptPath = path.join(process.cwd(), 'scripts', 'enrichArticleContent.js')
-        return new Promise<void>((resolve) => {
-          exec(`node ${scriptPath} ${proposalId}`, (error, stdout, stderr) => {
-            if (error) {
-              console.error(`Enrich failed: ${error.message}\n${stderr}`)
-              res.status(500).json({ error: 'Content enrichment failed', details: error.message, stderr })
-              return resolve()
-            }
-            const updated = getCampaignProposal(proposalId)
-            res.status(200).json({ status: 'success', message: 'Nội dung đã được cập nhật từ nguồn chính thức.', proposal: updated, stdout })
-            return resolve()
-          })
-        })
-      }
+```typescript
+const [disabledCampaigns, setDisabledCampaigns] = useState<Campaign[]>([])
 ```
 
-- [ ] **Step 2: Add the "Làm giàu nội dung" button in the Drawer footer**
+- [ ] **5.2** Update `fetchData` (currently lines 530–545). In the `if (res.ok)` block, add the new state setter:
 
-In `page.tsx`, in the `Drawer` component's footer section (inside `<div className="border-t ... space-y-2 bg-slate-950/50">`), after the existing status action buttons, add the enrich button for `scanned` and `draft` proposals:
+```typescript
+// BEFORE (inside if (res.ok)):
+setTopBannerCampaign(data.topBannerCampaign)
+setLiveCampaigns(data.liveCampaigns || [])
+setProposals(data.proposals || [])
+```
+```typescript
+// AFTER:
+setTopBannerCampaign(data.topBannerCampaign)
+setLiveCampaigns(data.liveCampaigns || [])
+setProposals(data.proposals || [])
+setDisabledCampaigns(data.disabledCampaigns || [])
+```
 
-Find the closing `</div>` of the drawer footer section (the one that wraps all the action buttons). Before the closing `</div>`, add:
+- [ ] **5.3** Update the live campaigns table action cell (currently lines 784–788). Replace the `<td>` that contains only the "Xem trên site" link:
 
 ```tsx
-          {(proposal.status === 'scanned' || proposal.status === 'draft') && (
-            <button
-              onClick={() => onAction('enrich-content')}
-              disabled={actionLoading !== null}
-              className="w-full rounded-xl border border-teal-500/40 bg-teal-900/30 py-2.5 text-sm font-semibold text-teal-300 hover:bg-teal-800/40 transition disabled:opacity-50"
-            >
-              {actionLoading?.startsWith('enrich-content') ? '⏳ Đang cào nội dung...' : '🌐 Cào nội dung chính thức'}
-            </button>
-          )}
+// BEFORE:
+<td className="py-3.5 text-right sticky right-0">
+  <Link href="/game" target="_blank" className="rounded-lg bg-slate-700/60 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-700 transition whitespace-nowrap">
+    Xem trên site
+  </Link>
+</td>
+```
+```tsx
+// AFTER:
+<td className="py-3.5 text-right sticky right-0" onClick={(e) => e.stopPropagation()}>
+  <div className="flex justify-end gap-1.5">
+    <Link href="/game" target="_blank" className="rounded-lg bg-slate-700/60 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-700 transition whitespace-nowrap">
+      Xem trên site
+    </Link>
+    <button
+      onClick={() => apiAction('deactivate', { campaignId: c.id })}
+      disabled={actionLoading !== null}
+      className="rounded-lg bg-rose-600/70 px-2.5 py-1.5 text-xs font-bold text-white hover:bg-rose-600 transition disabled:opacity-50 whitespace-nowrap"
+    >
+      Tắt
+    </button>
+  </div>
+</td>
 ```
 
-- [ ] **Step 3: Wire `enrich-content` in `handleDrawerAction`**
+- [ ] **5.4** Add Section 4 "Đã tắt" between the closing `</Section>` of Section 3 (line ~853) and the `{/* ═══ Slide-in Drawer ═══ */}` comment (line ~855):
 
-`handleDrawerAction` already passes through any action string to `apiAction`. No change needed — `onAction('enrich-content')` will call `apiAction('enrich-content', { proposalId: selectedProposal.id })`.
-
-After the action succeeds and `fetchData()` is called, the drawer will auto-refresh if the user re-opens it. For a better UX, also update `selectedProposal` from the response. In `apiAction`, find:
-
-```ts
-        if (data.proposal && selectedProposal?.id === (body.proposalId)) {
-          setSelectedProposal(data.proposal)
-        }
+```tsx
+{/* ═══ Section 4: Đã tắt ═══ */}
+{disabledCampaigns.length > 0 && (
+  <Section title="Đã tắt" icon="⛔" count={disabledCampaigns.length} defaultOpen={false} accentColor="blue">
+    <div className="overflow-x-auto -mx-5 px-5">
+      <table className="w-full text-left text-sm">
+        <thead>
+          <tr className="border-b border-white/[0.06] text-xs uppercase tracking-wider text-slate-500">
+            <th className="pb-3 pr-4 font-semibold">Chiến dịch</th>
+            <th className="hidden pb-3 pr-4 font-semibold md:table-cell">Publisher</th>
+            <th className="hidden pb-3 pr-4 font-semibold sm:table-cell">Giảm giá</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-white/[0.04]">
+          {disabledCampaigns.map((c) => (
+            <tr key={c.id} className="opacity-50">
+              <td className="py-3.5 pr-4">
+                <div className="font-semibold text-white truncate max-w-[240px]">{c.title}</div>
+                <div className="text-xs text-slate-500 truncate max-w-[240px] mt-0.5">{c.id}</div>
+              </td>
+              <td className="hidden py-3.5 pr-4 md:table-cell">
+                <span className="rounded-md bg-slate-800/80 px-2 py-1 text-xs font-semibold text-slate-300 uppercase">{c.targetPublisherId}</span>
+              </td>
+              <td className="hidden py-3.5 pr-4 sm:table-cell">
+                {c.discountPercent ? <span className="font-bold text-slate-400">-{c.discountPercent}%</span> : '—'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </Section>
+)}
 ```
 
-This is already there — the drawer will refresh with real content.
+- [ ] **5.5** Run `npm run dev` locally and verify:
+  - Live campaigns table shows "Tắt" button next to "Xem trên site"
+  - Clicking "Tắt" calls the deactivate endpoint and refreshes data
+  - Deactivated campaign disappears from live table and appears in collapsed "Đã tắt" section
+- [ ] **5.6** Run `npm run build` and confirm zero TypeScript errors
+- [ ] **5.7** Commit: `feat: add deactivate button to live campaigns table and Đã tắt section`
 
-- [ ] **Step 4: Verify no TypeScript errors**
+---
 
-Run: `npm run build 2>&1 | grep -E "error|Error" | head -20`
-Expected: no errors
+## TASK 6 — UI: Rename enrich button + Image sync button + Delete proposal button
 
-- [ ] **Step 5: Manual test**
+**Rationale:** Three UX improvements in the proposal drawer:
+1. Rename "Cào nội dung chính thức" to a clearer label for non-technical operators
+2. Add a one-click sync to copy `bannerImageUrl` → `coverImageUrl` to prevent URL duplication
+3. Add a delete button so stale proposals can be removed without a terminal command
 
-Visit `http://localhost:8080/game/campaign-mkt`
-- Click a draft or scanned proposal
-- In the drawer footer, click "🌐 Cào nội dung chính thức"
-- Toast shows "Đang xử lý..."
-- After a few seconds (network request), toast shows "Nội dung đã được cập nhật từ nguồn chính thức."
-- Scroll to "Bài viết đi kèm (CMS)" in the drawer → article content now shows real text extracted from the publisher's website
+**File affected:** `app/game/campaign-mkt/page.tsx`
 
-- [ ] **Step 6: Commit**
+### Steps
 
-```bash
-git add pages/api/campaign/index.ts app/game/campaign-mkt/page.tsx
-git commit -m "feat: add enrich-content action to scrape real publisher article content"
+**6a — Rename enrich button**
+
+- [ ] **6.1** Find the enrich button label at line ~478. Replace:
+
+```tsx
+// BEFORE:
+{actionLoading?.startsWith('enrich-content') ? '⏳ Đang cào nội dung...' : '🌐 Cào nội dung chính thức'}
 ```
+```tsx
+// AFTER:
+{actionLoading?.startsWith('enrich-content') ? '⏳ Đang cập nhật...' : '🔄 Lấy nội dung mới nhất từ website'}
+```
+
+**6b — Add image sync button in drawer editable fields section**
+
+- [ ] **6.2** Find the editable fields `.map()` block in the Drawer component (currently lines 316–332). Refactor it from a single array `.map()` to individually rendered groups so the sync button can be inserted after the image URL fields.
+
+Replace the entire `.map()` block (from the array `{[` opening to `})}` closing) AND the save button that follows it:
+
+```tsx
+// BEFORE (lines ~316–339):
+<div className="space-y-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+  {[
+    { key: 'bannerTitle', label: 'Tiêu đề Banner' },
+    { key: 'bannerSubtitle', label: 'Mô tả Banner' },
+    { key: 'bannerImageUrl', label: 'URL ảnh Banner (Desktop)' },
+    { key: 'mobileBannerImageUrl', label: 'URL ảnh Banner (Mobile)' },
+    { key: 'coverImageUrl', label: 'URL ảnh đại diện bài viết' },
+  ].map(({ key, label }) => (
+    <div key={key}>
+      <label className="block text-xs font-semibold text-slate-400 mb-1">{label}</label>
+      <input
+        type="text"
+        value={(editFields as any)[key]}
+        onChange={(e) => setEditFields((prev: any) => prev ? { ...prev, [key]: e.target.value } : null)}
+        className="w-full rounded-lg border border-white/[0.08] bg-slate-950/50 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition"
+      />
+    </div>
+  ))}
+  <button
+    onClick={onSave}
+    disabled={actionLoading !== null}
+    className="w-full rounded-lg bg-blue-600/90 py-2.5 text-xs font-bold text-white hover:bg-blue-600 transition disabled:opacity-50"
+  >
+    {actionLoading?.startsWith('save-') ? 'Đang lưu...' : 'Lưu chỉnh sửa'}
+  </button>
+</div>
+```
+```tsx
+// AFTER:
+<div className="space-y-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+  {(['bannerTitle', 'bannerSubtitle'] as const).map((key) => {
+    const labels: Record<string, string> = {
+      bannerTitle: 'Tiêu đề Banner',
+      bannerSubtitle: 'Mô tả Banner',
+    }
+    return (
+      <div key={key}>
+        <label className="block text-xs font-semibold text-slate-400 mb-1">{labels[key]}</label>
+        <input
+          type="text"
+          value={(editFields as any)[key]}
+          onChange={(e) => setEditFields((prev: any) => prev ? { ...prev, [key]: e.target.value } : null)}
+          className="w-full rounded-lg border border-white/[0.08] bg-slate-950/50 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition"
+        />
+      </div>
+    )
+  })}
+  {(['bannerImageUrl', 'mobileBannerImageUrl', 'coverImageUrl'] as const).map((key) => {
+    const labels: Record<string, string> = {
+      bannerImageUrl: 'URL ảnh Banner (Desktop)',
+      mobileBannerImageUrl: 'URL ảnh Banner (Mobile)',
+      coverImageUrl: 'URL ảnh đại diện bài viết',
+    }
+    return (
+      <div key={key}>
+        <label className="block text-xs font-semibold text-slate-400 mb-1">{labels[key]}</label>
+        <input
+          type="text"
+          value={(editFields as any)[key]}
+          onChange={(e) => setEditFields((prev: any) => prev ? { ...prev, [key]: e.target.value } : null)}
+          className="w-full rounded-lg border border-white/[0.08] bg-slate-950/50 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition"
+        />
+      </div>
+    )
+  })}
+  <button
+    type="button"
+    onClick={() => setEditFields((prev: any) => prev ? {
+      ...prev,
+      coverImageUrl: prev.bannerImageUrl
+    } : null)}
+    className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-slate-800/50 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-700/60 transition w-full justify-center"
+  >
+    ↕ Đồng bộ: dùng URL Banner làm Thumbnail bài viết
+  </button>
+  <button
+    onClick={onSave}
+    disabled={actionLoading !== null}
+    className="w-full rounded-lg bg-blue-600/90 py-2.5 text-xs font-bold text-white hover:bg-blue-600 transition disabled:opacity-50"
+  >
+    {actionLoading?.startsWith('save-') ? 'Đang lưu...' : 'Lưu chỉnh sửa'}
+  </button>
+</div>
+```
+
+**6c — Add delete proposal button in drawer footer**
+
+- [ ] **6.3** In the Drawer footer (currently lines 434–481), add the delete button after the enrich-content `</button>` closing tag (line ~480) and before the footer's closing `</div>`:
+
+```tsx
+{proposal.status !== 'applied' && (
+  <button
+    onClick={() => {
+      if (confirm(`Xóa proposal "${proposal.id}"? Hành động này không thể hoàn tác.`)) {
+        onAction('delete-proposal')
+      }
+    }}
+    disabled={actionLoading !== null}
+    className="w-full rounded-xl border border-rose-500/30 bg-rose-900/20 py-2 text-xs font-semibold text-rose-400 hover:bg-rose-900/40 transition disabled:opacity-50"
+  >
+    🗑 Xóa proposal này
+  </button>
+)}
+```
+
+**6d — Update handleDrawerAction to close drawer on successful delete**
+
+- [ ] **6.4** Update `handleDrawerAction` in `CampaignMktPage` (currently lines 583–586). Replace:
+
+```typescript
+// BEFORE:
+const handleDrawerAction = (action: string) => {
+  if (!selectedProposal) return
+  apiAction(action, { proposalId: selectedProposal.id })
+}
+```
+```typescript
+// AFTER:
+const handleDrawerAction = async (action: string) => {
+  if (!selectedProposal) return
+  const result = await apiAction(action, { proposalId: selectedProposal.id })
+  if (action === 'delete-proposal' && result?.status === 'success') {
+    setSelectedProposal(null)
+  }
+}
+```
+
+- [ ] **6.5** Run `npm run dev` locally and test all three changes:
+  - Enrich button shows new label "🔄 Lấy nội dung mới nhất từ website" and loading text "⏳ Đang cập nhật..."
+  - "↕ Đồng bộ" button copies `bannerImageUrl` value into `coverImageUrl` field immediately in the form
+  - "🗑 Xóa proposal này" appears for all non-applied proposals; clicking triggers confirm dialog; on confirm the drawer closes and the proposal disappears from all sections
+- [ ] **6.6** Run `npm run build` and confirm zero TypeScript errors
+- [ ] **6.7** Commit: `feat: image sync button, rename enrich button, add delete proposal button in drawer`
 
 ---
 
 ## Self-Review Checklist
 
-### Spec Coverage
+### Spec Coverage Scan
 
-| Issue | Tasks |
+| Requirement from spec | Covered by | Status |
+|---|---|---|
+| Remove dummy campaign entries from campaigns.ts | Task 1 | Covered |
+| Delete 9 stale test proposal JSON files | Task 1 | Covered |
+| Skip mockAnalytics when `--run-research` is passed | Task 2 | Covered |
+| Skip manual publisherPromoSignals when `--run-research` is passed | Task 2 | Covered |
+| Create `src/agent/campaignState.json` with `disabledCampaigns` array | Task 3 | Covered |
+| `disableCampaign()` — mutates in-memory + persists to JSON | Task 3 | Covered |
+| `isCampaignVisible` checks persisted disabled state | Task 3 | Covered |
+| `getDisabledCampaigns()` export from campaigns.ts | Task 4 | Covered |
+| GET `/api/campaign` returns `disabledCampaigns` array | Task 4 | Covered |
+| POST `deactivate` action with campaignId guard | Task 4 | Covered |
+| POST `delete-proposal` action with applied-status guard | Task 4 | Covered |
+| `disabledCampaigns` useState in CampaignMktPage | Task 5 | Covered |
+| fetchData populates `disabledCampaigns` from API response | Task 5 | Covered |
+| "Tắt" button in live campaigns action cell | Task 5 | Covered |
+| Section 4 "Đã tắt" collapsed by default | Task 5 | Covered |
+| Rename enrich button label | Task 6 | Covered |
+| Image sync button copies bannerImageUrl → coverImageUrl | Task 6 | Covered |
+| Delete proposal button in drawer footer (non-applied only) | Task 6 | Covered |
+| `handleDrawerAction` closes drawer after successful delete | Task 6 | Covered |
+
+### Placeholder / TODO Scan
+
+After implementation, search for these strings to confirm none remain as stubs:
+
+```bash
+grep -r "TODO\|FIXME\|PLACEHOLDER\|implement later" \
+  src/data/campaigns.ts \
+  pages/api/campaign/index.ts \
+  app/game/campaign-mkt/page.tsx \
+  scripts/generateWeeklyCampaignProposal.js
+```
+
+Expected: zero matches.
+
+### Build Verification Checkpoints
+
+Every TypeScript-touching task includes `npm run build` before committing:
+
+| Task | Build step |
 |---|---|
-| 1. Real news content scraping | Task 6 (script) + Task 7 (API + UI button) |
-| 2. Top banner toggle exclusive | Task 1 (unsetTopBanner) + Task 2 (API fix) |
-| 3. Sort Draft & Rejected by latest update | Task 3 |
-| 4. Remove "Ưu tiên" from top banner | Task 4 |
-| 5. Banner image as full background | Task 5 |
+| Task 1 | Step 1.4 |
+| Task 2 | Step 2.5 (Node syntax check, not tsc) |
+| Task 3 | Step 3.6 |
+| Task 4 | Step 4.8 |
+| Task 5 | Step 5.6 |
+| Task 6 | Step 6.6 |
 
-### Placeholder Scan
+### What is NOT in this plan (already done, per spec)
 
-- No TBD, TODO, or "implement later" present
-- All code blocks are complete and runnable
-- All file paths are exact
+- `coverImageUrl` input field in drawer — already exists at `page.tsx` line 321
+- `coverImageUrl` fallback in apply script — already at `scripts/applyApprovedCampaignProposal.js` line 382 (`proposal.coverImageUrl || proposal.bannerImageUrl`)
+- `set-top-banner` API action with exclusivity logic via `setTopBanner()` — already implemented (API route lines 117–129)
+- Top Banner card UI already showing active banner — already rendered
+- Toggle button per running campaign — already exists at `page.tsx` lines 775–782
 
-### Type Consistency
+---
 
-- `unsetTopBanner` added in Task 1, imported in Task 2 ✓
-- `Proposal` type in `page.tsx` already has `statusHistory?: StatusHistoryEntry[]` at line 70 ✓
-- `enrichArticleContent.js` is a plain Node.js script (no TS compilation needed) ✓
-- Drawer `onAction` callback is `(action: string) => void` — `'enrich-content'` is a string ✓
+## Dependency Order
+
+```
+Task 1 (cleanup)
+   └─ independent, run first
+
+Task 2 (script fix)
+   └─ independent, can run in parallel with Task 1
+
+Task 3 (campaignState + disableCampaign)
+   └─ must complete before Task 4
+
+Task 4 (API actions)
+   └─ depends on Task 3
+   └─ must complete before Task 5
+
+Task 5 (UI deactivate + Đã tắt section)
+   └─ depends on Task 4
+
+Task 6 (UI drawer improvements)
+   └─ independent of Tasks 3–5, can run in parallel with Task 5
+```
+
+**Recommended execution order for a single agent:** 1 → 2 → 3 → 4 → 5 → 6
+
+**Recommended execution for parallel agents:**
+- Agent A: Tasks 1 → 3 → 4 → 5
+- Agent B: Tasks 2 + 6 (both fully independent of the state/API chain)

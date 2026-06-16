@@ -10,8 +10,8 @@ import dynamic from 'next/dynamic'
 import { createContext, useCallback, useRef, useState } from 'react'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import { getPopularSearchItems, topupItems, resolveGameToPublisher } from '@/src/data/catalog'
-import { getActiveCampaign } from '@/src/data/campaigns'
-import { getEnabledArticles } from '@/src/data/newsArticles'
+import { getActiveCampaign, Campaign } from '@/src/data/campaigns'
+import { getEnabledArticles, NewsArticle } from '@/src/data/newsArticles'
 import SearchBar from '../search/SearchBar'
 import PopularSearchChips from '../search/PopularSearchChips'
 import BannerSlot from '../banner-slot/BannerSlot'
@@ -225,9 +225,11 @@ type FormValues = {
 
 interface MainProps {
   subCategoryID: number | undefined
+  activeCampaign?: Campaign
+  activeArticles?: NewsArticle[]
 }
 
-export default function Main({ subCategoryID }: MainProps) {
+export default function Main({ subCategoryID, activeCampaign: propActiveCampaign, activeArticles: propActiveArticles }: MainProps) {
   useLoadPageEventTracking({ appID: AppID.GAME })
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -250,7 +252,8 @@ export default function Main({ subCategoryID }: MainProps) {
   const orderDetailsRef = useRef<HTMLDivElement | null>(null)
 
   const [suppliersList, setSuppliersList] = useState<DataSupplier[]>([])
-  const [supplierSelectCallback, setSupplierSelectCallback] = useState<((supplier: DataSupplier) => void) | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const supplierSelectCallbackRef = useRef<((supplier: DataSupplier) => void) | null>(null)
 
   const handleScrollToView = (view: string) => {
     switch (view) {
@@ -284,23 +287,26 @@ export default function Main({ subCategoryID }: MainProps) {
   }
 
   const handleResolveTopupItem = (item: any) => {
+    setSearchQuery(item.displayName || '')
     const publisher = resolveGameToPublisher(item.id)
     if (!publisher) return
 
     const matchedSupplier = suppliersList.find(
       (s) => s.telcoCode.toUpperCase() === publisher.id.toUpperCase()
     )
-    if (matchedSupplier && supplierSelectCallback) {
-      supplierSelectCallback(matchedSupplier)
+    if (matchedSupplier && supplierSelectCallbackRef.current) {
+      supplierSelectCallbackRef.current(matchedSupplier)
     }
   }
 
   const popularSearchItems = getPopularSearchItems()
-  const activeCampaign = getActiveCampaign()
-  const activeArticles = getEnabledArticles()
+  const activeCampaign = propActiveCampaign !== undefined ? propActiveCampaign : getActiveCampaign()
+  const activeArticles = propActiveArticles !== undefined ? propActiveArticles : getEnabledArticles()
 
   const handleSelectSupplier = useCallback(
-    (cb: (supplier: DataSupplier) => void) => setSupplierSelectCallback(() => cb),
+    (cb: (supplier: DataSupplier) => void) => {
+      supplierSelectCallbackRef.current = cb
+    },
     []
   )
 
@@ -323,7 +329,7 @@ export default function Main({ subCategoryID }: MainProps) {
 
               <BannerSlot campaign={activeCampaign} />
 
-              <SearchBar items={topupItems} onSelect={handleResolveTopupItem} />
+              <SearchBar items={topupItems} onSelect={handleResolveTopupItem} query={searchQuery} setQuery={setSearchQuery} />
               <PopularSearchChips items={popularSearchItems} onSelect={handleResolveTopupItem} />
 
               <Suppliers innerRef={suppliersRef} />

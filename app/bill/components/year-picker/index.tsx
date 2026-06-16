@@ -1,5 +1,5 @@
 import Button, { ButtonSize, ButtonType } from '@/components/common/button'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import './styles.scss'
 
 const ITEM_HEIGHT = 33
@@ -27,7 +27,7 @@ export default function YearPicker({ options, selectedOption, onOptionSelect }: 
     }, 150)
   }
 
-  const setPickerWindowPosition = () => {
+  const setPickerWindowPosition = useCallback(() => {
     if (activeValue) {
       if (fixedDayListRef?.current) {
         fixedDayListRef.current.scrollTop = (activeValue + 1) * ITEM_HEIGHT - ITEM_HEIGHT / 2
@@ -38,11 +38,11 @@ export default function YearPicker({ options, selectedOption, onOptionSelect }: 
         fixedDayListRef?.current?.removeEventListener('scroll', handleScroll)
       }
     }
-  }
+  }, [activeValue, handleScroll])
 
   useEffect(() => {
     setPickerWindowPosition()
-  }, [])
+  }, [setPickerWindowPosition])
 
   const handleConfirm = () => {
     if (!fixedDayListRef.current) {

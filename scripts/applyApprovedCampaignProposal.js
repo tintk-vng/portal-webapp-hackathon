@@ -370,6 +370,7 @@ function proposalToCampaign(proposal, priority = 150) {
     articleId: proposal.id,
     enabled: true,
     priority,
+    isTopBanner: true,
     themeClassName: 'from-[#E75648] via-[#F1865F] to-[#FFD58F]'
   }
 }
@@ -564,9 +565,24 @@ function applyApprovedCampaignProposal(proposalId) {
   const nextNewsArticles = upsertObjectInExportedArray(originalNewsArticles, 'newsArticles', proposal.id, proposalToArticle(proposal))
   const nextCatalog = replaceExportedArray(originalCatalog, 'agentPopularSearchRecommendations', proposalToPopularSearchItems(proposal))
 
+  const campaignStatePath = path.join(root, 'src', 'agent', 'campaignState.json')
+  let originalState = null
+  if (fs.existsSync(campaignStatePath)) {
+    originalState = readText(campaignStatePath)
+  }
+
   writeText(campaignsPath, nextCampaigns)
   writeText(newsArticlesPath, nextNewsArticles)
   writeText(catalogPath, nextCatalog)
+
+  let campaignState = { disabledCampaigns: [], topBannerCampaignId: null }
+  try {
+    if (originalState) {
+      campaignState = JSON.parse(originalState)
+    }
+  } catch (e) {}
+  campaignState.topBannerCampaignId = proposal.id
+  writeText(campaignStatePath, JSON.stringify(campaignState, null, 2))
 
   let activationSummary
   try {
@@ -577,6 +593,11 @@ function applyApprovedCampaignProposal(proposalId) {
     writeText(campaignsPath, originalCampaigns)
     writeText(newsArticlesPath, originalNewsArticles)
     writeText(catalogPath, originalCatalog)
+    if (originalState !== null) {
+      writeText(campaignStatePath, originalState)
+    } else if (fs.existsSync(campaignStatePath)) {
+      fs.unlinkSync(campaignStatePath)
+    }
     throw new Error(`Apply failed after writing proposal. Original files were restored.\n${error.message}`)
   }
 

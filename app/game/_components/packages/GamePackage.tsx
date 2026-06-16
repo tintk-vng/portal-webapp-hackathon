@@ -10,7 +10,7 @@ import { TopupSku } from '@/src/data/catalog'
 interface GamePackageProps {
   dataPackage: DataPackage
   selectedPackage: DataPackage | undefined
-  campaign: Campaign
+  campaign?: Campaign
 }
 
 export default function GamePackage({ dataPackage, selectedPackage, campaign }: GamePackageProps) {
@@ -23,45 +23,54 @@ export default function GamePackage({ dataPackage, selectedPackage, campaign }: 
     amount: dataPackage.originalAmount || dataPackage.amount,
     displayAmount: `${(dataPackage.originalAmount || dataPackage.amount) / 1000}.000đ`,
   }
-  const effectiveSku = getEffectiveSku(campaign, tempSku)
+  const effectiveSku = campaign 
+    ? getEffectiveSku(campaign, tempSku) 
+    : { discountPercent: 0, salePrice: dataPackage.amount, basePrice: dataPackage.amount }
   const hasCampaignDiscount = (effectiveSku.discountPercent ?? 0) > 0
   const displayedSalePrice = hasCampaignDiscount ? effectiveSku.salePrice : dataPackage.amount
   const originalPriceWhenDiscounted = hasCampaignDiscount ? effectiveSku.basePrice : null
 
+  const faceValue = dataPackage.originalAmount || dataPackage.amount
+
   return (
     <div
       className={classNames({
-        'group relative flex h-[60px] w-full flex-col items-center justify-center gap-0.5 rounded-lg border p-2 transition md:h-16':
+        'group relative flex h-[66px] w-full flex-col items-center justify-center gap-0.5 rounded-lg border p-2 transition md:h-[72px]':
           true,
-        'cursor-pointer md:hover:border-blue-500': !isMaintained,
+        'cursor-pointer md:hover:border-blue-500 md:hover:bg-other-background': !isMaintained,
         'cursor-not-allowed border-dark-50 bg-dark-25 md:hover:border-dark-50': isMaintained,
         'border-dark-50 md:hover:scale-105': !isSelected,
-        'border-blue-500': isSelected,
+        'border-blue-500 bg-other-background': isSelected,
       })}
     >
-      {originalPriceWhenDiscounted !== null && (
-        <span
-          className={classNames({
-            'text-center text-label-xs line-through': true,
-            'cursor-pointer text-dark-300': !isMaintained,
-            'cursor-not-allowed text-dark-200': isMaintained,
-          })}
-        >
-          {commonUtil.formatCurrency(originalPriceWhenDiscounted)}
-        </span>
-      )}
-
       <span
         className={classNames({
-          'text-center font-bold': true,
-          'text-label-md': hasCampaignDiscount,
-          'text-label-lg': !hasCampaignDiscount,
+          'text-center font-bold text-label-lg': true,
           'cursor-pointer md:group-hover:text-blue-500': !isMaintained,
           'cursor-not-allowed text-dark-200': isMaintained,
           'text-blue-500': isSelected && !isMaintained,
+          'text-dark-500': !isSelected && !isMaintained,
         })}
       >
-        {commonUtil.formatCurrency(displayedSalePrice)}
+        {commonUtil.formatCurrency(faceValue)}
+      </span>
+
+      <span
+        className={classNames({
+          'text-center text-label-xs': true,
+          'text-dark-200': isMaintained,
+          'text-dark-300': !isMaintained,
+        })}
+      >
+        Giá bán:{' '}
+        <span
+          className={classNames({
+            'font-bold text-green-600': !isMaintained,
+            'text-dark-200': isMaintained,
+          })}
+        >
+          {commonUtil.formatCurrency(displayedSalePrice)}
+        </span>
       </span>
 
       {isMaintained && (
@@ -78,3 +87,4 @@ export default function GamePackage({ dataPackage, selectedPackage, campaign }: 
     </div>
   )
 }
+

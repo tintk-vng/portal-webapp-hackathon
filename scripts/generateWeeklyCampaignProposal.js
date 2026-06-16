@@ -488,36 +488,90 @@ function getBestManualSignal(candidate) {
 }
 
 function buildArticleContent({ publisher, targetGameNames, discountText, discountSource, bestResearchSignal, briefTitle }) {
-  const gameText = targetGameNames.length > 0 ? targetGameNames.join(', ') : publisher.displayName
-  const sourceLine = bestResearchSignal?.sourceName
-    ? `Nguồn tham khảo công khai: ${bestResearchSignal.sourceName} (${bestResearchSignal.sourceUrl}).`
-    : 'Nguồn tham khảo công khai: chưa có tín hiệu đủ rõ từ bước research.'
-  const discountLine =
-    discountSource === 'research'
-      ? `Mức ưu đãi ${discountText} được phát hiện từ tín hiệu research công khai và cần được rà soát trong preview trước khi áp dụng.`
-      : `Mức ưu đãi ${discountText} được lấy từ campaign setup nội bộ cho bản nháp này.`
+  const pubId = (publisher.id || '').toLowerCase()
+  const discountVal = discountText || 'ưu đãi tốt nhất'
+  const gamesList = targetGameNames.length > 0 ? targetGameNames.join(', ') : publisher.displayName
 
-  let crawledContentSection = ''
-  if (bestResearchSignal && bestResearchSignal.evidenceSnippet && bestResearchSignal.evidenceSnippet.trim().length > 10) {
-    crawledContentSection = `<p><strong>Thông tin khuyến mãi ghi nhận từ đối tác:</strong></p><blockquote style="border-left: 4px solid #3b82f6; padding-left: 16px; margin: 16px 0; font-style: italic; color: #4b5563;">"${bestResearchSignal.evidenceSnippet || bestResearchSignal.summary}"</blockquote>`
+  if (pubId === 'garena') {
+    return `<h3>Hướng Dẫn Nạp Thẻ Game Garena An Toàn &amp; Chính Thức tại Napthe.vn</h3>
+<p>Đối với cộng đồng game thủ chơi các tựa game nổi tiếng như <strong>Free Fire, Liên Quân Mobile, FC Online, hay Liên Minh Huyền Thoại</strong>, trang web <strong>napthe.vn</strong> là cổng nạp thẻ chính thức duy nhất do Garena phát hành để đảm bảo an toàn tuyệt đối cho tài khoản của bạn.</p>
+
+<h4>Các bước nạp thẻ chính thức tại napthe.vn:</h4>
+<ol>
+  <li><strong>Truy cập cổng nạp:</strong> Sử dụng trình duyệt truy cập địa chỉ duy nhất <strong><a href="https://napthe.vn" target="_blank" rel="noopener">https://napthe.vn</a></strong>.</li>
+  <li><strong>Chọn Game &amp; Đăng nhập:</strong> Chọn logo tựa game bạn đang chơi và tiến hành đăng nhập bằng tài khoản Garena hoặc qua Player ID (ID nhân vật).</li>
+  <li><strong>Chọn hình thức nạp &amp; Mệnh giá:</strong> Bạn có thể chọn thanh toán qua Thẻ Garena, Ví ShopeePay, thẻ ngân hàng, hoặc quét mã QR. Sau đó chọn mệnh giá nạp phù hợp.</li>
+  <li><strong>Hoàn tất giao dịch:</strong> Nhập thông tin thẻ cào (mã nạp và số seri) hoặc tiến hành quét mã QR để thanh toán. Kim cương, Quân Huy, hoặc FC sẽ được chuyển trực tiếp vào tài khoản game sau ít phút.</li>
+</ol>
+
+<h4>Mẹo nạp thẻ tiết kiệm và an toàn:</h4>
+<ul>
+  <li><strong>Mua thẻ Garena với chiết khấu tại NapTheVui:</strong> Trước khi nạp thẻ, hãy mua thẻ Garena trực tiếp trên NapTheVui để nhận ngay chiết khấu cực hời (hiện đang có chương trình ${discountVal} dành cho nhóm Garena tuần này).</li>
+  <li><strong>Cảnh giác với các trang web giả mạo:</strong> Garena chỉ có duy nhất trang nạp thẻ <strong>napthe.vn</strong>. Tuyệt đối không nhập thông tin tài khoản hoặc mã thẻ vào các trang web lạ tự xưng là "nạp lậu", "nhân X2 sò" để phòng tránh lừa đảo và mất tài khoản game.</li>
+</ul>`
   }
 
-  return [
-    `<h3>Ưu Đãi Nạp Thẻ Game ${publisher.displayName} Tuần Này</h3>`,
-    `<p>NapTheVui đang chuẩn bị ưu đãi nạp ${publisher.displayName} dành cho người dùng muốn nạp nhanh các tựa game quen thuộc.</p>`,
-    `<p><strong>Áp dụng cho:</strong> ${gameText}.</p>`,
-    `<p>${discountLine}</p>`,
-    `<p>${sourceLine}</p>`,
-    crawledContentSection,
-    `<h4>Hướng dẫn cách nạp và nhận ưu đãi:</h4>`,
-    `<ol>`,
-    `<li>Tìm kiếm <strong>${publisher.displayName}</strong> hoặc tên tựa game bạn chơi trong ô tìm kiếm NapTheVui.</li>`,
-    `<li>Chọn mệnh giá thẻ nạp phù hợp với nhu cầu.</li>`,
-    `<li>Kiểm tra chiết khấu và ưu đãi hiển thị rõ ràng tại màn hình thẻ nạp, mệnh giá và phần thanh toán trước khi tiến hành xác nhận giao dịch.</li>`,
-    `</ol>`,
-    `<p><strong>Thời gian áp dụng:</strong> Theo lịch trình campaign cụ thể sau khi bản nháp đề xuất này được ban biên tập duyệt và áp dụng chính thức.</p>`,
-    `<p><em>Lưu ý: Bài viết này được tạo tự động dựa trên ${briefTitle}. Các chi tiết khuyến mãi cần được xác nhận trong preview và validation trước khi xuất hiện trên website chính thức.</em></p>`
-  ].filter(Boolean).join('\n')
+  if (pubId === 'googleplay') {
+    return `<h3>Hướng Dẫn Mua &amp; Sử Dụng Mã Thẻ Google Play (CH Play) Nhanh Chóng</h3>
+<p>Mã quà tặng Google Play (Google Play Gift Card) là phương thức tiện lợi nhất để thanh toán các ứng dụng, phim ảnh, sách và nạp vật phẩm trong các tựa game Android phổ biến như <strong>Genshin Impact, Tốc Chiến, Roblox</strong> mà không cần liên kết trực tiếp tài khoản ngân hàng cá nhân.</p>
+
+<h4>Quy trình mua và kích hoạt mã Google Play:</h4>
+<ol>
+  <li><strong>Mua mã thẻ:</strong> Tìm kiếm "Google Play" trên ô tìm kiếm của NapTheVui, chọn mệnh giá phù hợp và tiến hành thanh toán để nhận ngay mã nạp thẻ.</li>
+  <li><strong>Nạp mã vào tài khoản:</strong>
+    <ul>
+      <li>Mở ứng dụng <strong>Google Play Store (CH Play)</strong> trên điện thoại Android của bạn.</li>
+      <li>Nhấp vào biểu tượng tài khoản (avatar) ở góc trên bên phải màn hình.</li>
+      <li>Chọn <strong>Thanh toán và gói thuê bao</strong> (Payments &amp; subscriptions) &gt; <strong>Đổi mã quà tặng</strong> (Redeem code).</li>
+      <li>Nhập chính xác mã nạp bạn nhận được từ hệ thống và nhấn <strong>Đổi</strong> (Redeem).</li>
+    </ul>
+  </li>
+  <li><strong>Sử dụng số dư:</strong> Số tiền sẽ ngay lập tức được cộng vào số dư Google Play của bạn, sẵn sàng sử dụng để thanh toán các giao dịch trực tiếp trong game hoặc ứng dụng.</li>
+</ol>
+
+<h4>Lưu ý quan trọng:</h4>
+<ul>
+  <li><strong>Kiểm tra quốc gia tài khoản:</strong> Đảm bảo vùng/quốc gia tài khoản Google Play của bạn trùng khớp với mệnh giá thẻ mua (thông thường là Việt Nam).</li>
+  <li><strong>Khuyến mãi đi kèm:</strong> Đừng bỏ qua các đợt ưu đãi chiết khấu từ NapTheVui (như chương trình ${discountVal} tuần này) để tối ưu chi phí nạp game của bạn.</li>
+</ul>`
+  }
+
+  if (pubId === 'zing') {
+    return `<h3>Hướng Dẫn Nạp Zing Xu &amp; Thẻ Zing Cào Chính Hãng Qua ZingPay</h3>
+<p>Zing Card (Thẻ Zing) là thẻ game do VNG phát hành, dùng để nạp Zing Xu hoặc trực tiếp đổi vật phẩm trong các tựa game đình đám của nhà phát hành VNG như <strong>Gunny, Võ Lâm Truyền Kỳ, PUBG Mobile VN</strong>.</p>
+
+<h4>Các bước nạp thẻ Zing chính thức:</h4>
+<ol>
+  <li><strong>Truy cập cổng ZingPay:</strong> Truy cập địa chỉ chính thức <strong><a href="https://pay.zing.vn" target="_blank" rel="noopener">https://pay.zing.vn</a></strong>.</li>
+  <li><strong>Chọn game cần nạp:</strong> Nhập tên game hoặc chọn từ danh sách game của VNG.</li>
+  <li><strong>Đăng nhập tài khoản:</strong> Đăng nhập bằng tài khoản ZingID, Facebook hoặc ID nhân vật trong game của bạn.</li>
+  <li><strong>Chọn gói nạp &amp; Hình thức thanh toán:</strong> Chọn gói vật phẩm cần mua, chọn hình thức thanh toán là <strong>Thẻ Zing cào</strong>. Nhập mã thẻ và số seri để hoàn tất nạp.</li>
+</ol>
+
+<h4>Ưu đãi khi nạp qua NapTheVui:</h4>
+<ul>
+  <li>Nhận mức chiết khấu cực tốt (lên tới ${discountVal} tuần này) khi mua thẻ Zing trực tiếp tại NapTheVui trước khi nạp vào cổng ZingPay.</li>
+  <li>Đảm bảo mã thẻ sạch, chính gốc và được bảo mật tuyệt đối 100%.</li>
+</ul>`
+  }
+
+  // Fallback for other publishers (VTC, Gate, Appota, Sohacoin, Gosu, Scoin, Funcard, etc.)
+  const pubName = publisher.displayName || publisher.id.toUpperCase()
+  return `<h3>Ưu Đãi Mua Thẻ Game ${pubName} Chiết Khấu Cao Tại NapTheVui</h3>
+<p>Nhằm đem lại trải nghiệm nạp game tốt nhất cho game thủ, NapTheVui cung cấp dịch vụ mua mã thẻ ${pubName} online cực kỳ nhanh chóng và an toàn 24/7. Áp dụng cho các tựa game tiêu biểu: <strong>${gamesList}</strong>.</p>
+
+<h4>Quy trình mua thẻ tại NapTheVui:</h4>
+<ol>
+  <li>Tìm kiếm <strong>${pubName}</strong> trong ô tìm kiếm của website NapTheVui.</li>
+  <li>Chọn mệnh giá thẻ game phù hợp với nhu cầu sử dụng của bạn.</li>
+  <li>Xem thông tin chiết khấu và tiến hành thanh toán qua ví ZaloPay hoặc tài khoản ngân hàng. Mã thẻ và số seri sẽ hiển thị ngay lập tức.</li>
+</ol>
+
+<h4>Lợi ích vượt trội:</h4>
+<ul>
+  <li><strong>Chiết khấu hấp dẫn:</strong> Mức ưu đãi cực hời lên tới ${discountVal} theo chương trình tuần này giúp bạn nạp game siêu tiết kiệm.</li>
+  <li><strong>Giao dịch an toàn:</strong> 100% thẻ chính hãng, hỗ trợ kỹ thuật nhanh chóng khi gặp sự cố thẻ.</li>
+</ul>`
 }
 
 function buildProposal({

@@ -1,7 +1,7 @@
 'use client'
 
 import classNames from 'classnames'
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState, useCallback } from 'react'
 
 interface CollapseProps {
   title: string
@@ -20,7 +20,7 @@ export default function Collapse({
   const [isCollapsed, setIsCollapsed] = useState(false)
   const contentRef = useRef<HTMLDivElement | null>(null)
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setIsCollapsed(!isCollapsed)
     if (contentRef?.current) {
       const content = contentRef.current
@@ -30,13 +30,13 @@ export default function Collapse({
         content.style.maxHeight = '0'
       }
     }
-  }
+  }, [isCollapsed])
 
   useEffect(() => {
     if (initCollapsed) {
       handleClick()
     }
-  }, [])
+  }, [initCollapsed, handleClick])
 
   return (
     <div

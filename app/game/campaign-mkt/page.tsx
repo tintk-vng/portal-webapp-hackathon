@@ -249,9 +249,27 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
             <h2 className="text-lg font-bold text-white">Chi tiết Campaign</h2>
             <p className="text-xs text-slate-500 font-mono mt-0.5">{proposal.id}</p>
           </div>
-          <button onClick={onClose} className="rounded-lg p-2 text-slate-400 hover:bg-white/[0.06] hover:text-white transition">
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-          </button>
+          <div className="flex items-center gap-2">
+            {proposal.status !== 'applied' && (
+              <button
+                onClick={() => {
+                  if (confirm(`Xóa proposal "${proposal.id}"? Hành động này không thể hoàn tác.`)) {
+                    onAction('delete-proposal')
+                  }
+                }}
+                disabled={actionLoading !== null}
+                className="rounded-lg p-2 text-rose-400 hover:bg-rose-950/30 hover:text-rose-300 transition disabled:opacity-50"
+                title="Xóa proposal"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+            )}
+            <button onClick={onClose} className="rounded-lg p-2 text-slate-400 hover:bg-white/[0.06] hover:text-white transition">
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
         </div>
 
         {/* Drawer Content — scrollable */}
@@ -264,32 +282,35 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
               const hasBgImage = !!imgUrl
               return (
                 <div
-                  className="relative overflow-hidden rounded-xl shadow-lg min-h-[140px] flex flex-col justify-between"
+                  className="relative overflow-hidden rounded-xl shadow-lg min-h-[140px] flex flex-col justify-center bg-slate-900"
                   style={hasBgImage ? {
                     backgroundImage: `url(${imgUrl})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   } : undefined}
                 >
-                  <div className={`absolute inset-0 rounded-xl ${hasBgImage ? 'bg-gradient-to-r from-black/70 via-black/40 to-transparent' : 'bg-gradient-to-br from-[#E75648] via-[#F1865F] to-[#FFD58F]'}`} />
-                  <div className="relative z-10 p-5 flex flex-col justify-between h-full min-h-[140px]">
-                    <span className="absolute right-3 top-3 rounded-lg bg-white px-2.5 py-1 text-xs font-extrabold text-blue-600 shadow">
-                      {proposal.discountText || `Giảm ${proposal.discountPercent}%`}
-                    </span>
-                    <div>
-                      <h4 className={`font-extrabold text-xl leading-tight mt-6 drop-shadow-sm ${hasBgImage ? 'text-white' : 'text-slate-900'}`}>
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                  <div className="relative z-10 p-5 flex flex-col justify-center min-h-[140px]">
+                    <div className="min-w-0 text-white">
+                      {(proposal.discountText || proposal.discountPercent) && (
+                        <div className="mb-2 inline-flex rounded bg-white px-2 py-0.5 text-xs font-bold text-blue-600">
+                          {proposal.discountText || `Giảm ${proposal.discountPercent}%`}
+                        </div>
+                      )}
+                      <h4 className="font-extrabold text-xl leading-tight text-white font-sans">
                         {editFields?.bannerTitle || proposal.bannerTitle}
                       </h4>
-                      <p className={`text-sm font-medium mt-1.5 ${hasBgImage ? 'text-white/80' : 'text-slate-800'}`}>
-                        {editFields?.bannerSubtitle || proposal.bannerSubtitle}
-                      </p>
-                    </div>
-                    <div className={`mt-5 flex items-center justify-between text-sm font-bold ${hasBgImage ? 'text-white' : 'text-blue-700'}`}>
-                      <span>{proposal.ctaText || 'Xem ưu đãi'}</span>
-                      {hasBgImage && (
-                        <span className="rounded-lg bg-white/20 backdrop-blur px-3 py-1 text-xs font-bold text-white border border-white/30">
-                          {proposal.ctaText || 'Xem ưu đãi →'}
-                        </span>
+                      {(editFields?.bannerSubtitle || proposal.bannerSubtitle) && (
+                        <p className="text-sm font-medium mt-1 text-white/80">
+                          {editFields?.bannerSubtitle || proposal.bannerSubtitle}
+                        </p>
+                      )}
+                      {proposal.ctaText && (
+                        <div className="mt-3">
+                          <span className="inline-flex rounded-md bg-white px-3 py-1.5 text-xs font-bold text-blue-600 shadow-sm">
+                            {proposal.ctaText}
+                          </span>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -446,13 +467,18 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
                   <textarea rows={5} value={editFields.articleContent} onChange={(e) => setEditFields((prev: any) => prev ? { ...prev, articleContent: e.target.value } : null)}
                     className="w-full rounded-lg border border-white/[0.08] bg-slate-950/50 px-3 py-2 text-xs text-white font-mono focus:border-blue-500/50 focus:outline-none transition" />
                 </div>
+                <div className="mt-2.5">
+                  <label className="block text-xs font-semibold text-slate-400 mb-1">Xem trước bài viết (Live Preview)</label>
+                  <div className="rounded-lg border border-white/[0.08] bg-slate-950/40 p-4 text-xs text-slate-300 leading-relaxed max-h-60 overflow-y-auto cms-article-preview font-sans"
+                    dangerouslySetInnerHTML={{ __html: editFields.articleContent }} />
+                </div>
               </div>
             ) : (
               <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 space-y-2">
                 <h4 className="font-bold text-white text-sm">{proposal.articleTitle}</h4>
                 <p className="text-xs text-slate-400 italic">{proposal.articleSummary}</p>
                 <hr className="border-white/[0.06]" />
-                <div className="text-xs text-slate-300 leading-relaxed max-h-48 overflow-y-auto"
+                <div className="text-xs text-slate-300 leading-relaxed max-h-60 overflow-y-auto cms-article-preview font-sans"
                   dangerouslySetInnerHTML={{ __html: proposal.articleContent.includes('<') ? proposal.articleContent : proposal.articleContent.replace(/\n/g, '<br/>') }} />
               </div>
             )}
@@ -506,19 +532,6 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
               {actionLoading?.startsWith('enrich-content') ? '⏳ Đang cập nhật...' : '🔄 Lấy nội dung mới nhất từ website'}
             </button>
           )}
-          {proposal.status !== 'applied' && (
-            <button
-              onClick={() => {
-                if (confirm(`Xóa proposal "${proposal.id}"? Hành động này không thể hoàn tác.`)) {
-                  onAction('delete-proposal')
-                }
-              }}
-              disabled={actionLoading !== null}
-              className="w-full rounded-xl border border-rose-500/30 bg-rose-900/20 py-2 text-xs font-semibold text-rose-400 hover:bg-rose-900/40 transition disabled:opacity-50"
-            >
-              🗑 Xóa proposal này
-            </button>
-          )}
         </div>
       </div>
 
@@ -529,6 +542,41 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
         }
         .animate-slide-in {
           animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cms-article-preview h3 {
+          font-size: 1.125rem;
+          font-weight: 700;
+          margin-top: 1rem;
+          margin-bottom: 0.5rem;
+          color: #fff;
+        }
+        .cms-article-preview h4 {
+          font-size: 1rem;
+          font-weight: 700;
+          margin-top: 0.75rem;
+          margin-bottom: 0.375rem;
+          color: #fff;
+        }
+        .cms-article-preview p {
+          margin-bottom: 0.75rem;
+          line-height: 1.6;
+        }
+        .cms-article-preview ol {
+          list-style-type: decimal;
+          padding-left: 1.25rem;
+          margin-bottom: 0.75rem;
+        }
+        .cms-article-preview ul {
+          list-style-type: disc;
+          padding-left: 1.25rem;
+          margin-bottom: 0.75rem;
+        }
+        .cms-article-preview li {
+          margin-bottom: 0.25rem;
+        }
+        .cms-article-preview a {
+          color: #3b82f6;
+          text-decoration: underline;
         }
       `}</style>
     </>
@@ -641,10 +689,14 @@ export default function CampaignMktPage() {
   const appliedProposals = proposals.filter(p => p.status === 'applied' || p.status === 'approved')
 
   function latestUpdateTs(p: Proposal): number {
-    if (p.statusHistory && p.statusHistory.length > 0) {
-      return new Date(p.statusHistory[p.statusHistory.length - 1].timestamp).getTime()
+    const times = [new Date(p.createdAt).getTime()]
+    if (Array.isArray(p.statusHistory)) {
+      p.statusHistory.forEach((h) => {
+        const t = new Date(h.timestamp).getTime()
+        if (!isNaN(t)) times.push(t)
+      })
     }
-    return new Date(p.createdAt).getTime()
+    return Math.max(...times)
   }
 
   const draftAndRejected = proposals
@@ -732,20 +784,22 @@ export default function CampaignMktPage() {
                 const hasBgImage = !!topBannerCampaign.bannerImageUrl
                 return (
                   <div
-                    className="relative flex-1 overflow-hidden rounded-xl shadow-inner min-h-[100px]"
+                    className="relative flex-1 overflow-hidden rounded-xl shadow-inner min-h-[100px] flex flex-col justify-center bg-slate-900"
                     style={hasBgImage ? {
                       backgroundImage: `url(${topBannerCampaign.bannerImageUrl})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
                     } : undefined}
                   >
-                    <div className={`absolute inset-0 rounded-xl ${hasBgImage ? 'bg-gradient-to-r from-black/60 via-black/30 to-transparent' : `bg-gradient-to-br ${topBannerCampaign.themeClassName || 'from-blue-600 to-green-600'}`}`} />
-                    <div className="relative z-10 p-4 min-h-[100px] flex flex-col justify-between">
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-0" />
+                    <div className="relative z-10 p-4 min-h-[100px] flex flex-col justify-center">
                       {topBannerCampaign.discountText && (
-                        <span className="absolute right-2 top-2 rounded bg-white px-2 py-0.5 text-xs font-extrabold text-blue-600">{topBannerCampaign.discountText}</span>
+                        <div className="mb-1.5 self-start rounded bg-white px-2 py-0.5 text-[10px] font-extrabold text-blue-600">{topBannerCampaign.discountText}</div>
                       )}
-                      <h3 className="font-bold text-lg leading-tight mt-4 text-white">{topBannerCampaign.title}</h3>
-                      <p className="text-xs text-white/80 mt-1">{topBannerCampaign.subtitle}</p>
+                      <h3 className="font-bold text-base md:text-lg leading-tight text-white">{topBannerCampaign.title}</h3>
+                      {topBannerCampaign.subtitle && (
+                        <p className="text-xs text-white/85 mt-0.5">{topBannerCampaign.subtitle}</p>
+                      )}
                     </div>
                   </div>
                 )
@@ -864,7 +918,6 @@ export default function CampaignMktPage() {
                         Áp dụng
                       </button>
                     )}
-                    <StatusBadge status={p.status} />
                   </>
                 )}
               />

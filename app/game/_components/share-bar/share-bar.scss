@@ -1,0 +1,22 @@
+// share-bar.scss
+.share-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-dark-400);
+}
+
+.share-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.share-button:hover {
+  color: var(--color-primary-500);
+  background-color: rgba(0, 0, 0, 0.05);
+}

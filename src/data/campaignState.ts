@@ -2,20 +2,29 @@ import fs from 'fs'
 import path from 'path'
 import { campaigns, Campaign } from './campaigns'
 
+export type CampaignState = {
+  disabledCampaigns: string[]
+  topBannerCampaignId?: string | null
+}
+
 function getCampaignStatePath() {
   return path.join(process.cwd(), 'src', 'agent', 'campaignState.json')
 }
 
-export function loadCampaignState(): { disabledCampaigns: string[] } {
+export function loadCampaignState(): CampaignState {
   try {
     const raw = fs.readFileSync(getCampaignStatePath(), 'utf8')
-    return JSON.parse(raw)
+    const parsed = JSON.parse(raw)
+    return {
+      disabledCampaigns: parsed.disabledCampaigns || [],
+      topBannerCampaignId: parsed.topBannerCampaignId !== undefined ? parsed.topBannerCampaignId : null
+    }
   } catch {
-    return { disabledCampaigns: [] }
+    return { disabledCampaigns: [], topBannerCampaignId: null }
   }
 }
 
-function writeCampaignState(state: { disabledCampaigns: string[] }) {
+function writeCampaignState(state: CampaignState) {
   fs.writeFileSync(getCampaignStatePath(), JSON.stringify(state, null, 2))
 }
 
@@ -34,9 +43,25 @@ export function getDisabledCampaigns(): Campaign[] {
   return campaigns.filter(c => state.disabledCampaigns.includes(c.id))
 }
 
-// Re-apply persisted disabled state when this module is first loaded
+export function setPersistedTopBanner(campaignId: string | null) {
+  const state = loadCampaignState()
+  state.topBannerCampaignId = campaignId
+  writeCampaignState(state)
+  
+  for (const campaign of campaigns) {
+    campaign.isTopBanner = campaign.id === campaignId
+  }
+}
+
+// Re-apply persisted disabled and top banner state when this module is first loaded
 const _initialState = loadCampaignState()
 _initialState.disabledCampaigns.forEach(id => {
   const campaign = campaigns.find(c => c.id === id)
   if (campaign) campaign.enabled = false
 })
+
+const activeTopBannerId = _initialState.topBannerCampaignId
+for (const campaign of campaigns) {
+  campaign.isTopBanner = campaign.id === activeTopBannerId
+}
+

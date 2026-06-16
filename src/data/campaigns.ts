@@ -1,4 +1,5 @@
 import { getItemById, topupSkus } from './catalog'
+import { getArticleById } from './newsArticles'
 
 export type CampaignSkuDiscount = {
   id: string
@@ -225,6 +226,28 @@ export function validateCampaignData(candidateCampaigns: Campaign[] = campaigns)
 }
 
 function getCampaignsFromSource(): { campaigns: Campaign[]; source: CampaignSource } {
+  if (typeof window === 'undefined') {
+    try {
+      const fs = require('fs')
+      const path = require('path')
+      const statePath = path.join(process.cwd(), 'src', 'agent', 'campaignState.json')
+      if (fs.existsSync(statePath)) {
+        const state = JSON.parse(fs.readFileSync(statePath, 'utf8'))
+        const activeTopBannerId = state.topBannerCampaignId
+        const disabledCampaigns = state.disabledCampaigns || []
+
+        for (const c of campaigns) {
+          if (disabledCampaigns.includes(c.id)) {
+            c.enabled = false
+          }
+          c.isTopBanner = c.id === activeTopBannerId
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   const validEditableCampaigns = getValidActiveCampaigns(campaigns)
   if (validEditableCampaigns.length > 0) {
     return { campaigns: validEditableCampaigns, source: 'editable' }
@@ -240,8 +263,7 @@ function getCampaignsFromSource(): { campaigns: Campaign[]; source: CampaignSour
 
 export function getActiveCampaign() {
   const { campaigns: activeCampaigns } = getCampaignsFromSource()
-  const topBanner = activeCampaigns.find((c) => c.isTopBanner)
-  return topBanner ?? activeCampaigns[0] ?? fallbackCampaigns[0]
+  return activeCampaigns.find((c) => c.isTopBanner)
 }
 
 export function setTopBanner(campaignId: string) {
@@ -282,4 +304,9 @@ export function getCampaignSkuDiscounts(campaign: Campaign) {
   }
 
   return []
+}
+export function getCampaignArticle(campaignId: string) {
+  const campaign = campaigns.find((c) => c.id === campaignId);
+  if (!campaign || !campaign.articleId) return null;
+  return getArticleById(campaign.articleId);
 }

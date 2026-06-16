@@ -50,3 +50,5 @@ yarn.lock
 # Build artifacts
 next-build-temp/
 tsconfig.tsbuildinfo
+.greennode.json
+.agentbase/

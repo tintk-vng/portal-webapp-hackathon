@@ -42,7 +42,7 @@ export default function Suppliers({ supplierDatas, isMobile = false }: Suppliers
         handleClickSupplier(supplierDatas[index])
       }
     }
-  }, [])
+  }, [supplierDatas, handleClickSupplier])
 
   function handleClickSupplier(supplier: Supplier) {
     clearErrors(FIELD_NAME)

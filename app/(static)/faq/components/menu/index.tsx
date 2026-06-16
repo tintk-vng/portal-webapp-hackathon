@@ -3,7 +3,7 @@
 import Image from '@/components/common/image'
 import { DesignSystemIconSize } from '@/constants/common'
 import classNames from 'classnames'
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState, useCallback } from 'react'
 
 interface MenuProps {
   title: string
@@ -27,7 +27,7 @@ export default function Menu({
     missingWidth += DesignSystemIconSize.ic36 + inlineSpacing
   }
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setIsCollapsed(!isCollapsed)
     if (contentRef?.current) {
       const it = contentRef.current
@@ -37,13 +37,13 @@ export default function Menu({
         it.style.maxHeight = '0'
       }
     }
-  }
+  }, [isCollapsed])
 
   useEffect(() => {
     if (initCollapsed) {
       handleClick()
     }
-  }, [])
+  }, [initCollapsed, handleClick])
 
   return (
     <div

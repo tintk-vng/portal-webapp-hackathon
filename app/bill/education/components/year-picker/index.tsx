@@ -42,7 +42,7 @@ export default function YearPicker({ options, selectedOption, onOptionSelect }: 
 
   useEffect(() => {
     setPickerWindowPosition()
-  }, [])
+  }, [setPickerWindowPosition])
 
   const handleConfirm = () => {
     if (!fixedDayListRef.current) {

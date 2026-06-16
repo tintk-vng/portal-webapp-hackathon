@@ -1,0 +1,167 @@
+{
+  "id": "weekly-googleplay-2026-06-16-2",
+  "title": "Google Play weekly campaign proposal",
+  "selectedPublisher": "googleplay",
+  "alternativesConsidered": [
+    "appota",
+    "vtc",
+    "funcard"
+  ],
+  "targetPublisherId": "googleplay",
+  "targetGameIds": [
+    "google-play-game",
+    "genshin-impact",
+    "toc-chien"
+  ],
+  "discountPercent": 0,
+  "discountText": "Ưu đãi đang xác minh",
+  "bannerTitle": "Ưu đãi nạp Google Play trong tuần",
+  "bannerSubtitle": "Ưu đãi đang xác minh cho Google Play, Genshin Impact trên NapTheVui.",
+  "bannerImageUrl": "https://play-lh.googleusercontent.com/pXooT00frDwY1CVPeN_Qiz1R4_UyHqhjdXQgP1-e8bf7VUGtYIly6K0R0p39jeoD80Yu3dPg7hqO4hi4oUVz=s256",
+  "mobileBannerImageUrl": "https://play-lh.googleusercontent.com/pXooT00frDwY1CVPeN_Qiz1R4_UyHqhjdXQgP1-e8bf7VUGtYIly6K0R0p39jeoD80Yu3dPg7hqO4hi4oUVz=s256",
+  "coverImageUrl": "https://play-lh.googleusercontent.com/pXooT00frDwY1CVPeN_Qiz1R4_UyHqhjdXQgP1-e8bf7VUGtYIly6K0R0p39jeoD80Yu3dPg7hqO4hi4oUVz=s256",
+  "ctaText": "Xem ưu đãi",
+  "altText": "Google Play promotion banner",
+  "imagePrompt": "Consumer promotion banner for Google Play on NapTheVui. Focus games: Google Play, Genshin Impact, Tốc Chiến. Message: Ưu đãi đang xác minh. Clean fintech checkout style, Vietnamese market, polished but not cluttered.",
+  "articleTitle": "Google Play: ưu đãi nạp thẻ tuần này trên NapTheVui",
+  "articleSummary": "Ưu đãi đang xác minh cho nhóm nạp Google Play, tập trung vào Google Play, Genshin Impact, Tốc Chiến.",
+  "articleContent": "<h3>Hướng Dẫn Mua &amp; Sử Dụng Mã Thẻ Google Play (CH Play) Nhanh Chóng</h3>\n<p>Mã quà tặng Google Play (Google Play Gift Card) là phương thức tiện lợi nhất để thanh toán các ứng dụng, phim ảnh, sách và nạp vật phẩm trong các tựa game Android phổ biến như <strong>Genshin Impact, Tốc Chiến, Roblox</strong> mà không cần liên kết trực tiếp tài khoản ngân hàng cá nhân.</p>\n\n<h4>Quy trình mua và kích hoạt mã Google Play:</h4>\n<ol>\n  <li><strong>Mua mã thẻ:</strong> Tìm kiếm \"Google Play\" trên ô tìm kiếm của NapTheVui, chọn mệnh giá phù hợp và tiến hành thanh toán để nhận ngay mã nạp thẻ.</li>\n  <li><strong>Nạp mã vào tài khoản:</strong>\n    <ul>\n      <li>Mở ứng dụng <strong>Google Play Store (CH Play)</strong> trên điện thoại Android của bạn.</li>\n      <li>Nhấp vào biểu tượng tài khoản (avatar) ở góc trên bên phải màn hình.</li>\n      <li>Chọn <strong>Thanh toán và gói thuê bao</strong> (Payments &amp; subscriptions) &gt; <strong>Đổi mã quà tặng</strong> (Redeem code).</li>\n      <li>Nhập chính xác mã nạp bạn nhận được từ hệ thống và nhấn <strong>Đổi</strong> (Redeem).</li>\n    </ul>\n  </li>\n  <li><strong>Sử dụng số dư:</strong> Số tiền sẽ ngay lập tức được cộng vào số dư Google Play của bạn, sẵn sàng sử dụng để thanh toán các giao dịch trực tiếp trong game hoặc ứng dụng.</li>\n</ol>\n\n<h4>Lưu ý quan trọng:</h4>\n<ul>\n  <li><strong>Kiểm tra quốc gia tài khoản:</strong> Đảm bảo vùng/quốc gia tài khoản Google Play của bạn trùng khớp với mệnh giá thẻ mua (thông thường là Việt Nam).</li>\n  <li><strong>Khuyến mãi đi kèm:</strong> Đừng bỏ qua các đợt ưu đãi chiết khấu từ NapTheVui (như chương trình Ưu đãi đang xác minh tuần này) để tối ưu chi phí nạp game của bạn.</li>\n</ul>",
+  "recommendedPopularSearchItems": [
+    {
+      "id": "agent-weekly-googleplay-2026-06-16-2-google-play-game",
+      "targetId": "google-play-game",
+      "targetType": "game",
+      "label": "Google Play",
+      "priority": 1,
+      "campaignBoost": 25,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-16T19:48:43.460Z"
+    },
+    {
+      "id": "agent-weekly-googleplay-2026-06-16-2-genshin-impact",
+      "targetId": "genshin-impact",
+      "targetType": "game",
+      "label": "Genshin Impact",
+      "priority": 2,
+      "campaignBoost": 25,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-16T19:48:43.460Z"
+    },
+    {
+      "id": "agent-weekly-googleplay-2026-06-16-2-toc-chien",
+      "targetId": "toc-chien",
+      "targetType": "game",
+      "label": "Tốc Chiến",
+      "priority": 3,
+      "campaignBoost": 25,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-16T19:48:43.460Z"
+    },
+    {
+      "id": "agent-weekly-googleplay-2026-06-16-2-free-fire",
+      "targetId": "free-fire",
+      "targetType": "game",
+      "label": "Free Fire",
+      "priority": 4,
+      "aiScore": 194,
+      "searchCount": 12840,
+      "clickCount": 4320,
+      "purchaseCount": 980,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-16T19:48:43.460Z"
+    },
+    {
+      "id": "agent-weekly-googleplay-2026-06-16-2-lien-quan-mobile",
+      "targetId": "lien-quan-mobile",
+      "targetType": "game",
+      "label": "Liên Quân Mobile",
+      "priority": 5,
+      "aiScore": 187,
+      "searchCount": 10820,
+      "clickCount": 3900,
+      "purchaseCount": 860,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-16T19:48:43.460Z"
+    },
+    {
+      "id": "agent-weekly-googleplay-2026-06-16-2-fc-online",
+      "targetId": "fc-online",
+      "targetType": "game",
+      "label": "FC Online",
+      "priority": 6,
+      "aiScore": 165,
+      "searchCount": 6120,
+      "clickCount": 2140,
+      "purchaseCount": 420,
+      "enabled": true,
+      "source": "agent",
+      "updatedAt": "2026-06-16T19:48:43.460Z"
+    }
+  ],
+  "proposedFileChanges": [
+    "src/data/campaigns.ts",
+    "src/data/newsArticles.ts",
+    "src/data/catalog.ts"
+  ],
+  "createdAt": "2026-06-16T19:48:43.460Z",
+  "status": "approved",
+  "lastScannedAt": "2026-06-16T19:48:43.460Z",
+  "statusHistory": [
+    {
+      "status": "scanned",
+      "timestamp": "2026-06-16T19:48:43.460Z"
+    },
+    {
+      "status": "draft",
+      "timestamp": "2026-06-16T20:51:43.498Z"
+    },
+    {
+      "status": "approved",
+      "timestamp": "2026-06-16T20:52:02.905Z"
+    }
+  ],
+  "researchSourceIds": [
+    "research-google-play"
+  ],
+  "researchVisitedUrls": [
+    "https://play.google.com",
+    "https://play.google.com/about/giftcards",
+    "https://support.google.com/googleplay/?p=about_play"
+  ],
+  "reasoningSummary": "Google Play was selected for one single-publisher campaign.\nScore inputs: research=3280, manual=0, demand=0, brief=0.\nDiscount source: missing.\nTop target games: Google Play, Genshin Impact, Tốc Chiến.\nAlternatives considered: appota, vtc, funcard.\nBest research signal: Google Play official site, confidence 0.56.\nNo live campaign data was edited. This proposal is draft-only.",
+  "validationWarnings": [
+    "Analytics input is missing or empty: /Users/lap14891/Desktop/webapp-napthe-vui/portal-webapp-frontend-active/src/agent/inputs/mockAnalytics.json",
+    "Manual publisher promo signals input is missing or empty: /Users/lap14891/Desktop/webapp-napthe-vui/portal-webapp-frontend-active/src/agent/inputs/publisherPromoSignals.json",
+    "Research garena: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research garena: Fetched pages did not contain configured promotion keywords.",
+    "Research zing: Fetch failed for https://zing.vn: fetch failed",
+    "Research zing: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research zing: No public pages could be fetched for this source.",
+    "Research vtc: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research appota: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research scoin: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research sohacoin: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research funcard: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research gosu: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research googleplay: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research roblox-store: Fetch failed for https://roblox.com: This operation was aborted",
+    "Research roblox-store: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
+    "Research roblox-store: No public pages could be fetched for this source.",
+    "Selected publisher googleplay does not have a confirmed campaign discount from manual or public research signals.",
+    "discountPercent must be a positive number below 100",
+    "Campaign weekly-googleplay-2026-06-16-2 discountPercent must be a positive number below 100",
+    "Campaign weekly-googleplay-2026-06-16-2 skuDiscount weekly-googleplay-2026-06-16-2-googleplay-eligible-skus must have a valid discount percent"
+  ],
+  "inputSnapshot": {
+    "weeklyBriefPath": "src/agent/inputs/weeklyBrief.md",
+    "analyticsPath": "src/agent/inputs/mockAnalytics.json",
+    "publisherPromoSignalsPath": "src/agent/inputs/publisherPromoSignals.json",
+    "generatedPromoSignalsPath": "src/agent/outputs/publisherPromoSignals.generated.json",
+    "generatedBy": "Campaign & Merchandising Agent v1A"
+  }
+}

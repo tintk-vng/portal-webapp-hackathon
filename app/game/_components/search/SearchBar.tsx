@@ -6,6 +6,8 @@ import { KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react'
 type SearchBarProps = {
   items: TopupItem[]
   onSelect: (item: TopupItem) => void
+  query: string
+  setQuery: (query: string) => void
 }
 
 function normalizeText(value: string) {
@@ -21,8 +23,7 @@ function getSearchText(item: TopupItem) {
   return normalizeText([item.name, item.displayName, ...item.aliases].join(' '))
 }
 
-export default function SearchBar({ items, onSelect }: SearchBarProps) {
-  const [query, setQuery] = useState('')
+export default function SearchBar({ items, onSelect, query, setQuery }: SearchBarProps) {
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement | null>(null)
 

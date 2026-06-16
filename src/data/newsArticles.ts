@@ -172,8 +172,23 @@ export const newsArticles: NewsArticle[] = [
 ]
 
 export function getEnabledArticles() {
+  let disabledCampaigns: string[] = []
+  if (typeof window === 'undefined') {
+    try {
+      const fs = require('fs')
+      const path = require('path')
+      const statePath = path.join(process.cwd(), 'src', 'agent', 'campaignState.json')
+      if (fs.existsSync(statePath)) {
+        const state = JSON.parse(fs.readFileSync(statePath, 'utf8'))
+        disabledCampaigns = state.disabledCampaigns || []
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   return newsArticles
-    .filter((article) => article.enabled)
+    .filter((article) => article.enabled && (!article.relatedCampaignId || !disabledCampaigns.includes(article.relatedCampaignId)))
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 }
 

@@ -134,7 +134,7 @@ export default function Suppliers({ innerRef }: SuppliersProps) {
 
   useEffect(() => {
     onSelectSupplier(handleSupplierChange)
-  }, [onSelectSupplier])
+  }, [onSelectSupplier, handleSupplierChange])
 
   const setDefaultParams = () => {
     try {
@@ -237,6 +237,7 @@ export default function Suppliers({ innerRef }: SuppliersProps) {
               {(() => {
                 if (isMaintained) return null;
                 const activeCampaign = getActiveCampaign()
+                if (!activeCampaign) return null
                 const badgeInfo = getDiscountForPublisher(activeCampaign, supplier.telcoCode.toLowerCase())
                 if (!badgeInfo) return null
                 return (

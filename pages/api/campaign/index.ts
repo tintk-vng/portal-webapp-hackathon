@@ -3,7 +3,7 @@ import { exec, execFile } from 'child_process'
 import path from 'path'
 import fs from 'fs'
 import { getActiveCampaign, setTopBanner, unsetTopBanner, campaigns } from '@/src/data/campaigns'
-import { disableCampaign, getDisabledCampaigns } from '@/src/data/campaignState'
+import { disableCampaign, getDisabledCampaigns, setPersistedTopBanner } from '@/src/data/campaignState'
 import {
   listCampaignProposalIds,
   getCampaignProposal,
@@ -124,9 +124,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         const alreadyActive = campaigns.find((c) => c.isTopBanner && c.id === campaignId)
         if (alreadyActive) {
-          unsetTopBanner()
+          setPersistedTopBanner(null)
         } else {
-          setTopBanner(campaignId)
+          setPersistedTopBanner(campaignId)
         }
         const activeCampaign = getActiveCampaign()
         return res.status(200).json({ status: 'success', activeCampaign })

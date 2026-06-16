@@ -1,3 +1,5 @@
+'use client'
+
 import Image from '@/components/common/image'
 import StaticImage from '@/components/common/static-image'
 import dayjs from 'dayjs'
@@ -13,7 +15,7 @@ export default function BlogCard({ blog }: BlogCardProps) {
 
   return (
     <Link
-      href={`/tin-tuc?slug=${blog.slug}-${blog.ID}`}
+      href={`/mua-the-game/tin-tuc?slug=${blog.slug}-${blog.ID}`}
       className="block overflow-hidden rounded-xl bg-white-500"
     >
       <div className="relative aspect-[2/1] w-full overflow-hidden rounded-xl">

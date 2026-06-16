@@ -1,4 +1,6 @@
 import blogAPI from '@/api-client/common/blog'
+import { getActiveCampaign } from '@/src/data/campaigns'
+import { getEnabledArticles } from '@/src/data/newsArticles'
 import Main from './_components/main'
 
 const CATEGORY_SLUG = 'blog'
@@ -29,5 +31,14 @@ export default async function Page() {
     error = e as Error
   }
 
-  return <Main subCategoryID={subCategoryID} />
+  const activeCampaign = getActiveCampaign()
+  const activeArticles = getEnabledArticles()
+
+  return (
+    <Main
+      subCategoryID={subCategoryID}
+      activeCampaign={activeCampaign}
+      activeArticles={activeArticles}
+    />
+  )
 }

@@ -60,7 +60,7 @@ export default function Suppliers({ supplierDatas, isMobile = false }: Suppliers
         handleClickSupplier(supplierDatas[0])
       }
     }
-  }, [supplierDatas, defaultSupplierID])
+  }, [supplierDatas, defaultSupplierID, handleClickSupplier])
 
   function handleClickSupplier(supplier: Supplier) {
     clearErrors(FIELD_NAME)

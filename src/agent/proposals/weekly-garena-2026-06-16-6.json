@@ -26,7 +26,7 @@
   "imagePrompt": "Consumer promotion banner for Garena on NapTheVui. Focus games: Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại. Message: Giảm 5%. Clean fintech checkout style, Vietnamese market, polished but not cluttered.",
   "articleTitle": "Garena: ưu đãi nạp thẻ tuần này trên NapTheVui",
   "articleSummary": "Giảm 5% cho nhóm nạp Garena, tập trung vào Free Fire, Liên Quân Mobile, FC Online.",
-  "articleContent": "<h3>Ưu Đãi Nạp GARENA Giảm 5%</h3>\n<p><strong>Áp dụng cho:</strong> free-fire, lien-quan-mobile, fc-online, lien-minh-huyen-thoai.</p>\n<p><strong>Mức ưu đãi:</strong> Giảm 5% khi nạp qua NapTheVui.</p>\n\n<h4>Nội dung từ nhà phát hành chính thức:</h4>\n<p>Cập nhật ưu đãi mới nhất từ trang chính thức GARENA tại <a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a>.</p>\n\n<h4>Hướng dẫn nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>GARENA</strong> hoặc tên tựa game trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp.</li>\n<li>Kiểm tra chiết khấu hiển thị tại màn hình thanh toán trước khi xác nhận.</li>\n</ol>\n\n<p><em>Nguồn: <a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a>. Nội dung được tổng hợp tự động — kiểm tra và xác nhận trước khi xuất bản.</em></p>",
+  "articleContent": "<h3>Hướng Dẫn Nạp Thẻ Game Garena An Toàn &amp; Chính Thức tại Napthe.vn</h3>\n<p>Đối với cộng đồng game thủ chơi các tựa game nổi tiếng như <strong>Free Fire, Liên Quân Mobile, FC Online, hay Liên Minh Huyền Thoại</strong>, trang web <strong>napthe.vn</strong> là cổng nạp thẻ chính thức duy nhất do Garena phát hành để đảm bảo an toàn tuyệt đối cho tài khoản của bạn.</p>\n\n<h4>Các bước nạp thẻ chính thức tại napthe.vn:</h4>\n<ol>\n  <li><strong>Truy cập cổng nạp:</strong> Sử dụng trình duyệt truy cập địa chỉ duy nhất <strong><a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a></strong>.</li>\n  <li><strong>Chọn Game &amp; Đăng nhập:</strong> Chọn logo tựa game bạn đang chơi và tiến hành đăng nhập bằng tài khoản Garena hoặc qua Player ID (ID nhân vật).</li>\n  <li><strong>Chọn hình thức nạp &amp; Mệnh giá:</strong> Bạn có thể chọn thanh toán qua Thẻ Garena, Ví ShopeePay, thẻ ngân hàng, hoặc quét mã QR. Sau đó chọn mệnh giá nạp phù hợp.</li>\n  <li><strong>Hoàn tất giao dịch:</strong> Nhập thông tin thẻ cào (mã nạp và số seri) hoặc tiến hành quét mã QR để thanh toán. Kim cương, Quân Huy, hoặc FC sẽ được chuyển trực tiếp vào tài khoản game sau ít phút.</li>\n</ol>\n\n<h4>Mẹo nạp thẻ tiết kiệm và an toàn:</h4>\n<ul>\n  <li><strong>Mua thẻ Garena với chiết khấu tại NapTheVui:</strong> Trước khi nạp thẻ, hãy mua thẻ Garena trực tiếp trên NapTheVui để nhận ngay chiết khấu cực hời (hiện đang có chương trình Giảm 5% dành cho nhóm Garena tuần này).</li>\n  <li><strong>Cảnh giác với các trang web giả mạo:</strong> Garena chỉ có duy nhất trang nạp thẻ <strong>napthe.vn</strong>. Tuyệt đối không nhập thông tin tài khoản hoặc mã thẻ vào các trang web lạ tự xưng là \"nạp lậu\", \"nhân X2 sò\" để phòng tránh lừa đảo và mất tài khoản game.</li>\n</ul>\n\n<p><em>Nguồn tham khảo: <a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a>. Nội dung được tổng hợp chính thức cho cổng NapTheVui.</em></p>",
   "recommendedPopularSearchItems": [
     {
       "id": "agent-weekly-garena-2026-06-16-6-free-fire",
@@ -119,12 +119,24 @@
     "src/data/catalog.ts"
   ],
   "createdAt": "2026-06-16T14:41:52.305Z",
-  "status": "scanned",
+  "status": "approved",
   "lastScannedAt": "2026-06-16T14:41:52.305Z",
   "statusHistory": [
     {
       "status": "scanned",
       "timestamp": "2026-06-16T14:41:52.305Z"
+    },
+    {
+      "status": "rejected",
+      "timestamp": "2026-06-16T19:49:45.640Z"
+    },
+    {
+      "status": "draft",
+      "timestamp": "2026-06-16T19:49:47.358Z"
+    },
+    {
+      "status": "approved",
+      "timestamp": "2026-06-16T19:49:48.550Z"
     }
   ],
   "researchSourceIds": [

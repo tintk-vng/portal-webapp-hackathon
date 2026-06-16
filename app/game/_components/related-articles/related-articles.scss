@@ -1,0 +1,12 @@
+// related-articles.scss
+.related-articles {
+  .grid {
+    gap: 1rem;
+  }
+  .share-button {
+    transition: transform 0.2s ease;
+  }
+  .share-button:hover {
+    transform: scale(1.05);
+  }
+}
