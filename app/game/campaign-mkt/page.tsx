@@ -313,23 +313,51 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
             <div>
               <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Chỉnh sửa Banner & Nội dung</h3>
               <div className="space-y-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
-                {[
-                  { key: 'bannerTitle', label: 'Tiêu đề Banner' },
-                  { key: 'bannerSubtitle', label: 'Mô tả Banner' },
-                  { key: 'bannerImageUrl', label: 'URL ảnh Banner (Desktop)' },
-                  { key: 'mobileBannerImageUrl', label: 'URL ảnh Banner (Mobile)' },
-                  { key: 'coverImageUrl', label: 'URL ảnh đại diện bài viết' },
-                ].map(({ key, label }) => (
-                  <div key={key}>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">{label}</label>
-                    <input
-                      type="text"
-                      value={(editFields as any)[key]}
-                      onChange={(e) => setEditFields((prev: any) => prev ? { ...prev, [key]: e.target.value } : null)}
-                      className="w-full rounded-lg border border-white/[0.08] bg-slate-950/50 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition"
-                    />
-                  </div>
-                ))}
+                {(['bannerTitle', 'bannerSubtitle'] as const).map((key) => {
+                  const labels: Record<string, string> = {
+                    bannerTitle: 'Tiêu đề Banner',
+                    bannerSubtitle: 'Mô tả Banner',
+                  }
+                  return (
+                    <div key={key}>
+                      <label className="block text-xs font-semibold text-slate-400 mb-1">{labels[key]}</label>
+                      <input
+                        type="text"
+                        value={(editFields as any)[key]}
+                        onChange={(e) => setEditFields((prev: any) => prev ? { ...prev, [key]: e.target.value } : null)}
+                        className="w-full rounded-lg border border-white/[0.08] bg-slate-950/50 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition"
+                      />
+                    </div>
+                  )
+                })}
+                {(['bannerImageUrl', 'mobileBannerImageUrl', 'coverImageUrl'] as const).map((key) => {
+                  const labels: Record<string, string> = {
+                    bannerImageUrl: 'URL ảnh Banner (Desktop)',
+                    mobileBannerImageUrl: 'URL ảnh Banner (Mobile)',
+                    coverImageUrl: 'URL ảnh đại diện bài viết',
+                  }
+                  return (
+                    <div key={key}>
+                      <label className="block text-xs font-semibold text-slate-400 mb-1">{labels[key]}</label>
+                      <input
+                        type="text"
+                        value={(editFields as any)[key]}
+                        onChange={(e) => setEditFields((prev: any) => prev ? { ...prev, [key]: e.target.value } : null)}
+                        className="w-full rounded-lg border border-white/[0.08] bg-slate-950/50 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition"
+                      />
+                    </div>
+                  )
+                })}
+                <button
+                  type="button"
+                  onClick={() => setEditFields((prev: any) => prev ? {
+                    ...prev,
+                    coverImageUrl: prev.bannerImageUrl
+                  } : null)}
+                  className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-slate-800/50 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-700/60 transition w-full justify-center"
+                >
+                  ↕ Đồng bộ: dùng URL Banner làm Thumbnail bài viết
+                </button>
                 <button
                   onClick={onSave}
                   disabled={actionLoading !== null}
@@ -475,7 +503,20 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
               disabled={actionLoading !== null}
               className="w-full rounded-xl border border-teal-500/40 bg-teal-900/30 py-2.5 text-sm font-semibold text-teal-300 hover:bg-teal-800/40 transition disabled:opacity-50"
             >
-              {actionLoading?.startsWith('enrich-content') ? '⏳ Đang cào nội dung...' : '🌐 Cào nội dung chính thức'}
+              {actionLoading?.startsWith('enrich-content') ? '⏳ Đang cập nhật...' : '🔄 Lấy nội dung mới nhất từ website'}
+            </button>
+          )}
+          {proposal.status !== 'applied' && (
+            <button
+              onClick={() => {
+                if (confirm(`Xóa proposal "${proposal.id}"? Hành động này không thể hoàn tác.`)) {
+                  onAction('delete-proposal')
+                }
+              }}
+              disabled={actionLoading !== null}
+              className="w-full rounded-xl border border-rose-500/30 bg-rose-900/20 py-2 text-xs font-semibold text-rose-400 hover:bg-rose-900/40 transition disabled:opacity-50"
+            >
+              🗑 Xóa proposal này
             </button>
           )}
         </div>
@@ -582,9 +623,12 @@ export default function CampaignMktPage() {
   const handleScan = () => apiAction('scan')
   const handleToggleTopBanner = (campaignId: string) => apiAction('set-top-banner', { campaignId })
 
-  const handleDrawerAction = (action: string) => {
+  const handleDrawerAction = async (action: string) => {
     if (!selectedProposal) return
-    apiAction(action, { proposalId: selectedProposal.id })
+    const result = await apiAction(action, { proposalId: selectedProposal.id })
+    if (action === 'delete-proposal' && result?.status === 'success') {
+      setSelectedProposal(null)
+    }
   }
 
   const handleSaveEdits = () => {
