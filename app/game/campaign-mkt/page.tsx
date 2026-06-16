@@ -667,7 +667,6 @@ export default function CampaignMktPage() {
                 {[
                   { l: 'Publisher', v: topBannerCampaign.targetPublisherId || 'Tất cả' },
                   { l: 'Giảm giá', v: topBannerCampaign.discountPercent ? `${topBannerCampaign.discountPercent}%` : '—' },
-                  { l: 'Ưu tiên', v: String(topBannerCampaign.priority) },
                 ].map(({ l, v }) => (
                   <div key={l} className="flex justify-between border-b border-white/[0.04] pb-1.5">
                     <span className="text-slate-500">{l}</span>
