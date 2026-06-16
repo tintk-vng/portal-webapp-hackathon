@@ -199,17 +199,11 @@ function validateCampaign(campaign: Campaign): CampaignValidationResult {
 }
 
 function isCampaignVisible(campaign: Campaign) {
-  if (!campaign.enabled) {
-    return false
-  }
+  if (!campaign.enabled) return false
 
   const now = new Date()
-  if (campaign.validFrom && now < new Date(campaign.validFrom)) {
-    return false
-  }
-  if (campaign.validTo && now > new Date(campaign.validTo)) {
-    return false
-  }
+  if (campaign.validFrom && now < new Date(campaign.validFrom)) return false
+  if (campaign.validTo && now > new Date(campaign.validTo)) return false
   return true
 }
 
@@ -261,6 +255,7 @@ export function unsetTopBanner() {
     campaign.isTopBanner = false
   }
 }
+
 
 export function getCampaignSkuDiscounts(campaign: Campaign) {
   if (!isPositiveDiscountPercent(campaign.discountPercent)) {
