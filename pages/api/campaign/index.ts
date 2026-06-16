@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { exec, execFile } from 'child_process'
 import path from 'path'
+import fs from 'fs'
 import { getActiveCampaign, setTopBanner, unsetTopBanner, campaigns } from '@/src/data/campaigns'
+import { disableCampaign, getDisabledCampaigns } from '@/src/data/campaignState'
 import {
   listCampaignProposalIds,
   getCampaignProposal,
@@ -33,10 +35,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Get live campaigns (enabled ones)
       const liveCampaigns = campaigns.filter((c) => c.enabled)
 
+      const disabledCampaigns = getDisabledCampaigns()
       return res.status(200).json({
         activeCampaign,
         topBannerCampaign,
         liveCampaigns,
+        disabledCampaigns,
         proposals
       })
     }
@@ -80,7 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       // Actions that need proposalId
-      if (action === 'acknowledge' || action === 'approve' || action === 'reject' || action === 'apply' || action === 'revert' || action === 'update' || action === 'enrich-content') {
+      if (action === 'acknowledge' || action === 'approve' || action === 'reject' || action === 'apply' || action === 'revert' || action === 'update' || action === 'enrich-content' || action === 'delete-proposal') {
         if (!proposalId) {
           return res.status(400).json({ error: 'Missing proposalId parameter' })
         }
@@ -126,6 +130,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         const activeCampaign = getActiveCampaign()
         return res.status(200).json({ status: 'success', activeCampaign })
+      }
+
+      if (action === 'deactivate') {
+        const { campaignId } = req.body
+        if (!campaignId) {
+          return res.status(400).json({ error: 'Missing campaignId parameter' })
+        }
+        const found = campaigns.find((c) => c.id === campaignId)
+        if (!found) {
+          return res.status(404).json({ error: 'Campaign not found' })
+        }
+        disableCampaign(campaignId)
+        return res.status(200).json({ status: 'success', message: `Campaign "${campaignId}" đã bị tắt.` })
+      }
+
+      if (action === 'delete-proposal') {
+        if (!proposalId) {
+          return res.status(400).json({ error: 'Missing proposalId parameter' })
+        }
+        const proposal = getCampaignProposal(proposalId)
+        if (!proposal) {
+          return res.status(404).json({ error: 'Proposal not found' })
+        }
+        if (proposal.status === 'applied') {
+          return res.status(400).json({ error: 'Không thể xóa proposal đang được áp dụng.' })
+        }
+        const proposalFilePath = path.join(process.cwd(), 'src', 'agent', 'proposals', `${proposalId}.json`)
+        if (fs.existsSync(proposalFilePath)) {
+          fs.unlinkSync(proposalFilePath)
+        }
+        return res.status(200).json({ status: 'success', message: `Proposal "${proposalId}" đã bị xóa.` })
       }
 
       if (action === 'update') {

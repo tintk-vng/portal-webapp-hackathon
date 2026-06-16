@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { campaigns } from './campaigns'
+import { campaigns, Campaign } from './campaigns'
 
 function getCampaignStatePath() {
   return path.join(process.cwd(), 'src', 'agent', 'campaignState.json')
@@ -27,6 +27,11 @@ export function disableCampaign(campaignId: string) {
     state.disabledCampaigns.push(campaignId)
     writeCampaignState(state)
   }
+}
+
+export function getDisabledCampaigns(): Campaign[] {
+  const state = loadCampaignState()
+  return campaigns.filter(c => state.disabledCampaigns.includes(c.id))
 }
 
 // Re-apply persisted disabled state when this module is first loaded
