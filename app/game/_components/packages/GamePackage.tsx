@@ -26,9 +26,7 @@ export default function GamePackage({ dataPackage, selectedPackage, campaign }: 
   const effectiveSku = getEffectiveSku(campaign, tempSku)
   const hasCampaignDiscount = (effectiveSku.discountPercent ?? 0) > 0
   const displayedSalePrice = hasCampaignDiscount ? effectiveSku.salePrice : dataPackage.amount
-  const displayedOriginalPrice = hasCampaignDiscount
-    ? effectiveSku.basePrice
-    : dataPackage.originalAmount || dataPackage.amount
+  const originalPriceWhenDiscounted = hasCampaignDiscount ? effectiveSku.basePrice : null
 
   return (
     <div
@@ -41,7 +39,7 @@ export default function GamePackage({ dataPackage, selectedPackage, campaign }: 
         'border-blue-500': isSelected,
       })}
     >
-      {hasCampaignDiscount && (
+      {originalPriceWhenDiscounted !== null && (
         <span
           className={classNames({
             'text-center text-label-xs line-through': true,
@@ -49,11 +47,11 @@ export default function GamePackage({ dataPackage, selectedPackage, campaign }: 
             'cursor-not-allowed text-dark-200': isMaintained,
           })}
         >
-          {commonUtil.formatCurrency(displayedOriginalPrice)}
+          {commonUtil.formatCurrency(originalPriceWhenDiscounted)}
         </span>
       )}
 
-      <label
+      <span
         className={classNames({
           'text-center font-bold': true,
           'text-label-md': hasCampaignDiscount,
@@ -64,7 +62,7 @@ export default function GamePackage({ dataPackage, selectedPackage, campaign }: 
         })}
       >
         {commonUtil.formatCurrency(displayedSalePrice)}
-      </label>
+      </span>
 
       {isMaintained && (
         <Badge type={BadgeType.Ribbon2} variant={BadgeVariant.Neutral}>
