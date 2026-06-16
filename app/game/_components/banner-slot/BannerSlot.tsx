@@ -33,13 +33,13 @@ export default function BannerSlot({ campaign }: BannerSlotProps) {
           )}
         </div>
 
-        <div className="hidden h-20 w-28 shrink-0 items-center justify-center rounded-lg bg-white-500/95 p-4 shadow-soft sm:flex md:h-24 md:w-32 relative">
+        <div className="relative flex h-16 w-20 shrink-0 items-center justify-center rounded-lg bg-white-500/95 p-3 shadow-soft sm:h-20 sm:w-28 md:h-24 md:w-32">
           <Image
             className="max-h-full max-w-full object-contain"
-            src={campaign.bannerImageUrl}
+            src={campaign.mobileBannerImageUrl ?? campaign.bannerImageUrl}
             alt={campaign.altText}
             fill
-            sizes="(max-width: 768px) 100px, 120px"
+            sizes="(max-width: 640px) 64px, (max-width: 768px) 100px, 120px"
             loader={({ src }) => src}
             unoptimized
           />
