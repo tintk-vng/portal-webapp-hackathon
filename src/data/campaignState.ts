@@ -28,3 +28,10 @@ export function disableCampaign(campaignId: string) {
     writeCampaignState(state)
   }
 }
+
+// Re-apply persisted disabled state when this module is first loaded
+const _initialState = loadCampaignState()
+_initialState.disabledCampaigns.forEach(id => {
+  const campaign = campaigns.find(c => c.id === id)
+  if (campaign) campaign.enabled = false
+})
