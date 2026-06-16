@@ -80,7 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       // Actions that need proposalId
-      if (action === 'acknowledge' || action === 'approve' || action === 'reject' || action === 'apply' || action === 'revert' || action === 'update') {
+      if (action === 'acknowledge' || action === 'approve' || action === 'reject' || action === 'apply' || action === 'revert' || action === 'update' || action === 'enrich-content') {
         if (!proposalId) {
           return res.status(400).json({ error: 'Missing proposalId parameter' })
         }
@@ -162,6 +162,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         saveCampaignProposal(updatedProposal)
         return res.status(200).json({ status: 'success', proposal: updatedProposal })
+      }
+
+      if (action === 'enrich-content') {
+        if (!proposalId) {
+          return res.status(400).json({ error: 'Missing proposalId parameter' })
+        }
+        const proposal = getCampaignProposal(proposalId)
+        if (!proposal) {
+          return res.status(404).json({ error: 'Proposal not found' })
+        }
+        const scriptPath = path.join(process.cwd(), 'scripts', 'enrichArticleContent.js')
+        return new Promise<void>((resolve) => {
+          exec(`node ${scriptPath} ${proposalId}`, (error, stdout, stderr) => {
+            if (error) {
+              console.error(`Enrich failed: ${error.message}\n${stderr}`)
+              res.status(500).json({ error: 'Content enrichment failed', details: error.message, stderr })
+              return resolve()
+            }
+            const updated = getCampaignProposal(proposalId)
+            res.status(200).json({ status: 'success', message: 'Nội dung đã được cập nhật từ nguồn chính thức.', proposal: updated, stdout })
+            return resolve()
+          })
+        })
       }
 
       if (action === 'approve') {

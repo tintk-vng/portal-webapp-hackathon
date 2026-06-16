@@ -469,6 +469,15 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
               Khôi phục về Bản nháp
             </button>
           )}
+          {(proposal.status === 'scanned' || proposal.status === 'draft') && (
+            <button
+              onClick={() => onAction('enrich-content')}
+              disabled={actionLoading !== null}
+              className="w-full rounded-xl border border-teal-500/40 bg-teal-900/30 py-2.5 text-sm font-semibold text-teal-300 hover:bg-teal-800/40 transition disabled:opacity-50"
+            >
+              {actionLoading?.startsWith('enrich-content') ? '⏳ Đang cào nội dung...' : '🌐 Cào nội dung chính thức'}
+            </button>
+          )}
         </div>
       </div>
 
