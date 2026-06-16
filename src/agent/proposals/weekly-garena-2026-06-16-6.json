@@ -1,5 +1,5 @@
 {
-  "id": "weekly-garena-2026-06-16",
+  "id": "weekly-garena-2026-06-16-6",
   "title": "Garena weekly campaign proposal",
   "selectedPublisher": "garena",
   "alternativesConsidered": [
@@ -20,15 +20,16 @@
   "bannerSubtitle": "Giảm 5% cho Free Fire, Liên Quân Mobile trên NapTheVui.",
   "bannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
   "mobileBannerImageUrl": "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+  "coverImageUrl": "https://www.facebook.com/tr?id=214992645851330&ev=PageView&noscript=1",
   "ctaText": "Xem ưu đãi",
   "altText": "Garena promotion banner",
   "imagePrompt": "Consumer promotion banner for Garena on NapTheVui. Focus games: Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại. Message: Giảm 5%. Clean fintech checkout style, Vietnamese market, polished but not cluttered.",
   "articleTitle": "Garena: ưu đãi nạp thẻ tuần này trên NapTheVui",
   "articleSummary": "Giảm 5% cho nhóm nạp Garena, tập trung vào Free Fire, Liên Quân Mobile, FC Online.",
-  "articleContent": "NapTheVui đang chuẩn bị ưu đãi nạp Garena dành cho người dùng muốn nạp nhanh các tựa game quen thuộc.\n\nÁp dụng cho: Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại.\nMức ưu đãi Giảm 5% được lấy từ campaign setup nội bộ cho bản nháp này.\nNguồn tham khảo công khai: Garena official top-up site (https://napthe.vn).\n\nCách sử dụng:\n1. Tìm Garena hoặc tên game trong ô tìm kiếm NapTheVui.\n2. Chọn mệnh giá phù hợp.\n3. Kiểm tra ưu đãi hiển thị ở thẻ nạp, mệnh giá và phần thanh toán trước khi xác nhận.\n\nThời gian áp dụng: theo lịch campaign sau khi bản nháp được duyệt và áp dụng.\n\nLưu ý: Bài viết này được tạo từ Weekly campaign brief. Các chi tiết khuyến mãi cần được xác nhận trong preview và validation trước khi xuất hiện trên website chính thức.",
+  "articleContent": "<h3>Ưu Đãi Nạp GARENA Giảm 5%</h3>\n<p><strong>Áp dụng cho:</strong> free-fire, lien-quan-mobile, fc-online, lien-minh-huyen-thoai.</p>\n<p><strong>Mức ưu đãi:</strong> Giảm 5% khi nạp qua NapTheVui.</p>\n\n<h4>Nội dung từ nhà phát hành chính thức:</h4>\n<p>Cập nhật ưu đãi mới nhất từ trang chính thức GARENA tại <a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a>.</p>\n\n<h4>Hướng dẫn nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>GARENA</strong> hoặc tên tựa game trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp.</li>\n<li>Kiểm tra chiết khấu hiển thị tại màn hình thanh toán trước khi xác nhận.</li>\n</ol>\n\n<p><em>Nguồn: <a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a>. Nội dung được tổng hợp tự động — kiểm tra và xác nhận trước khi xuất bản.</em></p>",
   "recommendedPopularSearchItems": [
     {
-      "id": "agent-weekly-garena-2026-06-16-free-fire",
+      "id": "agent-weekly-garena-2026-06-16-6-free-fire",
       "targetId": "free-fire",
       "targetType": "game",
       "label": "Free Fire",
@@ -40,10 +41,10 @@
       "campaignBoost": 25,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T07:04:29.390Z"
+      "updatedAt": "2026-06-16T14:41:52.305Z"
     },
     {
-      "id": "agent-weekly-garena-2026-06-16-lien-quan-mobile",
+      "id": "agent-weekly-garena-2026-06-16-6-lien-quan-mobile",
       "targetId": "lien-quan-mobile",
       "targetType": "game",
       "label": "Liên Quân Mobile",
@@ -55,10 +56,10 @@
       "campaignBoost": 25,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T07:04:29.390Z"
+      "updatedAt": "2026-06-16T14:41:52.305Z"
     },
     {
-      "id": "agent-weekly-garena-2026-06-16-fc-online",
+      "id": "agent-weekly-garena-2026-06-16-6-fc-online",
       "targetId": "fc-online",
       "targetType": "game",
       "label": "FC Online",
@@ -70,10 +71,10 @@
       "campaignBoost": 25,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T07:04:29.390Z"
+      "updatedAt": "2026-06-16T14:41:52.305Z"
     },
     {
-      "id": "agent-weekly-garena-2026-06-16-lien-minh-huyen-thoai",
+      "id": "agent-weekly-garena-2026-06-16-6-lien-minh-huyen-thoai",
       "targetId": "lien-minh-huyen-thoai",
       "targetType": "game",
       "label": "Liên Minh Huyền Thoại",
@@ -81,10 +82,10 @@
       "campaignBoost": 25,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T07:04:29.390Z"
+      "updatedAt": "2026-06-16T14:41:52.305Z"
     },
     {
-      "id": "agent-weekly-garena-2026-06-16-googleplay",
+      "id": "agent-weekly-garena-2026-06-16-6-googleplay",
       "targetId": "googleplay",
       "targetType": "store",
       "label": "Google Play",
@@ -95,10 +96,10 @@
       "purchaseCount": 510,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T07:04:29.390Z"
+      "updatedAt": "2026-06-16T14:41:52.305Z"
     },
     {
-      "id": "agent-weekly-garena-2026-06-16-roblox",
+      "id": "agent-weekly-garena-2026-06-16-6-roblox",
       "targetId": "roblox",
       "targetType": "game",
       "label": "Roblox",
@@ -109,7 +110,7 @@
       "purchaseCount": 430,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T07:04:29.390Z"
+      "updatedAt": "2026-06-16T14:41:52.305Z"
     }
   ],
   "proposedFileChanges": [
@@ -117,8 +118,15 @@
     "src/data/newsArticles.ts",
     "src/data/catalog.ts"
   ],
-  "createdAt": "2026-06-16T07:04:29.390Z",
-  "status": "rejected",
+  "createdAt": "2026-06-16T14:41:52.305Z",
+  "status": "scanned",
+  "lastScannedAt": "2026-06-16T14:41:52.305Z",
+  "statusHistory": [
+    {
+      "status": "scanned",
+      "timestamp": "2026-06-16T14:41:52.305Z"
+    }
+  ],
   "researchSourceIds": [
     "research-garena-napthe"
   ],
@@ -138,7 +146,6 @@
     "Research sohacoin: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
     "Research funcard: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
     "Research gosu: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
-    "Research googleplay: Fetch failed for https://play.google.com/about/giftcards: This operation was aborted",
     "Research googleplay: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
     "Research roblox-store: Fetch failed for https://roblox.com: This operation was aborted",
     "Research roblox-store: No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
