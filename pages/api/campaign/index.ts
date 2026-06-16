@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { exec } from 'child_process'
+import { exec, execFile } from 'child_process'
 import path from 'path'
 import { getActiveCampaign, setTopBanner, unsetTopBanner, campaigns } from '@/src/data/campaigns'
 import {
@@ -174,7 +174,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         const scriptPath = path.join(process.cwd(), 'scripts', 'enrichArticleContent.js')
         return new Promise<void>((resolve) => {
-          exec(`node ${scriptPath} ${proposalId}`, (error, stdout, stderr) => {
+          execFile('node', [scriptPath, proposalId], (error: Error | null, stdout: string, stderr: string) => {
             if (error) {
               console.error(`Enrich failed: ${error.message}\n${stderr}`)
               res.status(500).json({ error: 'Content enrichment failed', details: error.message, stderr })
@@ -233,7 +233,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const scriptPath = path.join(process.cwd(), 'scripts', 'applyApprovedCampaignProposal.js')
         return new Promise<void>((resolve, reject) => {
-          exec(`node ${scriptPath} ${proposalId}`, { env: cleanEnv }, (error, stdout, stderr) => {
+          execFile('node', [scriptPath, proposalId], { env: cleanEnv }, (error: Error | null, stdout: string, stderr: string) => {
             if (error) {
               console.error(`Apply failed: ${error.message}\n${stderr}`)
               res.status(500).json({ error: 'Failed to apply campaign', details: error.message, stderr })
