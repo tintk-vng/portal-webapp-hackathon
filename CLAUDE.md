@@ -69,6 +69,17 @@ npm test            # jest + coverage
 npm run analyze     # bundle analyzer
 ```
 
+## Shipping to Production (Quy trình Ship Code)
+
+Khi hoàn thành chỉnh sửa hoặc phát triển tính năng mới và muốn đưa lên production:
+1. **Kiểm tra Code (Build & Typecheck)**: Luôn chạy `npm run build` để đảm bảo code biên dịch thành công và không lỗi TypeScript/Next.js. Không được push code lỗi build.
+2. **Kiểm tra Linter**: Chạy `npm run lint` để kiểm tra quy chuẩn viết code.
+3. **Commit & Push**:
+   - Chỉ stage các file code thay đổi thực tế, tránh các file cấu hình local hoặc file cache.
+   - Commit theo chuẩn: `git commit -m "feat/fix/chore: <mô tả chi tiết bằng tiếng Anh hoặc tiếng Việt>"`
+   - Đẩy lên remote branch: `git push origin <tên-branch>`
+4. **Tạo Pull Request (PR)**: Tạo PR trên GitHub hướng mục tiêu (target) vào branch **`dev`** (không target trực tiếp vào `main`). Sau khi được review và merge vào `dev`, code sẽ đi qua luồng CI/CD Staging trước khi lên Production.
+
 ## Gotchas
 
 - Không VPN: nội dung game blog (`cms.zalopay.vn`) và header/footer thật sẽ KHÔNG có; telco/bill vẫn chạy.
