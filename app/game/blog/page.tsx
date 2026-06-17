@@ -105,4 +105,4 @@ export default function Page() {
     </ErrorBoundary>
   )
 }
-export const revalidate = 60;
+

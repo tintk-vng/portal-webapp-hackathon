@@ -28,9 +28,9 @@ export default function ArticleHeader({ blog }: ArticleHeaderProps) {
       <h1 className="text-heading-lg md:text-[28px] md:leading-9 font-extrabold text-dark-500 mb-2">
         {blog.title}
       </h1>
-      {blog.subtitle && (
+      {blog.description && (
         <p className="text-label-lg md:text-label-xl text-dark-400 mb-3">
-          {blog.subtitle}
+          {blog.description}
         </p>
       )}
       <div className="flex items-center text-label-sm text-dark-300 mb-4">

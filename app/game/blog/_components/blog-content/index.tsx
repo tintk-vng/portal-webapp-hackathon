@@ -17,7 +17,7 @@ export default function BlogContent({ blog }: BlogContentProps) {
   const publishDate = blog.publishTimer || blog.publishedAt || blog.createdAt
   const thumbnailUrl = blog.thumbnail?.url || blog.avatar
 
-  const relatedArticles = getEnabledArticles().filter((a) => a.id !== blog.id).slice(0, 3);
+  const relatedArticles = getEnabledArticles().filter((a) => a.id !== blog.slug).slice(0, 3);
 
   return (
     <article className="blog-article">
