@@ -1,3 +1,5 @@
+import { campaigns } from './campaigns'
+
 export type NewsArticle = {
   id: string
   title: string
@@ -140,7 +142,7 @@ export const newsArticles: NewsArticle[] = [
     title: "Garena: ưu đãi nạp thẻ tuần này trên NapTheVui",
     summary: "Giảm 5% cho nhóm nạp Garena, tập trung vào Free Fire, Liên Quân Mobile, FC Online.",
     coverImageUrl: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80",
-    content: "<h3>Ưu Đãi Nạp Thẻ Game Garena Tuần Này</h3>\n<p>NapTheVui đang chuẩn bị ưu đãi nạp Garena dành cho người dùng muốn nạp nhanh các tựa game quen thuộc.</p>\n<p><strong>Áp dụng cho:</strong> Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại.</p>\n<p>Mức ưu đãi Giảm 5% được lấy từ campaign setup nội bộ cho bản nháp này.</p>\n<p>Nguồn tham khảo công khai: Garena official top-up site (https://napthe.vn).</p>\n<h4>Hướng dẫn cách nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>Garena</strong> hoặc tên tựa game bạn chơi trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp với nhu cầu.</li>\n<li>Kiểm tra chiết khấu và ưu đãi hiển thị rõ ràng tại màn hình thẻ nạp, mệnh giá và phần thanh toán trước khi tiến hành xác nhận giao dịch.</li>\n</ol>\n<p><strong>Thời gian áp dụng:</strong> Theo lịch trình campaign cụ thể sau khi bản nháp đề xuất này được ban biên tập duyệt và áp dụng chính thức.</p>\n<p><em>Lưu ý: Bài viết này được tạo tự động dựa trên Weekly campaign brief. Các chi tiết khuyến mãi cần được xác nhận trong preview và validation trước khi xuất hiện trên website chính thức.</em></p>",
+    content: "<h3>Ưu Đãi Nạp Thẻ Game Garena Tuần Này</h3>\n<p>NapTheVui đang chuẩn bị ưu đãi nạp Garena dành cho người dùng muốn nạp nhanh các tựa game quen thuộc.</p>\n<p><strong>Áp dụng cho:</strong> Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại.</p>\n<p>Mức ưu đãi Giảm 5% được lấy từ campaign setup nội bộ cho bản nháp này.</p>\n<p>Nguồn tham khảo công khai: Garena official top-up site (https://napthe.vn).</p>\n<h4>Hướng dẫn cách nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>Garena</strong> hoặc tên tựa game bạn chơi trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp với nhu cầu.</li>\n<li>Kiểm tra chiết khấu và ưu đãi hiển thị rõ ràng tại màn hình thẻ nạp, mệnh giá và phần thanh toán trước khi tiến hành giao dịch.</li>\n</ol>\n<p><strong>Thời gian áp dụng:</strong> Theo lịch trình campaign cụ thể sau khi bản nháp đề xuất này được ban biên tập duyệt và áp dụng chính thức.</p>\n<p><em>Lưu ý: Bài viết này được tạo tự động dựa trên Weekly campaign brief. Các chi tiết khuyến mãi cần được xác nhận trong preview và validation trước khi xuất hiện trên website chính thức.</em></p>",
     relatedCampaignId: "weekly-garena-2026-06-16-2",
     relatedPublisherId: "garena",
     relatedGameIds: [
@@ -157,7 +159,7 @@ export const newsArticles: NewsArticle[] = [
     title: "Garena: ưu đãi nạp thẻ tuần này trên NapTheVui",
     summary: "Giảm 5% cho nhóm nạp Garena, tập trung vào Free Fire, Liên Quân Mobile, FC Online.",
     coverImageUrl: "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
-    content: "<h3>Ưu Đãi Nạp Thẻ Game Garena Tuần Này</h3>\n<p>NapTheVui đang chuẩn bị ưu đãi nạp Garena dành cho người dùng muốn nạp nhanh các tựa game quen thuộc.</p>\n<p><strong>Áp dụng cho:</strong> Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại.</p>\n<p>Mức ưu đãi Giảm 5% được lấy từ campaign setup nội bộ cho bản nháp này.</p>\n<p>Nguồn tham khảo công khai: Garena official top-up site (https://napthe.vn).</p>\n<h4>Hướng dẫn cách nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>Garena</strong> hoặc tên tựa game bạn chơi trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp với nhu cầu.</li>\n<li>Kiểm tra chiết khấu và ưu đãi hiển thị rõ ràng tại màn hình thẻ nạp, mệnh giá và phần thanh toán trước khi tiến hành xác nhận giao dịch.</li>\n</ol>\n<p><strong>Thời gian áp dụng:</strong> Theo lịch trình campaign cụ thể sau khi bản nháp đề xuất này được ban biên tập duyệt và áp dụng chính thức.</p>\n<p><em>Lưu ý: Bài viết này được tạo tự động dựa trên Weekly campaign brief. Các chi tiết khuyến mãi cần được xác nhận trong preview và validation trước khi xuất hiện trên website chính thức.</em></p>",
+    content: "<h3>Ưu Đãi Nạp Thẻ Game Garena Tuần Này</h3>\n<p>NapTheVui đang chuẩn bị ưu đãi nạp Garena dành cho người dùng muốn nạp nhanh các tựa game quen thuộc.</p>\n<p><strong>Áp dụng cho:</strong> Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại.</p>\n<p>Mức ưu đãi Giảm 5% được lấy từ campaign setup nội bộ cho bản nháp này.</p>\n<p>Nguồn tham khảo công khai: Garena official top-up site (https://napthe.vn).</p>\n<h4>Hướng dẫn cách nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>Garena</strong> hoặc tên tựa game bạn chơi trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp với nhu cầu.</li>\n<li>Kiểm tra chiết khấu và ưu đãi hiển thị rõ ràng tại màn hình thẻ nạp, mệnh giá và phần thanh toán trước khi tiến hành giao dịch.</li>\n</ol>\n<p><strong>Thời gian áp dụng:</strong> Theo lịch trình campaign cụ thể sau khi bản nháp đề xuất này được ban biên tập duyệt và áp dụng chính thức.</p>\n<p><em>Lưu ý: Bài viết này được tạo tự động dựa trên Weekly campaign brief. Các chi tiết khuyến mãi cần được xác nhận trong preview và validation trước khi xuất hiện trên website chính thức.</em></p>",
     relatedCampaignId: "weekly-garena-2026-06-16-4",
     relatedPublisherId: "garena",
     relatedGameIds: [
@@ -187,15 +189,23 @@ export function getEnabledArticles() {
     }
   }
 
+  const activeCampaignIds = campaigns
+    .filter((c) => c.enabled && !disabledCampaigns.includes(c.id))
+    .map((c) => c.id)
+
   return newsArticles
-    .filter((article) => article.enabled && (!article.relatedCampaignId || !disabledCampaigns.includes(article.relatedCampaignId)))
+    .filter((article) => {
+      if (!article.enabled) return false
+      if (!article.relatedCampaignId) return false
+      return activeCampaignIds.includes(article.relatedCampaignId)
+    })
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 }
 
 export function getArticleById(id: string) {
-  return newsArticles.find((article) => article.id === id && article.enabled)
+  return getEnabledArticles().find((article) => article.id === id)
 }
 
 export function getArticleForCampaign(campaignId: string) {
-  return newsArticles.find((article) => article.relatedCampaignId === campaignId && article.enabled)
+  return getEnabledArticles().find((article) => article.relatedCampaignId === campaignId)
 }
