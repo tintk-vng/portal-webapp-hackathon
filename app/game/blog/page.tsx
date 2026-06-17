@@ -5,6 +5,7 @@ import ErrorBoundary from '@/components/layout/error-boundary'
 import commonUtil from '@/utils/common'
 import { useEffect, useState } from 'react'
 import { getArticleById, NewsArticle } from '@/src/data/newsArticles'
+import { useSearchParams } from 'next/navigation'
 import Breadcrumb from '../_components/breadcrumb'
 import BlogContent from './_components/blog-content'
 import EmptyState from './_components/empty-state'
@@ -50,12 +51,13 @@ function buildStaticBlog(slug: string, article: NewsArticle): Blog {
 }
 
 export default function Page() {
+  const searchParams = useSearchParams()
+  const slug = searchParams ? searchParams.get('slug') : null
   const [isLoading, setIsLoading] = useState(true)
   const [blog, setBlog] = useState<Blog | null>(null)
 
   useEffect(() => {
     async function fetchBlog() {
-      const slug = commonUtil.getParameterByName('slug')
       if (!slug) {
         setIsLoading(false)
         return
@@ -87,8 +89,9 @@ export default function Page() {
       }
     }
 
+    setIsLoading(true)
     fetchBlog()
-  }, [])
+  }, [slug])
 
   if (isLoading) {
     return <LoadingState />
