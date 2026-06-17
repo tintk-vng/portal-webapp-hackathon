@@ -170,6 +170,40 @@ export const newsArticles: NewsArticle[] = [
     ],
     publishedAt: "2026-06-16T08:56:52.135Z",
     enabled: true
+  },
+  {
+    id: "weekly-garena-2026-06-16-5",
+    title: "Garena: ưu đãi nạp thẻ tuần này trên NapTheVui",
+    summary: "Giảm 5% cho nhóm nạp Garena, tập trung vào Free Fire, Liên Quân Mobile, FC Online.",
+    coverImageUrl: "https://www.facebook.com/tr?id=214992645851330&ev=PageView&noscript=1",
+    content: "<h3>Ưu Đãi Nạp Thẻ Game Garena Tuần Này</h3>\n<p>NapTheVui đang chuẩn bị ưu đãi nạp Garena dành cho người dùng muốn nạp nhanh các tựa game quen thuộc.</p>\n<p><strong>Áp dụng cho:</strong> Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại.</p>\n<p>Mức ưu đãi Giảm 5% được lấy từ campaign setup nội bộ cho bản nháp này.</p>\n<p>Nguồn tham khảo công khai: Garena official top-up site (https://napthe.vn).</p>\n<h4>Hướng dẫn cách nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>Garena</strong> hoặc tên tựa game bạn chơi trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp với nhu cầu.</li>\n<li>Kiểm tra chiết khấu và ưu đãi hiển thị rõ ràng tại màn hình thẻ nạp, mệnh giá và phần thanh toán trước khi tiến hành xác nhận giao dịch.</li>\n</ol>\n<p><strong>Thời gian áp dụng:</strong> Theo lịch trình campaign cụ thể sau khi bản nháp đề xuất này được ban biên tập duyệt và áp dụng chính thức.</p>\n<p><em>Lưu ý: Bài viết này được tạo tự động dựa trên Weekly campaign brief. Các chi tiết khuyến mãi cần được xác nhận trong preview và validation trước khi xuất hiện trên website chính thức.</em></p>",
+    relatedCampaignId: "weekly-garena-2026-06-16-5",
+    relatedPublisherId: "garena",
+    relatedGameIds: [
+      "free-fire",
+      "lien-quan-mobile",
+      "fc-online",
+      "lien-minh-huyen-thoai"
+    ],
+    publishedAt: "2026-06-16T10:00:45.939Z",
+    enabled: true
+  },
+  {
+    id: "weekly-garena-2026-06-16-6",
+    title: "Garena: ưu đãi nạp thẻ tuần này trên NapTheVui",
+    summary: "Giảm 5% cho nhóm nạp Garena, tập trung vào Free Fire, Liên Quân Mobile, FC Online.",
+    coverImageUrl: "https://www.facebook.com/tr?id=214992645851330&ev=PageView&noscript=1",
+    content: "<h3>Hướng Dẫn Nạp Thẻ Game Garena An Toàn &amp; Chính Thức tại Napthe.vn</h3>\n<p>Đối với cộng đồng game thủ chơi các tựa game nổi tiếng như <strong>Free Fire, Liên Quân Mobile, FC Online, hay Liên Minh Huyền Thoại</strong>, trang web <strong>napthe.vn</strong> là cổng nạp thẻ chính thức duy nhất do Garena phát hành để đảm bảo an toàn tuyệt đối cho tài khoản của bạn.</p>\n\n<h4>Các bước nạp thẻ chính thức tại napthe.vn:</h4>\n<ol>\n  <li><strong>Truy cập cổng nạp:</strong> Sử dụng trình duyệt truy cập địa chỉ duy nhất <strong><a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a></strong>.</li>\n  <li><strong>Chọn Game &amp; Đăng nhập:</strong> Chọn logo tựa game bạn đang chơi và tiến hành đăng nhập bằng tài khoản Garena hoặc qua Player ID (ID nhân vật).</li>\n  <li><strong>Chọn hình thức nạp &amp; Mệnh giá:</strong> Bạn có thể chọn thanh toán qua Thẻ Garena, Ví ShopeePay, thẻ ngân hàng, hoặc quét mã QR. Sau đó chọn mệnh giá nạp phù hợp.</li>\n  <li><strong>Hoàn tất giao dịch:</strong> Nhập thông tin thẻ cào (mã nạp và số seri) hoặc tiến hành quét mã QR để thanh toán. Kim cương, Quân Huy, hoặc FC sẽ được chuyển trực tiếp vào tài khoản game sau ít phút.</li>\n</ol>\n\n<h4>Mẹo nạp thẻ tiết kiệm và an toàn:</h4>\n<ul>\n  <li><strong>Mua thẻ Garena với chiết khấu tại NapTheVui:</strong> Trước khi nạp thẻ, hãy mua thẻ Garena trực tiếp trên NapTheVui để nhận ngay chiết khấu cực hời (hiện đang có chương trình Giảm 5% dành cho nhóm Garena tuần này).</li>\n  <li><strong>Cảnh giác với các trang web giả mạo:</strong> Garena chỉ có duy nhất trang nạp thẻ <strong>napthe.vn</strong>. Tuyệt đối không nhập thông tin tài khoản hoặc mã thẻ vào các trang web lạ tự xưng là \"nạp lậu\", \"nhân X2 sò\" để phòng tránh lừa đảo và mất tài khoản game.</li>\n</ul>\n\n<p><em>Nguồn tham khảo: <a href=\"https://napthe.vn\" target=\"_blank\" rel=\"noopener\">https://napthe.vn</a>. Nội dung được tổng hợp chính thức cho cổng NapTheVui.</em></p>",
+    relatedCampaignId: "weekly-garena-2026-06-16-6",
+    relatedPublisherId: "garena",
+    relatedGameIds: [
+      "free-fire",
+      "lien-quan-mobile",
+      "fc-online",
+      "lien-minh-huyen-thoai"
+    ],
+    publishedAt: "2026-06-16T14:41:52.305Z",
+    enabled: true
   }
 ]
 

@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const scriptPath = path.join(process.cwd(), 'scripts', 'generateWeeklyCampaignProposal.js')
         return new Promise<void>((resolve, reject) => {
           // Run the weekly campaign proposal generator with research scanning
-          exec(`node ${scriptPath} --run-research`, (error, stdout, stderr) => {
+          exec(`"${process.execPath}" ${scriptPath} --run-research`, (error, stdout, stderr) => {
             if (error) {
               console.error(`Scan failed: ${error.message}\n${stderr}`)
               res.status(500).json({ error: 'Failed to run campaign scan', details: error.message, stderr })
@@ -84,7 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       // Actions that need proposalId
-      if (action === 'acknowledge' || action === 'approve' || action === 'reject' || action === 'apply' || action === 'revert' || action === 'update' || action === 'enrich-content' || action === 'delete-proposal') {
+      if (action === 'acknowledge' || action === 'approve' || action === 'reject' || action === 'apply' || action === 'revert' || action === 'update' || action === 'enrich-content' || action === 'delete-proposal' || action === 'set-proposal-top-banner') {
         if (!proposalId) {
           return res.status(400).json({ error: 'Missing proposalId parameter' })
         }
@@ -163,6 +163,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(200).json({ status: 'success', message: `Proposal "${proposalId}" đã bị xóa.` })
       }
 
+      if (action === 'set-proposal-top-banner') {
+        const proposal = getCampaignProposal(proposalId)
+        if (!proposal) {
+          return res.status(404).json({ error: 'Proposal not found' })
+        }
+
+        const cleanEnv = { ...process.env }
+        for (const key of Object.keys(cleanEnv)) {
+          if (key.startsWith('__NEXT') || key === 'NODE_OPTIONS') {
+            delete cleanEnv[key]
+          }
+        }
+        cleanEnv.NODE_ENV = 'production'
+        cleanEnv.SKIP_LOCAL_SERVER_RESTART = '1'
+
+        const scriptPath = path.join(process.cwd(), 'scripts', 'applyApprovedCampaignProposal.js')
+        return new Promise<void>((resolve) => {
+          execFile(process.execPath, [scriptPath, proposalId], { env: cleanEnv }, (error: Error | null, stdout: string, stderr: string) => {
+            if (error) {
+              console.error(`Set proposal top banner failed: ${error.message}\n${stderr}`)
+              res.status(500).json({ error: 'Failed to activate/set proposal as top banner', details: error.message, stderr })
+              return resolve()
+            }
+            const updatedProposal = getCampaignProposal(proposalId)
+            if (updatedProposal && updatedProposal.status !== 'applied') {
+              updatedProposal.status = 'applied'
+              updatedProposal.statusHistory = addStatusHistory(updatedProposal, 'applied')
+              saveCampaignProposal(updatedProposal)
+            }
+            res.status(200).json({ status: 'success', message: 'Đã kích hoạt và đưa campaign lên top banner.', proposal: updatedProposal || proposal, stdout })
+            return resolve()
+          })
+        })
+      }
+
       if (action === 'update') {
         const proposal = getCampaignProposal(proposalId)
         if (!proposal) {
@@ -196,6 +231,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         updatedProposal.validationWarnings = validateCampaignProposal(updatedProposal)
 
         saveCampaignProposal(updatedProposal)
+
+        if (proposal.status === 'applied') {
+          const cleanEnv = { ...process.env }
+          for (const key of Object.keys(cleanEnv)) {
+            if (key.startsWith('__NEXT') || key === 'NODE_OPTIONS') {
+              delete cleanEnv[key]
+            }
+          }
+          cleanEnv.NODE_ENV = 'production'
+          cleanEnv.SKIP_LOCAL_SERVER_RESTART = '1'
+
+          const scriptPath = path.join(process.cwd(), 'scripts', 'applyApprovedCampaignProposal.js')
+          return new Promise<void>((resolve) => {
+            execFile(process.execPath, [scriptPath, proposalId], { env: cleanEnv }, (error: Error | null, stdout: string, stderr: string) => {
+              if (error) {
+                console.error(`Update live campaign failed: ${error.message}\n${stderr}`)
+                res.status(500).json({ error: 'Failed to update live campaign', details: error.message, stderr })
+                return resolve()
+              }
+              res.status(200).json({ status: 'success', message: 'Cập nhật và republish campaign thành công.', proposal: updatedProposal, stdout })
+              return resolve()
+            })
+          })
+        }
+
         return res.status(200).json({ status: 'success', proposal: updatedProposal })
       }
 
@@ -209,7 +269,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         const scriptPath = path.join(process.cwd(), 'scripts', 'enrichArticleContent.js')
         return new Promise<void>((resolve) => {
-          execFile('node', [scriptPath, proposalId], (error: Error | null, stdout: string, stderr: string) => {
+          execFile(process.execPath, [scriptPath, proposalId], (error: Error | null, stdout: string, stderr: string) => {
             if (error) {
               console.error(`Enrich failed: ${error.message}\n${stderr}`)
               res.status(500).json({ error: 'Content enrichment failed', details: error.message, stderr })
@@ -268,7 +328,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const scriptPath = path.join(process.cwd(), 'scripts', 'applyApprovedCampaignProposal.js')
         return new Promise<void>((resolve, reject) => {
-          execFile('node', [scriptPath, proposalId], { env: cleanEnv }, (error: Error | null, stdout: string, stderr: string) => {
+          execFile(process.execPath, [scriptPath, proposalId], { env: cleanEnv }, (error: Error | null, stdout: string, stderr: string) => {
             if (error) {
               console.error(`Apply failed: ${error.message}\n${stderr}`)
               res.status(500).json({ error: 'Failed to apply campaign', details: error.message, stderr })

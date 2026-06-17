@@ -1,4 +1,6 @@
 {
-  "disabledCampaigns": [],
-  "topBannerCampaignId": "weekly-garena-2026-06-16-4"
+  "disabledCampaigns": [
+    "weekly-garena-2026-06-16-4"
+  ],
+  "topBannerCampaignId": "weekly-garena-2026-06-16-6"
 }

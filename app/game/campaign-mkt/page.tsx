@@ -222,7 +222,7 @@ function Timeline({ history }: { history?: StatusHistoryEntry[] }) {
 }
 
 /* ─── Drawer ─── */
-function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction, actionLoading }: {
+function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction, actionLoading, topBannerCampaign }: {
   proposal: Proposal
   onClose: () => void
   editFields: any
@@ -230,9 +230,10 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
   onSave: () => void
   onAction: (action: string) => void
   actionLoading: string | null
+  topBannerCampaign?: any
 }) {
   const drawerRef = useRef<HTMLDivElement>(null)
-  const isEditable = proposal.status === 'scanned' || proposal.status === 'draft'
+  const isEditable = proposal.status !== 'rejected'
 
   return (
     <>
@@ -512,14 +513,26 @@ function Drawer({ proposal, onClose, editFields, setEditFields, onSave, onAction
             </>
           )}
           {proposal.status === 'approved' && (
-            <button onClick={() => onAction('apply')} disabled={actionLoading !== null}
-              className="w-full rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 text-sm font-bold text-white hover:from-emerald-500 hover:to-teal-500 transition disabled:opacity-50">
-              Áp dụng & Kích hoạt chiến dịch
+            <>
+              <button onClick={() => onAction('apply')} disabled={actionLoading !== null}
+                className="w-full rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 text-sm font-bold text-white hover:from-emerald-500 hover:to-teal-500 transition disabled:opacity-50 font-semibold">
+                Áp dụng & Kích hoạt chiến dịch
+              </button>
+              <button onClick={() => onAction('set-proposal-top-banner')} disabled={actionLoading !== null}
+                className="w-full rounded-xl bg-blue-600 py-3 text-sm font-bold text-white hover:bg-blue-500 transition disabled:opacity-50 font-semibold">
+                Đưa lên Top Banner
+              </button>
+            </>
+          )}
+          {proposal.status === 'applied' && (
+            <button onClick={() => onAction('set-proposal-top-banner')} disabled={actionLoading !== null || topBannerCampaign?.id === proposal.id}
+              className="w-full rounded-xl bg-blue-600 py-3 text-sm font-bold text-white hover:bg-blue-500 transition disabled:opacity-50 disabled:bg-blue-800/40 font-semibold">
+              {topBannerCampaign?.id === proposal.id ? '★ Đang là Top Banner Live' : 'Đưa lên Top Banner'}
             </button>
           )}
           {proposal.status === 'rejected' && (
             <button onClick={() => onAction('revert')} disabled={actionLoading !== null}
-              className="w-full rounded-xl bg-amber-600/80 py-3 text-sm font-bold text-white hover:bg-amber-600 transition disabled:opacity-50">
+              className="w-full rounded-xl bg-amber-600/80 py-3 text-sm font-bold text-white hover:bg-amber-600 transition disabled:opacity-50 font-semibold">
               Khôi phục về Bản nháp
             </button>
           )}
@@ -594,6 +607,7 @@ export default function CampaignMktPage() {
   const [selectedProposal, setSelectedProposal] = useState<Proposal | null>(null)
   const [scanOutput, setScanOutput] = useState<string | null>(null)
   const [message, setMessage] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null)
+  const [scannedSectionKey, setScannedSectionKey] = useState(0)
   const [editFields, setEditFields] = useState<{
     bannerTitle: string; bannerSubtitle: string; bannerImageUrl: string
     mobileBannerImageUrl: string; coverImageUrl: string
@@ -652,6 +666,9 @@ export default function CampaignMktPage() {
       const data = await res.json()
       if (res.ok) {
         showMsg('success', data.message || 'Thành công!')
+        if (action === 'scan') {
+          setScannedSectionKey(prev => prev + 1)
+        }
         if (data.proposal && selectedProposal?.id === (body.proposalId)) {
           setSelectedProposal(data.proposal)
         }
@@ -823,7 +840,7 @@ export default function CampaignMktPage() {
         </div>
 
         {/* ═══ Section 1: Mới quét (Scanned) ═══ */}
-        <Section title="Mới quét" icon="🔍" count={scannedProposals.length} defaultOpen={scannedProposals.length > 0} accentColor="violet">
+        <Section key={`scanned-${scannedSectionKey}-${scannedProposals.length}`} title="Mới quét" icon="🔍" count={scannedProposals.length} defaultOpen={scannedProposals.length > 0} accentColor="violet">
           <CampaignTable
             proposals={scannedProposals}
             onSelect={setSelectedProposal}
@@ -860,7 +877,37 @@ export default function CampaignMktPage() {
                 </thead>
                 <tbody className="divide-y divide-white/[0.04]">
                   {liveCampaigns.map((c) => (
-                    <tr key={c.id} className="hover:bg-white/[0.03] transition">
+                    <tr
+                      key={c.id}
+                      onClick={() => {
+                        const p = proposals.find(p => p.id === c.id)
+                        if (p) {
+                          setSelectedProposal(p)
+                        } else {
+                          const synth: Proposal = {
+                            id: c.id,
+                            title: c.title,
+                            targetPublisherId: c.targetPublisherId || '',
+                            targetGameIds: c.targetGameIds || [],
+                            discountPercent: c.discountPercent || 0,
+                            bannerTitle: c.title,
+                            bannerSubtitle: c.subtitle || '',
+                            bannerImageUrl: c.bannerImageUrl,
+                            mobileBannerImageUrl: c.mobileBannerImageUrl || c.bannerImageUrl,
+                            ctaText: c.ctaText || 'Xem ngay',
+                            createdAt: new Date().toISOString(),
+                            status: 'applied',
+                            articleTitle: c.title,
+                            articleSummary: c.subtitle || '',
+                            articleContent: '',
+                            recommendedPopularSearchItems: [],
+                            proposedFileChanges: [],
+                          }
+                          setSelectedProposal(synth)
+                        }
+                      }}
+                      className="cursor-pointer hover:bg-white/[0.03] transition"
+                    >
                       <td className="py-3.5 pr-4">
                         <div className="font-semibold text-white truncate max-w-[240px]">{c.title}</div>
                         <div className="text-xs text-slate-500 truncate max-w-[240px] mt-0.5">{c.id}</div>
@@ -910,16 +957,28 @@ export default function CampaignMktPage() {
                 proposals={appliedProposals}
                 onSelect={setSelectedProposal}
                 selectedId={selectedProposal?.id}
-                actions={(p) => (
-                  <>
-                    {p.status === 'approved' && (
-                      <button onClick={() => apiAction('apply', { proposalId: p.id })} disabled={actionLoading !== null}
-                        className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-500 transition disabled:opacity-50 whitespace-nowrap">
-                        Áp dụng
+                actions={(p) => {
+                  const isTop = topBannerCampaign?.id === p.id
+                  return (
+                    <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                      {p.status === 'approved' && (
+                        <button onClick={() => apiAction('apply', { proposalId: p.id })} disabled={actionLoading !== null}
+                          className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-500 transition disabled:opacity-50 whitespace-nowrap">
+                          Áp dụng
+                        </button>
+                      )}
+                      <button
+                        onClick={() => apiAction('set-proposal-top-banner', { proposalId: p.id })}
+                        disabled={actionLoading !== null || isTop}
+                        className={`rounded-lg px-3 py-1.5 text-xs font-bold text-white transition disabled:opacity-50 whitespace-nowrap ${
+                          isTop ? 'bg-emerald-600/40 text-emerald-300' : 'bg-blue-600 hover:bg-blue-500'
+                        }`}
+                      >
+                        {isTop ? '★ Top Banner Live' : 'Đưa lên Top Banner'}
                       </button>
-                    )}
-                  </>
-                )}
+                    </div>
+                  )
+                }}
               />
             </div>
           )}
@@ -1003,6 +1062,7 @@ export default function CampaignMktPage() {
             onSave={handleSaveEdits}
             onAction={handleDrawerAction}
             actionLoading={actionLoading}
+            topBannerCampaign={topBannerCampaign}
           />
         )}
       </div>

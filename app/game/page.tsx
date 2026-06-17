@@ -3,6 +3,8 @@ import { getActiveCampaign } from '@/src/data/campaigns'
 import { getEnabledArticles } from '@/src/data/newsArticles'
 import Main from './_components/main'
 
+export const dynamic = 'force-dynamic'
+
 const CATEGORY_SLUG = 'blog'
 const SUB_CATEGORY_SLUG = 'choi-game'
 

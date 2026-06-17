@@ -40,7 +40,7 @@ export type CampaignValidationResult = {
 
 // AI_AGENT_EDITABLE: update active campaigns and banner slot content
 export const campaigns: Campaign[] = [
-  {
+{
     id: "weekly-garena-2026-06-16-4",
     title: "Ưu đãi nạp Garena trong tuần",
     subtitle: "Giảm 5% cho Free Fire, Liên Quân Mobile trên NapTheVui.",
@@ -66,8 +66,70 @@ export const campaigns: Campaign[] = [
     ],
     ctaText: "Xem ưu đãi",
     articleId: "weekly-garena-2026-06-16-4",
-    enabled: true,
+    enabled: false,
     priority: 260,
+    isTopBanner: true,
+    themeClassName: "from-[#E75648] via-[#F1865F] to-[#FFD58F]"
+  },
+  {
+    id: "weekly-garena-2026-06-16-5",
+    title: "Ưu đãi nạp Garena trong tuần",
+    subtitle: "Giảm 5% cho Free Fire, Liên Quân Mobile trên NapTheVui.",
+    bannerImageUrl: "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+    mobileBannerImageUrl: "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+    altText: "Garena promotion banner",
+    targetPublisherId: "garena",
+    targetGameIds: [
+      "free-fire",
+      "lien-quan-mobile",
+      "fc-online",
+      "lien-minh-huyen-thoai"
+    ],
+    discountPercent: 5,
+    discountText: "Giảm 5%",
+    skuDiscounts: [
+      {
+        id: "weekly-garena-2026-06-16-5-garena-eligible-skus",
+        publisherId: "garena",
+        discountPercent: 5,
+        enabled: true
+      }
+    ],
+    ctaText: "Xem ưu đãi",
+    articleId: "weekly-garena-2026-06-16-5",
+    enabled: false,
+    priority: 270,
+    isTopBanner: true,
+    themeClassName: "from-[#E75648] via-[#F1865F] to-[#FFD58F]"
+  },
+  {
+    id: "weekly-garena-2026-06-16-6",
+    title: "Ưu đãi nạp Garena trong tuần",
+    subtitle: "Giảm 5% cho Free Fire, Liên Quân Mobile trên NapTheVui.",
+    bannerImageUrl: "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+    mobileBannerImageUrl: "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
+    altText: "Garena promotion banner",
+    targetPublisherId: "garena",
+    targetGameIds: [
+      "free-fire",
+      "lien-quan-mobile",
+      "fc-online",
+      "lien-minh-huyen-thoai"
+    ],
+    discountPercent: 5,
+    discountText: "Giảm 5%",
+    skuDiscounts: [
+      {
+        id: "weekly-garena-2026-06-16-6-garena-eligible-skus",
+        publisherId: "garena",
+        discountPercent: 5,
+        enabled: true
+      }
+    ],
+    ctaText: "Xem ưu đãi",
+    articleId: "weekly-garena-2026-06-16-6",
+    enabled: true,
+    priority: 280,
     isTopBanner: true,
     themeClassName: "from-[#E75648] via-[#F1865F] to-[#FFD58F]"
   }

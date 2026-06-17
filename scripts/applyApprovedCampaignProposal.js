@@ -280,8 +280,8 @@ function validateProposal(proposal, catalogSource) {
   const { itemTypes, itemPublisherIds, skuIds } = parseCatalogIds(catalogSource)
   const publisherType = itemTypes.get(proposal.targetPublisherId)
 
-  if (proposal.status !== 'approved') {
-    errors.push(`Proposal status must be "approved" before applying. Current status: ${proposal.status}`)
+  if (proposal.status !== 'approved' && proposal.status !== 'applied') {
+    errors.push(`Proposal status must be "approved" or "applied" before applying. Current status: ${proposal.status}`)
   }
 
   if (typeof proposal.targetPublisherId !== 'string' || Array.isArray(proposal.targetPublisherId)) {
