@@ -35,7 +35,7 @@ function runNextBuild() {
       ...process.env,
       NEXT_DIST_DIR: buildDistName(),
     },
-      stdio: 'inherit'
+      stdio: 'pipe'
     })
   } finally {
     if (originalTsconfig !== undefined) {

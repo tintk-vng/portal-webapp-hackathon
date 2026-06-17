@@ -582,6 +582,7 @@ function applyApprovedCampaignProposal(proposalId) {
     }
   } catch (e) {}
   campaignState.topBannerCampaignId = proposal.id
+  campaignState.disabledCampaigns = (campaignState.disabledCampaigns || []).filter((id) => id !== proposal.id)
   writeText(campaignStatePath, JSON.stringify(campaignState, null, 2))
 
   let activationSummary
