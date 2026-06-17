@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/router'
 import './share-bar.scss'
 
 interface ShareBarProps {
@@ -9,7 +8,6 @@ interface ShareBarProps {
 }
 
 export default function ShareBar({ title, url }: ShareBarProps) {
-  const router = useRouter()
   const currentUrl = typeof window !== 'undefined' ? `${window.location.origin}${url}` : ''
 
   const shareLinks = [
