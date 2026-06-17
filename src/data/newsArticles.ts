@@ -158,8 +158,8 @@ export const newsArticles: NewsArticle[] = [
     id: "weekly-garena-2026-06-16-4",
     title: "Garena: ưu đãi nạp thẻ tuần này trên NapTheVui",
     summary: "Giảm 5% cho nhóm nạp Garena, tập trung vào Free Fire, Liên Quân Mobile, FC Online.",
-    coverImageUrl: "https://scdn.zalopay.com.vn/zst/zpi/images/telco/logos_v2/digital_card/garena.png",
-    content: "<h3>Ưu Đãi Nạp Thẻ Game Garena Tuần Này</h3>\n<p>NapTheVui đang chuẩn bị ưu đãi nạp Garena dành cho người dùng muốn nạp nhanh các tựa game quen thuộc.</p>\n<p><strong>Áp dụng cho:</strong> Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại.</p>\n<p>Mức ưu đãi Giảm 5% được lấy từ campaign setup nội bộ cho bản nháp này.</p>\n<p>Nguồn tham khảo công khai: Garena official top-up site (https://napthe.vn).</p>\n<h4>Hướng dẫn cách nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>Garena</strong> hoặc tên tựa game bạn chơi trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp với nhu cầu.</li>\n<li>Kiểm tra chiết khấu và ưu đãi hiển thị rõ ràng tại màn hình thẻ nạp, mệnh giá và phần thanh toán trước khi tiến hành giao dịch.</li>\n</ol>\n<p><strong>Thời gian áp dụng:</strong> Theo lịch trình campaign cụ thể sau khi bản nháp đề xuất này được ban biên tập duyệt và áp dụng chính thức.</p>\n<p><em>Lưu ý: Bài viết này được tạo tự động dựa trên Weekly campaign brief. Các chi tiết khuyến mãi cần được xác nhận trong preview và validation trước khi xuất hiện trên website chính thức.</em></p>",
+    coverImageUrl: "https://www.facebook.com/tr?id=214992645851330&ev=PageView&noscript=1",
+    content: "<h3>Ưu Đãi Nạp Thẻ Game Garena Tuần Này</h3>\n<p>NapTheVui đang chuẩn bị ưu đãi nạp Garena dành cho người dùng muốn nạp nhanh các tựa game quen thuộc.</p>\n<p><strong>Áp dụng cho:</strong> Free Fire, Liên Quân Mobile, FC Online, Liên Minh Huyền Thoại.</p>\n<p>Mức ưu đãi Giảm 5% được lấy từ campaign setup nội bộ cho bản nháp này.</p>\n<p>Nguồn tham khảo công khai: Garena official top-up site (https://napthe.vn).</p>\n<h4>Hướng dẫn cách nạp và nhận ưu đãi:</h4>\n<ol>\n<li>Tìm kiếm <strong>Garena</strong> hoặc tên tựa game bạn chơi trong ô tìm kiếm NapTheVui.</li>\n<li>Chọn mệnh giá thẻ nạp phù hợp với nhu cầu.</li>\n<li>Kiểm tra chiết khấu và ưu đãi hiển thị rõ ràng tại màn hình thẻ nạp, mệnh giá và phần thanh toán trước khi tiến hành xác nhận giao dịch.</li>\n</ol>\n<p><strong>Thời gian áp dụng:</strong> Theo lịch trình campaign cụ thể sau khi bản nháp đề xuất này được ban biên tập duyệt và áp dụng chính thức.</p>\n<p><em>Lưu ý: Bài viết này được tạo tự động dựa trên Weekly campaign brief. Các chi tiết khuyến mãi cần được xác nhận trong preview và validation trước khi xuất hiện trên website chính thức.</em></p>",
     relatedCampaignId: "weekly-garena-2026-06-16-4",
     relatedPublisherId: "garena",
     relatedGameIds: [
@@ -203,6 +203,22 @@ export const newsArticles: NewsArticle[] = [
       "lien-minh-huyen-thoai"
     ],
     publishedAt: "2026-06-16T14:41:52.305Z",
+    enabled: true
+  },
+  {
+    id: "weekly-googleplay-2026-06-16-2",
+    title: "Google Play: ưu đãi nạp thẻ tuần này trên NapTheVui",
+    summary: "Ưu đãi đang xác minh cho nhóm nạp Google Play, tập trung vào Google Play, Genshin Impact, Tốc Chiến.",
+    coverImageUrl: "https://play-lh.googleusercontent.com/pXooT00frDwY1CVPeN_Qiz1R4_UyHqhjdXQgP1-e8bf7VUGtYIly6K0R0p39jeoD80Yu3dPg7hqO4hi4oUVz=s256",
+    content: "<h3>Hướng Dẫn Mua &amp; Sử Dụng Mã Thẻ Google Play (CH Play) Nhanh Chóng</h3>\n<p>Mã quà tặng Google Play (Google Play Gift Card) là phương thức tiện lợi nhất để thanh toán các ứng dụng, phim ảnh, sách và nạp vật phẩm trong các tựa game Android phổ biến như <strong>Genshin Impact, Tốc Chiến, Roblox</strong> mà không cần liên kết trực tiếp tài khoản ngân hàng cá nhân.</p>\n\n<h4>Quy trình mua và kích hoạt mã Google Play:</h4>\n<ol>\n  <li><strong>Mua mã thẻ:</strong> Tìm kiếm \"Google Play\" trên ô tìm kiếm của NapTheVui, chọn mệnh giá phù hợp và tiến hành thanh toán để nhận ngay mã nạp thẻ.</li>\n  <li><strong>Nạp mã vào tài khoản:</strong>\n    <ul>\n      <li>Mở ứng dụng <strong>Google Play Store (CH Play)</strong> trên điện thoại Android của bạn.</li>\n      <li>Nhấp vào biểu tượng tài khoản (avatar) ở góc trên bên phải màn hình.</li>\n      <li>Chọn <strong>Thanh toán và gói thuê bao</strong> (Payments &amp; subscriptions) &gt; <strong>Đổi mã quà tặng</strong> (Redeem code).</li>\n      <li>Nhập chính xác mã nạp bạn nhận được từ hệ thống và nhấn <strong>Đổi</strong> (Redeem).</li>\n    </ul>\n  </li>\n  <li><strong>Sử dụng số dư:</strong> Số tiền sẽ ngay lập tức được cộng vào số dư Google Play của bạn, sẵn sàng sử dụng để thanh toán các giao dịch trực tiếp trong game hoặc ứng dụng.</li>\n</ol>\n\n<h4>Lưu ý quan trọng:</h4>\n<ul>\n  <li><strong>Kiểm tra quốc gia tài khoản:</strong> Đảm bảo vùng/quốc gia tài khoản Google Play của bạn trùng khớp với mệnh giá thẻ mua (thông thường là Việt Nam).</li>\n  <li><strong>Khuyến mãi đi kèm:</strong> Đừng bỏ qua các đợt ưu đãi chiết khấu từ NapTheVui (như chương trình Ưu đãi đang xác minh tuần này) để tối ưu chi phí nạp game của bạn.</li>\n</ul>",
+    relatedCampaignId: "weekly-googleplay-2026-06-16-2",
+    relatedPublisherId: "googleplay",
+    relatedGameIds: [
+      "google-play-game",
+      "genshin-impact",
+      "toc-chien"
+    ],
+    publishedAt: "2026-06-16T19:48:43.460Z",
     enabled: true
   }
 ]

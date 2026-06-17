@@ -1,5 +1,5 @@
 {
-  "id": "weekly-googleplay-2026-06-16",
+  "id": "weekly-googleplay-2026-06-17-2",
   "title": "Google Play weekly campaign proposal",
   "selectedPublisher": "googleplay",
   "alternativesConsidered": [
@@ -28,7 +28,7 @@
   "articleContent": "<h3>Hướng Dẫn Mua &amp; Sử Dụng Mã Thẻ Google Play (CH Play) Nhanh Chóng</h3>\n<p>Mã quà tặng Google Play (Google Play Gift Card) là phương thức tiện lợi nhất để thanh toán các ứng dụng, phim ảnh, sách và nạp vật phẩm trong các tựa game Android phổ biến như <strong>Genshin Impact, Tốc Chiến, Roblox</strong> mà không cần liên kết trực tiếp tài khoản ngân hàng cá nhân.</p>\n\n<h4>Quy trình mua và kích hoạt mã Google Play:</h4>\n<ol>\n  <li><strong>Mua mã thẻ:</strong> Tìm kiếm \"Google Play\" trên ô tìm kiếm của NapTheVui, chọn mệnh giá phù hợp và tiến hành thanh toán để nhận ngay mã nạp thẻ.</li>\n  <li><strong>Nạp mã vào tài khoản:</strong>\n    <ul>\n      <li>Mở ứng dụng <strong>Google Play Store (CH Play)</strong> trên điện thoại Android của bạn.</li>\n      <li>Nhấp vào biểu tượng tài khoản (avatar) ở góc trên bên phải màn hình.</li>\n      <li>Chọn <strong>Thanh toán và gói thuê bao</strong> (Payments &amp; subscriptions) &gt; <strong>Đổi mã quà tặng</strong> (Redeem code).</li>\n      <li>Nhập chính xác mã nạp bạn nhận được từ hệ thống và nhấn <strong>Đổi</strong> (Redeem).</li>\n    </ul>\n  </li>\n  <li><strong>Sử dụng số dư:</strong> Số tiền sẽ ngay lập tức được cộng vào số dư Google Play của bạn, sẵn sàng sử dụng để thanh toán các giao dịch trực tiếp trong game hoặc ứng dụng.</li>\n</ol>\n\n<h4>Lưu ý quan trọng:</h4>\n<ul>\n  <li><strong>Kiểm tra quốc gia tài khoản:</strong> Đảm bảo vùng/quốc gia tài khoản Google Play của bạn trùng khớp với mệnh giá thẻ mua (thông thường là Việt Nam).</li>\n  <li><strong>Khuyến mãi đi kèm:</strong> Đừng bỏ qua các đợt ưu đãi chiết khấu từ NapTheVui (như chương trình Ưu đãi đang xác minh tuần này) để tối ưu chi phí nạp game của bạn.</li>\n</ul>",
   "recommendedPopularSearchItems": [
     {
-      "id": "agent-weekly-googleplay-2026-06-16-google-play-game",
+      "id": "agent-weekly-googleplay-2026-06-17-2-google-play-game",
       "targetId": "google-play-game",
       "targetType": "game",
       "label": "Google Play",
@@ -36,10 +36,10 @@
       "campaignBoost": 25,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T19:36:10.591Z"
+      "updatedAt": "2026-06-17T04:12:43.140Z"
     },
     {
-      "id": "agent-weekly-googleplay-2026-06-16-genshin-impact",
+      "id": "agent-weekly-googleplay-2026-06-17-2-genshin-impact",
       "targetId": "genshin-impact",
       "targetType": "game",
       "label": "Genshin Impact",
@@ -47,10 +47,10 @@
       "campaignBoost": 25,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T19:36:10.591Z"
+      "updatedAt": "2026-06-17T04:12:43.140Z"
     },
     {
-      "id": "agent-weekly-googleplay-2026-06-16-toc-chien",
+      "id": "agent-weekly-googleplay-2026-06-17-2-toc-chien",
       "targetId": "toc-chien",
       "targetType": "game",
       "label": "Tốc Chiến",
@@ -58,10 +58,10 @@
       "campaignBoost": 25,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T19:36:10.591Z"
+      "updatedAt": "2026-06-17T04:12:43.140Z"
     },
     {
-      "id": "agent-weekly-googleplay-2026-06-16-free-fire",
+      "id": "agent-weekly-googleplay-2026-06-17-2-free-fire",
       "targetId": "free-fire",
       "targetType": "game",
       "label": "Free Fire",
@@ -72,10 +72,10 @@
       "purchaseCount": 980,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T19:36:10.591Z"
+      "updatedAt": "2026-06-17T04:12:43.140Z"
     },
     {
-      "id": "agent-weekly-googleplay-2026-06-16-lien-quan-mobile",
+      "id": "agent-weekly-googleplay-2026-06-17-2-lien-quan-mobile",
       "targetId": "lien-quan-mobile",
       "targetType": "game",
       "label": "Liên Quân Mobile",
@@ -86,10 +86,10 @@
       "purchaseCount": 860,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T19:36:10.591Z"
+      "updatedAt": "2026-06-17T04:12:43.140Z"
     },
     {
-      "id": "agent-weekly-googleplay-2026-06-16-fc-online",
+      "id": "agent-weekly-googleplay-2026-06-17-2-fc-online",
       "targetId": "fc-online",
       "targetType": "game",
       "label": "FC Online",
@@ -100,7 +100,7 @@
       "purchaseCount": 420,
       "enabled": true,
       "source": "agent",
-      "updatedAt": "2026-06-16T19:36:10.591Z"
+      "updatedAt": "2026-06-17T04:12:43.140Z"
     }
   ],
   "proposedFileChanges": [
@@ -108,17 +108,13 @@
     "src/data/newsArticles.ts",
     "src/data/catalog.ts"
   ],
-  "createdAt": "2026-06-16T19:36:10.591Z",
-  "status": "draft",
-  "lastScannedAt": "2026-06-16T19:36:10.591Z",
+  "createdAt": "2026-06-17T04:12:43.140Z",
+  "status": "scanned",
+  "lastScannedAt": "2026-06-17T04:12:43.140Z",
   "statusHistory": [
     {
       "status": "scanned",
-      "timestamp": "2026-06-16T19:36:10.591Z"
-    },
-    {
-      "status": "draft",
-      "timestamp": "2026-06-17T04:14:03.151Z"
+      "timestamp": "2026-06-17T04:12:43.140Z"
     }
   ],
   "researchSourceIds": [
@@ -150,8 +146,8 @@
     "Research roblox-store: No public pages could be fetched for this source.",
     "Selected publisher googleplay does not have a confirmed campaign discount from manual or public research signals.",
     "discountPercent must be a positive number below 100",
-    "Campaign weekly-googleplay-2026-06-16 discountPercent must be a positive number below 100",
-    "Campaign weekly-googleplay-2026-06-16 skuDiscount weekly-googleplay-2026-06-16-googleplay-eligible-skus must have a valid discount percent"
+    "Campaign weekly-googleplay-2026-06-17-2 discountPercent must be a positive number below 100",
+    "Campaign weekly-googleplay-2026-06-17-2 skuDiscount weekly-googleplay-2026-06-17-2-googleplay-eligible-skus must have a valid discount percent"
   ],
   "inputSnapshot": {
     "weeklyBriefPath": "src/agent/inputs/weeklyBrief.md",

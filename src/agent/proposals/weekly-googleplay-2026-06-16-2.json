@@ -13,8 +13,8 @@
     "genshin-impact",
     "toc-chien"
   ],
-  "discountPercent": 0,
-  "discountText": "Ưu đãi đang xác minh",
+  "discountPercent": 5,
+  "discountText": "Giảm 5%",
   "bannerTitle": "Ưu đãi nạp Google Play trong tuần",
   "bannerSubtitle": "Ưu đãi đang xác minh cho Google Play, Genshin Impact trên NapTheVui.",
   "bannerImageUrl": "https://play-lh.googleusercontent.com/pXooT00frDwY1CVPeN_Qiz1R4_UyHqhjdXQgP1-e8bf7VUGtYIly6K0R0p39jeoD80Yu3dPg7hqO4hi4oUVz=s256",
@@ -109,7 +109,7 @@
     "src/data/catalog.ts"
   ],
   "createdAt": "2026-06-16T19:48:43.460Z",
-  "status": "approved",
+  "status": "applied",
   "lastScannedAt": "2026-06-16T19:48:43.460Z",
   "statusHistory": [
     {

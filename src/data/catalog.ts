@@ -329,7 +329,7 @@ export const topupSkus: TopupSku[] = [
 // AI_AGENT_EDITABLE: daily popular search recommendations
 export const agentPopularSearchRecommendations: PopularSearchItem[] = [
   {
-    id: "agent-weekly-garena-2026-06-16-5-free-fire",
+    id: "agent-weekly-garena-2026-06-16-6-free-fire",
     targetId: "free-fire",
     targetType: "game",
     label: "Free Fire",
@@ -341,10 +341,10 @@ export const agentPopularSearchRecommendations: PopularSearchItem[] = [
     campaignBoost: 25,
     enabled: true,
     source: "agent",
-    updatedAt: "2026-06-16T10:00:45.939Z"
+    updatedAt: "2026-06-16T14:41:52.305Z"
   },
   {
-    id: "agent-weekly-garena-2026-06-16-5-lien-quan-mobile",
+    id: "agent-weekly-garena-2026-06-16-6-lien-quan-mobile",
     targetId: "lien-quan-mobile",
     targetType: "game",
     label: "Liên Quân Mobile",
@@ -356,10 +356,10 @@ export const agentPopularSearchRecommendations: PopularSearchItem[] = [
     campaignBoost: 25,
     enabled: true,
     source: "agent",
-    updatedAt: "2026-06-16T10:00:45.939Z"
+    updatedAt: "2026-06-16T14:41:52.305Z"
   },
   {
-    id: "agent-weekly-garena-2026-06-16-5-fc-online",
+    id: "agent-weekly-garena-2026-06-16-6-fc-online",
     targetId: "fc-online",
     targetType: "game",
     label: "FC Online",
@@ -371,10 +371,10 @@ export const agentPopularSearchRecommendations: PopularSearchItem[] = [
     campaignBoost: 25,
     enabled: true,
     source: "agent",
-    updatedAt: "2026-06-16T10:00:45.939Z"
+    updatedAt: "2026-06-16T14:41:52.305Z"
   },
   {
-    id: "agent-weekly-garena-2026-06-16-5-lien-minh-huyen-thoai",
+    id: "agent-weekly-garena-2026-06-16-6-lien-minh-huyen-thoai",
     targetId: "lien-minh-huyen-thoai",
     targetType: "game",
     label: "Liên Minh Huyền Thoại",
@@ -382,10 +382,10 @@ export const agentPopularSearchRecommendations: PopularSearchItem[] = [
     campaignBoost: 25,
     enabled: true,
     source: "agent",
-    updatedAt: "2026-06-16T10:00:45.939Z"
+    updatedAt: "2026-06-16T14:41:52.305Z"
   },
   {
-    id: "agent-weekly-garena-2026-06-16-5-googleplay",
+    id: "agent-weekly-garena-2026-06-16-6-googleplay",
     targetId: "googleplay",
     targetType: "store",
     label: "Google Play",
@@ -396,10 +396,10 @@ export const agentPopularSearchRecommendations: PopularSearchItem[] = [
     purchaseCount: 510,
     enabled: true,
     source: "agent",
-    updatedAt: "2026-06-16T10:00:45.939Z"
+    updatedAt: "2026-06-16T14:41:52.305Z"
   },
   {
-    id: "agent-weekly-garena-2026-06-16-5-roblox",
+    id: "agent-weekly-garena-2026-06-16-6-roblox",
     targetId: "roblox",
     targetType: "game",
     label: "Roblox",
@@ -410,7 +410,7 @@ export const agentPopularSearchRecommendations: PopularSearchItem[] = [
     purchaseCount: 430,
     enabled: true,
     source: "agent",
-    updatedAt: "2026-06-16T10:00:45.939Z"
+    updatedAt: "2026-06-16T14:41:52.305Z"
   }
 ]
 

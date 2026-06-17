@@ -56,6 +56,7 @@ function getPaymentAggregatorBaseUrl() {
 }
 
 const nextConfig = {
+  staticPageGenerationTimeout: 1000,
   webpack: (config) => {
     // Handle SVG imports as React components
     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'))

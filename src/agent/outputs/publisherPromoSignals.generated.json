@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-17T00:52:16.435Z",
+  "generatedAt": "2026-06-17T04:12:42.952Z",
   "sourceFile": "src/agent/inputs/publisherResearchSources.json",
   "signals": [
     {
@@ -23,7 +23,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": "https://www.facebook.com/tr?id=214992645851330&ev=PageView&noscript=1",
       "confidence": 0.2,
-      "observedAt": "2026-06-17T00:51:59.070Z",
+      "observedAt": "2026-06-17T04:12:20.038Z",
       "evidenceSnippet": ". ",
       "warnings": [
         "No clear public discount percent was detected. Do not publish a discount from this research signal alone.",
@@ -48,7 +48,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": null,
       "confidence": 0.05,
-      "observedAt": "2026-06-17T00:51:59.125Z",
+      "observedAt": "2026-06-17T04:12:20.255Z",
       "evidenceSnippet": "",
       "warnings": [
         "Fetch failed for https://zing.vn: fetch failed",
@@ -76,7 +76,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": "https://vtcgame.vn/images/vtcshare.jpg",
       "confidence": 0.26,
-      "observedAt": "2026-06-17T00:51:59.696Z",
+      "observedAt": "2026-06-17T04:12:21.416Z",
       "evidenceSnippet": "me PC Con Đường Tơ Lụa tại Việt Nam, ủy quyền duy nhất của WEMADEMAX được ph&aacute;t h&agrave;nh bởi VTC Game. Tựa game MMORPG huyền thoại hay nhất. TRANG CHỦ AUDITION Game PC Audition - Nhịp Điệu Cuộc Sống l&agrave; tựa game &Acirc;m nhạc - Thời trang - Hẹn h&ograve; tr&ecirc;n m&aacute;y t&iacute;nh SỐ 1 tại Việt Nam. Ra mắt từ năm 2006, Audition đ&atilde; s&aacute;t c&aacute;nh c&ugrave;ng nhiều thế hệ game thủ, trở th&agrave;nh &ldquo;huyền thoại&rdquo; trong d&ograve;ng game casual dancing. TRANG CHỦ Truy kích PC Game PC Truy K&iacute;ch PC - Bắn ph&aacute; c&aacute;c",
       "warnings": [
         "No clear public discount percent was detected. Do not publish a discount from this research signal alone."
@@ -106,7 +106,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": "https://gamota.com/wp-content/uploads/2025/04/Thumbnail-scaled.jpg",
       "confidence": 0.38,
-      "observedAt": "2026-06-17T00:52:00.696Z",
+      "observedAt": "2026-06-17T04:12:22.466Z",
       "evidenceSnippet": "hành game, chúng tôi đều hướng đến việc đem lại những trải nghiệm tăng sự gắn bó của game thủ Nhận thông tin mới nhất Theo dõi để nhận thông báo về tất cả các tin tức mới nhất của chúng tôi Subscribe Now --> Theo dõi Trụ Sở Chính (+84) 19006855 Tòa nhà LE Building, Láng Hạ, phường Ô Chợ Dừa, Hà Nội Chi Nhánh (+84) 19006855 --> Tòa nhà TF Building , 408 Điện Biên Phủ, P.11, Quận 10, HCM Chi Nhánh (+84) 19006855 --> Đường 1 Scotts, #24-10 Trung tâm Shaw, Singapore 228208 Trang chủ Trang chủ About Us Game Dịch vụ Labs Liên hệ Kết nối Chúng tôi mang đến nhiều năm kinh nghiệm t",
       "warnings": [
         "No clear public discount percent was detected. Do not publish a discount from this research signal alone."
@@ -132,7 +132,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": "https://365.vtcpay.vn/media/Upload/Images/Category/Card@Telco-meta-imgae-13-11-2020-15-44-50.png",
       "confidence": 0.26,
-      "observedAt": "2026-06-17T00:52:01.301Z",
+      "observedAt": "2026-06-17T04:12:24.845Z",
       "evidenceSnippet": "; Bạn không nhận được tin nhắn chưa mã xác thực OTP SMS? Chúng tôi sẽ gửi cho bạn mã xác thực thông qua cuộc gọi tới số điện thoại Quay lại Gọi cho tôi &times; Combo Data 3G/4G giá tốt – Mua dễ dàng tại VTC Pay. Combo Data 3G/4G giá tốt – Mua dễ dàng tại VTC Pay Toggle navigation tin tức Hướng dẫn Tin tức Đăng nhập Đăng ký tin tức Nạp tiền điện thoại Data 3G/4G Thẻ game Nạp game Dịch vụ tài chính Điện Nước Truyền hình Internet Hóa đơn VNPT Google Play Voucher Tinder Voucher ELSA Vé vui chơi Vé xe rẻ Cố vấn phong thủy Vé máy bay Cố định Credit Tiện ích Dịch vụ Giftpop Nạp &",
       "warnings": [
         "No clear public discount percent was detected. Do not publish a discount from this research signal alone."
@@ -158,7 +158,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": "https://napthengay.vn/media/images/1200x630-thegame.jpg",
       "confidence": 0.26,
-      "observedAt": "2026-06-17T00:52:01.685Z",
+      "observedAt": "2026-06-17T04:12:25.350Z",
       "evidenceSnippet": "Nội, Việt Nam Hotline: 0776 395 737 - 034 510 2760 Email: hotro@napthengay.vn Chính sách bảo hành Chính sách bảo mật Chính sách giao hàng Chính sách đổi trả và hoàn tiền Chính sách hoạt động Chính sách kiểm hàng Chính sách vận chuyển Quy định và hình thức thanh toán Thông tin sản phẩm Những câu hỏi thường gặp CÔNG TY CỔ PHẦN FUNTEK VIỆT NAM Giấy chứng nhận đăng ký kinh doanh số: 0109054589 do Sở kế hoạch đầu tư Thành phố Hà Nội cấp ngày 06/01/2020 Địa chỉ: Số 31 phố Chùa Láng, Phường Láng Thượng, Quận Đống Đa, Thành phố Hà Nội, Việt Nam Hotline: 0776 395 737 - 034 510 2760",
       "warnings": [
         "No clear public discount percent was detected. Do not publish a discount from this research signal alone."
@@ -188,7 +188,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": "https://cdn.smobgame.com/template/corp/images/bg_new.jpg",
       "confidence": 0.32,
-      "observedAt": "2026-06-17T00:52:02.709Z",
+      "observedAt": "2026-06-17T04:12:26.638Z",
       "evidenceSnippet": "Funtap - Kiến tạo niềm vui. Funtap - Kiến tạo niềm vui Về chúng tôi Tin tức Games Tuyển dụng Liên hệ Việt Nam English Kiến tạo niềm vui Thành lập năm 2015 với sứ mệnh mang đến trải nghiệm giải trí và giá trị tri thức cho cộng đồng thông qua các sản phẩm công nghệ, Funtap Games đã phát triển nhanh chóng và trở thành một trong những nhà phát hành trò chơi trên di động hang đầu tại Việt Nam với mạng lưới 50 triệu người chơi trên toàn cầu. Về chúng tôi Dịch vụ phát hành Thủ tục pháp lý n",
       "warnings": [
         "No clear public discount percent was detected. Do not publish a discount from this research signal alone."
@@ -214,7 +214,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": "https://napthengay.vn/media/images/1200x630-thegame.jpg",
       "confidence": 0.26,
-      "observedAt": "2026-06-17T00:52:02.838Z",
+      "observedAt": "2026-06-17T04:12:26.777Z",
       "evidenceSnippet": "Nội, Việt Nam Hotline: 0776 395 737 - 034 510 2760 Email: hotro@napthengay.vn Chính sách bảo hành Chính sách bảo mật Chính sách giao hàng Chính sách đổi trả và hoàn tiền Chính sách hoạt động Chính sách kiểm hàng Chính sách vận chuyển Quy định và hình thức thanh toán Thông tin sản phẩm Những câu hỏi thường gặp CÔNG TY CỔ PHẦN FUNTEK VIỆT NAM Giấy chứng nhận đăng ký kinh doanh số: 0109054589 do Sở kế hoạch đầu tư Thành phố Hà Nội cấp ngày 06/01/2020 Địa chỉ: Số 31 phố Chùa Láng, Phường Láng Thượng, Quận Đống Đa, Thành phố Hà Nội, Việt Nam Hotline: 0776 395 737 - 034 510 2760",
       "warnings": [
         "No clear public discount percent was detected. Do not publish a discount from this research signal alone."
@@ -248,7 +248,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": "https://play-lh.googleusercontent.com/pXooT00frDwY1CVPeN_Qiz1R4_UyHqhjdXQgP1-e8bf7VUGtYIly6K0R0p39jeoD80Yu3dPg7hqO4hi4oUVz=s256",
       "confidence": 0.56,
-      "observedAt": "2026-06-17T00:52:06.417Z",
+      "observedAt": "2026-06-17T04:12:32.945Z",
       "evidenceSnippet": "Android Apps on Google Play. Android Apps on Google Play Games Apps Books Kids google_logo Play Games Apps Books Kids none search help_outline Sign in with Google play_apps Library & devices payment Payments & subscriptions reviews My Play activity redeem Offers Play Pass Personalization in Play settings Settings Privacy Policy • Terms of Service Games Apps Books Kids desktop_windows Windows phone_android Phone tablet_android Tablet",
       "warnings": [
         "No clear public discount percent was detected. Do not publish a discount from this research signal alone."
@@ -271,7 +271,7 @@
       "detectedDiscount": null,
       "detectedImageUrl": null,
       "confidence": 0.05,
-      "observedAt": "2026-06-17T00:52:16.435Z",
+      "observedAt": "2026-06-17T04:12:42.952Z",
       "evidenceSnippet": "",
       "warnings": [
         "Fetch failed for https://roblox.com: This operation was aborted",

@@ -67,7 +67,7 @@ export const campaigns: Campaign[] = [
     ctaText: "Xem ưu đãi",
     articleId: "weekly-garena-2026-06-16-4",
     enabled: false,
-    priority: 260,
+    priority: 300,
     isTopBanner: true,
     themeClassName: "from-[#E75648] via-[#F1865F] to-[#FFD58F]"
   },
@@ -97,7 +97,7 @@ export const campaigns: Campaign[] = [
     ],
     ctaText: "Xem ưu đãi",
     articleId: "weekly-garena-2026-06-16-5",
-    enabled: true,
+    enabled: false,
     priority: 290,
     isTopBanner: true,
     themeClassName: "from-[#E75648] via-[#F1865F] to-[#FFD58F]"
@@ -128,8 +128,38 @@ export const campaigns: Campaign[] = [
     ],
     ctaText: "Xem ưu đãi",
     articleId: "weekly-garena-2026-06-16-6",
+    enabled: true,
+    priority: 320,
+    isTopBanner: true,
+    themeClassName: "from-[#E75648] via-[#F1865F] to-[#FFD58F]"
+  },
+  {
+    id: "weekly-googleplay-2026-06-16-2",
+    title: "Ưu đãi nạp Google Play trong tuần",
+    subtitle: "Ưu đãi đang xác minh cho Google Play, Genshin Impact trên NapTheVui.",
+    bannerImageUrl: "https://play-lh.googleusercontent.com/pXooT00frDwY1CVPeN_Qiz1R4_UyHqhjdXQgP1-e8bf7VUGtYIly6K0R0p39jeoD80Yu3dPg7hqO4hi4oUVz=s256",
+    mobileBannerImageUrl: "https://play-lh.googleusercontent.com/pXooT00frDwY1CVPeN_Qiz1R4_UyHqhjdXQgP1-e8bf7VUGtYIly6K0R0p39jeoD80Yu3dPg7hqO4hi4oUVz=s256",
+    altText: "Google Play promotion banner",
+    targetPublisherId: "googleplay",
+    targetGameIds: [
+      "google-play-game",
+      "genshin-impact",
+      "toc-chien"
+    ],
+    discountPercent: 5,
+    discountText: "Giảm 5%",
+    skuDiscounts: [
+      {
+        id: "weekly-googleplay-2026-06-16-2-googleplay-eligible-skus",
+        publisherId: "googleplay",
+        discountPercent: 5,
+        enabled: true
+      }
+    ],
+    ctaText: "Xem ưu đãi",
+    articleId: "weekly-googleplay-2026-06-16-2",
     enabled: false,
-    priority: 280,
+    priority: 310,
     isTopBanner: true,
     themeClassName: "from-[#E75648] via-[#F1865F] to-[#FFD58F]"
   }
