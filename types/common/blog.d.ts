@@ -9,6 +9,7 @@ interface Blog {
   ID: number
   slug: string
   title: string
+  subtitle?: string
   description: string
   content?: string
   paragraphs?: any[]
