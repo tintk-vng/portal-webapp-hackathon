@@ -11,10 +11,18 @@ const tempBuildLinkName = 'next-build-temp'
 function ensureTempBuildJunction() {
   const linkPath = path.join(root, tempBuildLinkName)
 
-  fs.rmSync(linkPath, { recursive: true, force: true })
-  fs.mkdirSync(linkPath, { recursive: true })
-
-  return tempBuildLinkName
+  try {
+    fs.rmSync(linkPath, { recursive: true, force: true })
+    fs.mkdirSync(linkPath, { recursive: true })
+    return tempBuildLinkName
+  } catch {
+    // App root may be read-only (e.g. Docker production).
+    // Fall back to a temp directory.
+    const fallback = path.join(os.tmpdir(), tempBuildLinkName)
+    fs.rmSync(fallback, { recursive: true, force: true })
+    fs.mkdirSync(fallback, { recursive: true })
+    return fallback
+  }
 }
 
 function buildDistName() {

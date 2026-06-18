@@ -275,7 +275,15 @@ function parseCatalogIds(catalogSource) {
   return { itemTypes, itemPublisherIds, skuIds }
 }
 
+function normalizeNumericFields(proposal) {
+  if (proposal.discountPercent != null) {
+    proposal.discountPercent = Number(proposal.discountPercent)
+  }
+  return proposal
+}
+
 function validateProposal(proposal, catalogSource) {
+  normalizeNumericFields(proposal)
   const errors = []
   const { itemTypes, itemPublisherIds, skuIds } = parseCatalogIds(catalogSource)
   const publisherType = itemTypes.get(proposal.targetPublisherId)
