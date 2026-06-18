@@ -148,6 +148,33 @@ domain/
 
 ---
 
+## AI Agents & Data Layer
+
+This project ships a **structured static data layer** designed for AI agents to safely update content (campaigns, catalog, news) without touching React components or pricing logic. The full rulebook lives in [`AGENT_CONTRACT.md`](AGENT_CONTRACT.md).
+
+### Agent-Editable Data (`src/data/`)
+
+| File | Purpose | Agent may edit |
+| --- | --- | --- |
+| `campaigns.ts` | Promotional campaign definitions, banner targets, discount percentages | `campaigns` array only |
+| `catalog.ts` | Game items, SKU configs, popular search recommendations | `agentPopularSearchRecommendations`, `analyticsPopularSearchRecommendations`, `cachedPopularSearchRecommendations` |
+| `newsArticles.ts` | Game articles, top-up guides, campaign details | `newsArticles` array only |
+| `discounts.ts` | Derived pricing & badge helpers | **Read-only** — human-owned |
+
+### Contract Rules
+
+- **Edit data, not code.** Agents must not touch `app/**`, `components/**`, helper/selector functions, `discounts.ts`, or config files (`next.config.js`, `tailwind.config.js`, `package.json`).
+- **Single source of truth for price.** Base SKU price is `catalog.ts → TopupSku.amount` and must never be overwritten. Discounts are declared as `discountPercent` in `campaigns.ts`; final sale prices are **computed** by `getEffectiveSku()`, never stored.
+- **Referential integrity.** `targetPublisherId`, `targetGameIds`, and an article's `relatedCampaignId` must reference IDs that already exist in `catalog.ts` / `campaigns.ts`.
+- **Validation bounds.** `discountPercent` must be a positive number `< 100`; when `discountText` is present it must contain the same percent value.
+- **Fallback chain.** Rendering falls back through valid active campaigns → `lastKnownValidCampaigns` → `fallbackCampaigns`, so a bad agent edit degrades gracefully instead of breaking the UI.
+
+### Content-Editing Agent (GreenNode AgentBase)
+
+Content updates are driven by a companion agent (`portal-webapp-editor`) deployed on **GreenNode AgentBase**: it receives a change request, pulls this repo, uses an LLM to edit the data files above within the contract, then commits and opens a merge request. Local edits via Claude Code follow the same contract — `CLAUDE.md` is auto-loaded and requires the Superpowers skills in `.skills/` to be applied before any change.
+
+---
+
 ## Learn More
 
 - [Next.js Documentation](https://nextjs.org/docs)
