@@ -312,8 +312,10 @@ function validateProposal(proposal, catalogSource) {
     }
   }
 
-  if (!Number.isFinite(proposal.discountPercent) || proposal.discountPercent <= 0 || proposal.discountPercent >= 100) {
-    errors.push('discountPercent must be a positive number below 100')
+  if (proposal.discountPercent != null && proposal.discountPercent !== 0) {
+    if (!Number.isFinite(proposal.discountPercent) || proposal.discountPercent <= 0 || proposal.discountPercent >= 100) {
+      errors.push('discountPercent must be a positive number below 100')
+    }
   }
 
   for (const item of proposal.recommendedPopularSearchItems || []) {
@@ -338,8 +340,10 @@ function validateProposal(proposal, catalogSource) {
     if (rule.publisherId && !itemTypes.has(rule.publisherId)) {
       errors.push(`skuDiscount references a missing publisherId: ${rule.publisherId}`)
     }
-    if (!Number.isFinite(rule.discountPercent) || rule.discountPercent <= 0 || rule.discountPercent >= 100) {
-      errors.push('skuDiscount must have a valid discountPercent')
+    if (rule.discountPercent != null && rule.discountPercent !== 0) {
+      if (!Number.isFinite(rule.discountPercent) || rule.discountPercent <= 0 || rule.discountPercent >= 100) {
+        errors.push('skuDiscount must have a valid discountPercent')
+      }
     }
   }
 
@@ -355,7 +359,8 @@ function getNextCampaignPriority(campaignSource) {
 }
 
 function proposalToCampaign(proposal, priority = 150) {
-  return {
+  const hasDiscount = proposal.discountPercent > 0
+  const campaign = {
     id: proposal.id,
     title: proposal.bannerTitle,
     subtitle: proposal.bannerSubtitle,
@@ -364,16 +369,6 @@ function proposalToCampaign(proposal, priority = 150) {
     altText: proposal.altText || `${proposal.bannerTitle} banner`,
     targetPublisherId: proposal.targetPublisherId,
     targetGameIds: proposal.targetGameIds,
-    discountPercent: proposal.discountPercent,
-    discountText: proposal.discountText || `Giảm ${formatDiscountPercent(proposal.discountPercent)}%`,
-    skuDiscounts: [
-      {
-        id: `${proposal.id}-${proposal.targetPublisherId}-eligible-skus`,
-        publisherId: proposal.targetPublisherId,
-        discountPercent: proposal.discountPercent,
-        enabled: true
-      }
-    ],
     ctaText: proposal.ctaText,
     articleId: proposal.id,
     enabled: true,
@@ -381,6 +376,24 @@ function proposalToCampaign(proposal, priority = 150) {
     isTopBanner: true,
     themeClassName: 'from-[#E75648] via-[#F1865F] to-[#FFD58F]'
   }
+
+  if (hasDiscount) {
+    campaign.discountPercent = proposal.discountPercent
+    campaign.discountText = proposal.discountText || `Giảm ${formatDiscountPercent(proposal.discountPercent)}%`
+    campaign.skuDiscounts = [
+      {
+        id: `${proposal.id}-${proposal.targetPublisherId}-eligible-skus`,
+        publisherId: proposal.targetPublisherId,
+        discountPercent: proposal.discountPercent,
+        enabled: true
+      }
+    ]
+  } else {
+    campaign.discountText = proposal.discountText || ''
+    campaign.skuDiscounts = []
+  }
+
+  return campaign
 }
 
 function proposalToArticle(proposal) {
@@ -408,6 +421,10 @@ function proposalToPopularSearchItems(proposal) {
 }
 
 function runBuild() {
+  if (process.env.SKIP_NEXT_BUILD === '1') {
+    console.log('Skipping next build (SKIP_NEXT_BUILD=1)')
+    return
+  }
   runNextBuild()
 }
 
