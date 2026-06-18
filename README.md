@@ -154,3 +154,5 @@ domain/
 - [Next.js App Router](https://nextjs.org/docs/app)
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [Zustand](https://zustand-demo.pmnd.rs/)
+
+<!-- Reviewed by AI agent (hackathon demo) -->
