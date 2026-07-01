@@ -1,13 +1,13 @@
 const fs = require('fs')
 const path = require('path')
 const { spawn } = require('child_process')
-const { runNextBuild } = require('./runNextBuild')
 
 const root = path.resolve(__dirname, '..')
 const proposalDir = path.join(root, 'src', 'agent', 'proposals')
 const campaignsPath = path.join(root, 'src', 'data', 'campaigns.ts')
 const newsArticlesPath = path.join(root, 'src', 'data', 'newsArticles.ts')
 const catalogPath = path.join(root, 'src', 'data', 'catalog.ts')
+const appliedContentPath = path.join(root, 'src', 'agent', 'appliedContent.json')
 const localServerPidPath = path.join(root, 'dev-server.pid')
 const defaultLocalPort = process.env.NAPTHEVUI_LOCAL_PORT || '8090'
 
@@ -249,6 +249,33 @@ function markProposalApplied(proposal) {
   )
 }
 
+// Persist the applied campaign + article into a runtime overlay that the data layer
+// reads on every request. This makes the running server (dev or prod) reflect applied
+// content WITHOUT a rebuild/restart. Mirrors the .ts "enable only the applied campaign"
+// behaviour by disabling previously-applied overlay campaigns.
+function upsertAppliedContent(campaignObject, articleObject) {
+  let data = { campaigns: [], articles: [] }
+  try {
+    if (fs.existsSync(appliedContentPath)) {
+      const parsed = JSON.parse(readText(appliedContentPath))
+      data.campaigns = Array.isArray(parsed.campaigns) ? parsed.campaigns : []
+      data.articles = Array.isArray(parsed.articles) ? parsed.articles : []
+    }
+  } catch (e) {
+    data = { campaigns: [], articles: [] }
+  }
+
+  data.campaigns = data.campaigns
+    .filter((c) => c.id !== campaignObject.id)
+    .map((c) => ({ ...c, enabled: false, isTopBanner: false }))
+  data.campaigns.push(campaignObject)
+
+  data.articles = data.articles.filter((a) => a.id !== articleObject.id)
+  data.articles.push(articleObject)
+
+  writeText(appliedContentPath, `${JSON.stringify(data, null, 2)}\n`)
+}
+
 function parseCatalogIds(catalogSource) {
   const itemTypes = new Map()
   const itemPublisherIds = new Map()
@@ -418,14 +445,6 @@ function proposalToPopularSearchItems(proposal) {
     source: 'agent',
     updatedAt: item.updatedAt || proposal.createdAt
   }))
-}
-
-function runBuild() {
-  if (process.env.SKIP_NEXT_BUILD === '1') {
-    console.log('Skipping next build (SKIP_NEXT_BUILD=1)')
-    return
-  }
-  runNextBuild()
 }
 
 let typeScriptRequireHookRegistered = false
@@ -614,7 +633,9 @@ function applyApprovedCampaignProposal(proposalId) {
   try {
     activationSummary = getCampaignActivationSummary(proposal.id)
     assertAppliedCampaignIsActive(activationSummary, proposal.id)
-    runBuild()
+    // Write the runtime overlay so the running server reflects the applied campaign/article
+    // immediately, without a rebuild or restart.
+    upsertAppliedContent(appliedCampaign, proposalToArticle(proposal))
   } catch (error) {
     writeText(campaignsPath, originalCampaigns)
     writeText(newsArticlesPath, originalNewsArticles)
