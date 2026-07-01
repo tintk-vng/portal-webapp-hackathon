@@ -1,4 +1,5 @@
 import { campaigns } from './campaigns'
+import { loadOverlayCampaigns, loadOverlayArticles, mergeById } from './runtimeOverlay'
 
 export type NewsArticle = {
   id: string
@@ -225,6 +226,8 @@ export const newsArticles: NewsArticle[] = [
 
 export function getEnabledArticles() {
   let disabledCampaigns: string[] = []
+  let effectiveCampaigns = campaigns
+  let effectiveArticles = newsArticles
   if (typeof window === 'undefined') {
     try {
       const fs = require('fs')
@@ -237,13 +240,18 @@ export function getEnabledArticles() {
     } catch (e) {
       // ignore
     }
+
+    // Merge runtime overlay so campaigns/articles applied after the bundle was built
+    // are reflected in the news section without a rebuild/restart.
+    effectiveCampaigns = mergeById(campaigns, loadOverlayCampaigns())
+    effectiveArticles = mergeById(newsArticles, loadOverlayArticles())
   }
 
-  const activeCampaignIds = campaigns
+  const activeCampaignIds = effectiveCampaigns
     .filter((c) => c.enabled && !disabledCampaigns.includes(c.id))
     .map((c) => c.id)
 
-  return newsArticles
+  return effectiveArticles
     .filter((article) => {
       if (!article.enabled) return false
       if (!article.relatedCampaignId) return false

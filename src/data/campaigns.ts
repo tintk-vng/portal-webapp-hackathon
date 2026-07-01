@@ -1,5 +1,6 @@
 import { getItemById, topupSkus } from './catalog'
 import { getArticleById } from './newsArticles'
+import { loadOverlayCampaigns } from './runtimeOverlay'
 
 export type CampaignSkuDiscount = {
   id: string
@@ -318,8 +319,20 @@ export function validateCampaignData(candidateCampaigns: Campaign[] = campaigns)
 }
 
 function getCampaignsFromSource(): { campaigns: Campaign[]; source: CampaignSource } {
+  // Merge runtime overlay so campaigns applied after the bundle was built are visible
+  // without a rebuild/restart. Upsert by id into the shared array (idempotent).
+  let effectiveCampaigns: Campaign[] = campaigns
   if (typeof window === 'undefined') {
     try {
+      for (const overlayCampaign of loadOverlayCampaigns()) {
+        const index = campaigns.findIndex((c) => c.id === overlayCampaign.id)
+        if (index >= 0) {
+          campaigns[index] = { ...campaigns[index], ...overlayCampaign }
+        } else {
+          campaigns.push(overlayCampaign)
+        }
+      }
+
       const fs = require('fs')
       const path = require('path')
       const statePath = path.join(process.cwd(), 'src', 'agent', 'campaignState.json')
@@ -338,9 +351,10 @@ function getCampaignsFromSource(): { campaigns: Campaign[]; source: CampaignSour
     } catch (e) {
       // ignore
     }
+    effectiveCampaigns = campaigns
   }
 
-  const validEditableCampaigns = getValidActiveCampaigns(campaigns)
+  const validEditableCampaigns = getValidActiveCampaigns(effectiveCampaigns)
   if (validEditableCampaigns.length > 0) {
     return { campaigns: validEditableCampaigns, source: 'editable' }
   }
